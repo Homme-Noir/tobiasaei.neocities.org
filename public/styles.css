@@ -1279,9 +1279,31 @@ body::before {
   padding: 0;
 }
 
+.page-journal .journal-stream::after {
+  content: "";
+  position: absolute;
+  inset: -0.5rem -0.9rem;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(6, 12, 14, 0.58),
+    rgba(6, 12, 14, 0.42) 26%,
+    rgba(6, 12, 14, 0.28) 58%,
+    rgba(6, 12, 14, 0.18)
+  );
+  border-radius: 16px;
+}
+
+.page-journal .journal-stream > * {
+  position: relative;
+  z-index: 1;
+}
+
 .page-journal .journal-date {
-  color: #a4d8d3;
+  color: #b8e8e3;
   font-size: 0.78rem;
+  text-shadow: 0 1px 10px rgba(3, 10, 12, 0.45);
 }
 
 .page-journal .journal-body {
@@ -1291,14 +1313,29 @@ body::before {
 }
 
 .page-journal .journal-item-title {
-  color: #eef7f8;
+  color: #f5feff;
   font-size: 1.72rem;
+  text-shadow: 0 2px 14px rgba(3, 10, 12, 0.44);
 }
 
 .page-journal .journal-body p {
-  color: #d6e8ea;
+  color: #e8f7f8;
   font-size: 1.28rem;
   line-height: 1.72;
+  text-shadow: 0 1px 12px rgba(3, 10, 12, 0.4);
+}
+
+.page-journal .journal-filter-btn {
+  border-color: rgba(139, 232, 224, 0.52);
+  background: rgba(7, 14, 16, 0.84);
+  color: #d4efee;
+}
+
+.page-journal .journal-filter-btn.active,
+.page-journal .journal-filter-btn:hover {
+  border-color: rgba(138, 238, 229, 0.82);
+  background: rgba(37, 169, 158, 0.25);
+  color: #f2ffff;
 }
 
 .page-writings .writings-content {
@@ -2078,6 +2115,10 @@ body::after {
   z-index: 1;
   opacity: 0.42;
   background: radial-gradient(circle at center, transparent 52%, rgba(8, 15, 16, 0.75) 100%);
+}
+
+.page-journal::after {
+  opacity: 0.3;
 }
 
 .nav-shell {
