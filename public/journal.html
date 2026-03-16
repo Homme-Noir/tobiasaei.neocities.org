@@ -17,9 +17,9 @@
             <p>Timestamped fragments of thoughts.</p>
           </header>
           <div class="writings-filter journal-filter" role="tablist" aria-label="Journal filters">
-            <button type="button" role="tab" aria-selected="true" aria-controls="journal-entries" class="journal-filter-btn active" data-journal-filter="journal">[Journal]</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="journal-entries" class="journal-filter-btn" data-journal-filter="journal">[Journal]</button>
             <button type="button" role="tab" aria-selected="false" aria-controls="journal-entries" class="journal-filter-btn" data-journal-filter="indexes">[Indexes]</button>
-            <button type="button" role="tab" aria-selected="false" aria-controls="journal-entries" class="journal-filter-btn" data-journal-filter="all">[All]</button>
+            <button type="button" role="tab" aria-selected="true" aria-controls="journal-entries" class="journal-filter-btn active" data-journal-filter="all">[All]</button>
           </div>
           <div id="journal-entries" role="tabpanel"></div>
         </main>
@@ -41,7 +41,7 @@
             };
         var filterButtons = document.querySelectorAll(".journal-filter-btn");
         var entries = [];
-        var activeFilter = "journal";
+        var activeFilter = "all";
 
         function visibleEntries() {
           if (activeFilter === "all") return entries.slice();
@@ -86,7 +86,7 @@
 
         for (var i = 0; i < filterButtons.length; i++) {
           filterButtons[i].addEventListener("click", function () {
-            var next = this.getAttribute("data-journal-filter") || "journal";
+            var next = this.getAttribute("data-journal-filter") || "all";
             activeFilter = next;
             for (var j = 0; j < filterButtons.length; j++) {
               var isActive = filterButtons[j] === this;
