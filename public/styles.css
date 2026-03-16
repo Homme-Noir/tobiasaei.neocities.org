@@ -431,6 +431,17 @@ main {
   accent-color: var(--teal-500);
 }
 
+.lofi-station {
+  max-width: 170px;
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-pill);
+  padding: 0.45rem 0.6rem;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  color: var(--text-main);
+  background: oklch(20% 0.05 198 / 0.86);
+}
+
 /* ============================================================
    Guestbook
    ============================================================ */
@@ -1020,6 +1031,10 @@ main {
 
   .lofi-volume {
     width: 74px;
+  }
+
+  .lofi-station {
+    max-width: 120px;
   }
 
   .scroll-to-top {
@@ -1742,6 +1757,12 @@ body::before {
 
 .lofi-toggle.is-playing {
   background: rgba(45, 212, 191, 0.25);
+}
+
+.lofi-station {
+  border-color: var(--mp-border);
+  color: var(--mp-text-primary);
+  background: rgba(8, 15, 16, 0.92);
 }
 
 @media (max-width: 980px) {

@@ -11,6 +11,33 @@
   var HOME_TITLE = "Tobias_AEI: Home";
   var TAB_SUFFIX = " | Tobias AEI";
   var SCROLL_THRESHOLD = 300;
+  var RADIO_STATE_KEY = "taeiRadioStateV1";
+  var RADIO_STATIONS = [
+    {
+      id: "lofigirl",
+      label: "LoFi Girl Inspired",
+      sources: [
+        "https://ice1.somafm.com/groovesalad-128-mp3",
+        "https://ice2.somafm.com/groovesalad-128-mp3",
+      ],
+    },
+    {
+      id: "bootlegboy",
+      label: "Bootleg Boy Inspired",
+      sources: [
+        "https://ice1.somafm.com/illstreet-128-mp3",
+        "https://ice2.somafm.com/illstreet-128-mp3",
+      ],
+    },
+    {
+      id: "chillhop",
+      label: "Chillhop Inspired",
+      sources: [
+        "https://ice1.somafm.com/lush-128-mp3",
+        "https://ice2.somafm.com/lush-128-mp3",
+      ],
+    },
+  ];
 
   function setCurrentPage() {
     var nav = document.getElementById("navbar");
@@ -74,31 +101,144 @@
 
   function initLofiPlayer() {
     var root = document.querySelector("[data-lofi-player]");
-    if (!root) return;
+    if (!root) {
+      root = document.createElement("div");
+      root.className = "lofi-player";
+      root.setAttribute("data-lofi-player", "");
+      root.innerHTML =
+        '<button type="button" class="lofi-toggle" data-lofi-toggle aria-pressed="false">Play radio</button>' +
+        '<label class="lofi-station-wrap">' +
+        '  <span class="sr-only">Radio station</span>' +
+        '  <select class="lofi-station" data-lofi-station aria-label="Radio station"></select>' +
+        "</label>" +
+        '<label class="lofi-volume-wrap">' +
+        '  <span class="sr-only">Radio volume</span>' +
+        '  <input type="range" class="lofi-volume" data-lofi-volume min="0" max="1" step="0.05" value="0.45" aria-label="Radio volume" />' +
+        "</label>" +
+        '<audio data-lofi-audio preload="none"></audio>';
+      document.body.appendChild(root);
+    }
     var toggle = root.querySelector("[data-lofi-toggle]");
     var volume = root.querySelector("[data-lofi-volume]");
+    var station = root.querySelector("[data-lofi-station]");
     var audio = root.querySelector("[data-lofi-audio]");
-    if (!toggle || !volume || !audio) return;
+    if (!toggle || !volume || !audio || !station) return;
 
-    audio.volume = Number(volume.value || 0.45);
+    function readState() {
+      try {
+        var raw = window.localStorage.getItem(RADIO_STATE_KEY);
+        if (!raw) return null;
+        var parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== "object") return null;
+        return parsed;
+      } catch (err) {
+        return null;
+      }
+    }
+
+    function writeState(next) {
+      try {
+        window.localStorage.setItem(RADIO_STATE_KEY, JSON.stringify(next));
+      } catch (err) {
+        /* no-op: storage unavailable */
+      }
+    }
+
+    function resolveStation(id) {
+      for (var i = 0; i < RADIO_STATIONS.length; i++) {
+        if (RADIO_STATIONS[i].id === id) return RADIO_STATIONS[i];
+      }
+      return RADIO_STATIONS[0];
+    }
+
+    for (var i = 0; i < RADIO_STATIONS.length; i++) {
+      var opt = document.createElement("option");
+      opt.value = RADIO_STATIONS[i].id;
+      opt.textContent = RADIO_STATIONS[i].label;
+      station.appendChild(opt);
+    }
+
+    var stored = readState() || {};
+    var currentStation = resolveStation(stored.stationId);
+    var desiredVolume = Number(stored.volume);
+    var shouldResume = !!stored.isPlaying;
+
+    if (Number.isNaN(desiredVolume)) desiredVolume = 0.45;
+    if (desiredVolume < 0) desiredVolume = 0;
+    if (desiredVolume > 1) desiredVolume = 1;
+    volume.value = String(desiredVolume);
+    audio.volume = desiredVolume;
+    station.value = currentStation.id;
+
+    function setSources(stationConfig) {
+      while (audio.firstChild) {
+        audio.removeChild(audio.firstChild);
+      }
+      for (var s = 0; s < stationConfig.sources.length; s++) {
+        var source = document.createElement("source");
+        source.src = stationConfig.sources[s];
+        source.type = "audio/mpeg";
+        audio.appendChild(source);
+      }
+      audio.load();
+    }
+
+    function currentState(isPlaying) {
+      return {
+        stationId: station.value,
+        volume: Number(volume.value || 0.45),
+        isPlaying: !!isPlaying,
+      };
+    }
 
     function setPlaying(isPlaying) {
       toggle.classList.toggle("is-playing", isPlaying);
       toggle.setAttribute("aria-pressed", String(isPlaying));
-      toggle.textContent = isPlaying ? "Pause lofi" : "Play lofi";
+      toggle.textContent = isPlaying ? "Pause radio" : "Play radio";
+      writeState(currentState(isPlaying));
     }
+
+    setSources(currentStation);
 
     toggle.addEventListener("click", function () {
       if (audio.paused) {
-        audio.play().then(function () {
-          setPlaying(true);
-        }).catch(function () {
-          setPlaying(false);
-        });
+        audio
+          .play()
+          .then(function () {
+            setPlaying(true);
+          })
+          .catch(function () {
+            setPlaying(false);
+            toggle.textContent = "Tap to resume";
+          });
       } else {
         audio.pause();
         setPlaying(false);
       }
+    });
+
+    station.addEventListener("change", function () {
+      var wasPlaying = !audio.paused;
+      var next = resolveStation(station.value);
+      setSources(next);
+      if (wasPlaying) {
+        audio
+          .play()
+          .then(function () {
+            setPlaying(true);
+          })
+          .catch(function () {
+            setPlaying(false);
+          });
+      } else {
+        setPlaying(false);
+      }
+    });
+
+    volume.addEventListener("input", function () {
+      var next = Number(volume.value);
+      if (!Number.isNaN(next)) audio.volume = next;
+      writeState(currentState(!audio.paused));
     });
 
     audio.addEventListener("ended", function () {
@@ -107,13 +247,22 @@
 
     audio.addEventListener("error", function () {
       setPlaying(false);
-      toggle.textContent = "Lofi offline";
+      toggle.textContent = "Radio offline";
     });
 
-    volume.addEventListener("input", function () {
-      var next = Number(volume.value);
-      if (!Number.isNaN(next)) audio.volume = next;
-    });
+    if (shouldResume) {
+      audio
+        .play()
+        .then(function () {
+          setPlaying(true);
+        })
+        .catch(function () {
+          setPlaying(false);
+          toggle.textContent = "Tap to resume";
+        });
+    } else {
+      setPlaying(false);
+    }
   }
 
   function initNavScrollState() {

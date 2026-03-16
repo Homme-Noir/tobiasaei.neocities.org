@@ -63,28 +63,6 @@
       </main>
       <div id="footerPlaceholder"></div>
     </div>
-    <div class="lofi-player" data-lofi-player>
-      <button type="button" class="lofi-toggle" data-lofi-toggle aria-pressed="false">
-        Play lofi
-      </button>
-      <label class="lofi-volume-wrap">
-        <span class="sr-only">Lofi volume</span>
-        <input
-          type="range"
-          class="lofi-volume"
-          data-lofi-volume
-          min="0"
-          max="1"
-          step="0.05"
-          value="0.45"
-          aria-label="Lofi volume"
-        />
-      </label>
-      <audio data-lofi-audio preload="none">
-        <source src="https://ice1.somafm.com/groovesalad-128-mp3" type="audio/mpeg" />
-        <source src="https://ice2.somafm.com/groovesalad-128-mp3" type="audio/mpeg" />
-      </audio>
-    </div>
     <script src="main.js"></script>
   </body>
 </html>
