@@ -1241,6 +1241,13 @@ body::before {
   color: #c6dde0;
 }
 
+.page-journal .journal-stream {
+  background: rgba(8, 15, 16, 0.92);
+  border: 1px solid rgba(45, 212, 191, 0.28);
+  border-radius: 18px;
+  padding: 1.05rem;
+}
+
 .page-journal .journal-date {
   color: #a4d8d3;
   font-size: 0.78rem;
@@ -1299,6 +1306,9 @@ body::before {
 
 .journal-filter {
   margin-bottom: 1rem;
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
 }
 
 .journal-filter-btn {

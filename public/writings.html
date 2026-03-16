@@ -42,15 +42,6 @@
           return div.innerHTML;
         }
 
-        function firstMeaningfulLine(content) {
-          var lines = String(content || "").split(/\r?\n/);
-          for (var i = 0; i < lines.length; i++) {
-            var ln = lines[i].trim();
-            if (ln) return ln;
-          }
-          return "Untitled poem.";
-        }
-
         fetch("data/vault-poems.json", { cache: "no-store" })
           .then(function (res) {
             if (!res.ok) throw new Error("Poems unavailable");
@@ -66,16 +57,13 @@
               var poem = poems[i] || {};
               var title = poem.title || "Untitled";
               var content = String(poem.content || "");
-              var preview = firstMeaningfulLine(content);
               var isOpen = i < 2 ? " open" : "";
               html += "<li>";
               html += "<details class=\"writings-entry\"" + isOpen + ">";
               html += "<summary>";
               html += "<span class=\"entry-type\">Poetry</span>";
-              html += "<time datetime=\"\">" + escapeHtml(poem.datetime || "Forgotten") + "</time>";
               html += "<h2>" + escapeHtml(title) + "</h2>";
               html += "</summary>";
-              html += "<p class=\"writings-excerpt\">" + escapeHtml(preview) + "</p>";
               html += "<div class=\"writings-full vault-text\">" + escapeHtml(content) + "</div>";
               html += "</details>";
               html += "</li>";

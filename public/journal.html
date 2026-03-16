@@ -46,15 +46,6 @@
           return el.innerHTML;
         }
 
-        function firstMeaningfulLine(content) {
-          var lines = String(content || "").split(/\r?\n/);
-          for (var i = 0; i < lines.length; i++) {
-            var ln = lines[i].trim();
-            if (ln) return ln;
-          }
-          return "";
-        }
-
         function visibleEntries() {
           if (activeFilter === "all") return entries.slice();
           if (activeFilter === "indexes") {
@@ -80,12 +71,10 @@
             var datetime = entry.datetime || "Forgotten";
             var title = entry.title || "Untitled";
             var body = String(entry.content || "");
-            var preview = firstMeaningfulLine(body);
             html += "<article class=\"journal-item\">";
             html += "<time class=\"journal-date\" datetime=\"\">" + esc(datetime) + "</time>";
             html += "<div class=\"journal-body\">";
             html += "<h2 class=\"journal-item-title\">" + esc(title) + "</h2>";
-            if (preview) html += "<p>" + esc(preview) + "</p>";
             html += "<pre class=\"vault-text\">" + esc(body) + "</pre>";
             html += "</div></article>";
           }
