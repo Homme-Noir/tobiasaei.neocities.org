@@ -8,17 +8,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <style>
       :root {
-        --ink: oklch(97% 0.01 190);
-        --teal-900: oklch(22% 0.06 200);
-        --teal-700: oklch(42% 0.11 195);
-        --teal-500: oklch(58% 0.13 185);
-        --teal-300: oklch(82% 0.08 175);
-        --accent: oklch(75% 0.16 45);
+        --bg-deep: #080f10;
+        --teal-primary: #2dd4bf;
+        --teal-muted: #14b8a6;
+        --text-primary: #e2e8f0;
       }
 
       * {
@@ -32,12 +30,46 @@
       }
 
       body {
-        font-family: "Space Grotesk", sans-serif;
-        color: var(--ink);
+        font-family: "Cormorant Garamond", serif;
+        color: var(--text-primary);
         background:
-          linear-gradient(145deg, oklch(10% 0.03 220 / 0.7), oklch(18% 0.04 190 / 0.55)),
+          linear-gradient(rgba(8, 15, 16, 0.72), rgba(8, 15, 16, 0.72)),
           url("backiee-169091.jpg") center / cover no-repeat fixed;
         overflow: hidden;
+      }
+
+      .vhs-overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .vhs-scanlines {
+        position: absolute;
+        inset: 0;
+        opacity: 0.4;
+        background: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0),
+          rgba(255, 255, 255, 0) 50%,
+          rgba(0, 0, 0, 0.1) 50%,
+          rgba(0, 0, 0, 0.1)
+        );
+        background-size: 100% 4px;
+      }
+
+      .vhs-vignette {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at center, transparent 50%, rgba(8, 15, 16, 0.82) 100%);
+      }
+
+      .vhs-flicker {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.08);
+        mix-blend-mode: overlay;
+        animation: flicker 1.8s infinite;
       }
 
       .entry {
@@ -52,56 +84,21 @@
       .entry::before {
         content: "";
         position: absolute;
-        inset: 0;
-        background:
-          radial-gradient(circle at 14% 16%, oklch(56% 0.14 188 / 0.45), transparent 42%),
-          radial-gradient(circle at 84% 82%, oklch(66% 0.13 170 / 0.35), transparent 38%);
-        mix-blend-mode: screen;
-        pointer-events: none;
-        z-index: -1;
-      }
-
-      .entry::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: repeating-linear-gradient(
-          to bottom,
-          transparent 0px,
-          transparent 2px,
-          oklch(0% 0 0 / 0.22) 2px,
-          oklch(0% 0 0 / 0.22) 3px
-        );
-        mix-blend-mode: soft-light;
-        pointer-events: none;
-        z-index: -1;
-        animation: scan 8s linear infinite;
-      }
-
-      .entry-card {
-        max-width: 48rem;
-        width: min(100%, 48rem);
-        padding: 2rem;
-        border: 1px solid oklch(80% 0.1 180 / 0.35);
-        border-radius: 1.2rem;
-        background: oklch(17% 0.05 205 / 0.55);
-        backdrop-filter: blur(8px);
-        box-shadow: 0 18px 64px oklch(0% 0 0 / 0.35);
-      }
-
-      .entry-label {
-        margin: 0 0 0.85rem 0;
-        font-family: "IBM Plex Mono", monospace;
-        font-size: 0.75rem;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--teal-300);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: min(60vw, 600px);
+        height: min(60vw, 600px);
+        border-radius: 50%;
+        background: rgba(45, 212, 191, 0.08);
+        filter: blur(80px);
       }
 
       .entry h1 {
         margin: 0;
-        font-size: clamp(2rem, 6vw, 4rem);
+        font-size: clamp(3rem, 11vw, 6.4rem);
         line-height: 1;
+        letter-spacing: 0.2em;
       }
 
       .glitch-text {
@@ -128,29 +125,55 @@
         color: oklch(74% 0.11 38 / 0.5);
       }
 
-      .entry p {
-        margin: 1rem 0 1.8rem;
-        max-width: 44ch;
-        color: oklch(90% 0.03 195);
+      .type-line {
+        margin: 1.2rem 0 2.5rem;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.9rem;
+        letter-spacing: 0.14em;
+        color: var(--teal-muted);
+        min-height: 1.4rem;
+      }
+
+      .cursor {
+        display: inline-block;
+        width: 9px;
+        height: 1.1rem;
+        margin-left: 0.35rem;
+        vertical-align: middle;
+        background: var(--teal-primary);
+        animation: blink 1s step-end infinite;
       }
 
       .enter-link {
         display: inline-flex;
         align-items: center;
         gap: 0.55rem;
-        font-weight: 700;
-        color: var(--ink);
+        font-family: "IBM Plex Mono", monospace;
+        font-weight: 500;
+        font-size: 0.72rem;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--teal-primary);
         text-decoration: none;
-        border: 1px solid oklch(84% 0.07 170 / 0.45);
-        border-radius: 999px;
+        border: 1px solid rgba(45, 212, 191, 0.35);
+        border-radius: 2px;
         padding: 0.75rem 1rem;
-        background: linear-gradient(135deg, oklch(60% 0.13 182 / 0.75), oklch(70% 0.1 170 / 0.62));
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        background: rgba(45, 212, 191, 0.05);
+        box-shadow: 0 0 0 rgba(45, 212, 191, 0);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.45s ease, background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+      }
+
+      .enter-link.is-ready {
+        opacity: 1;
+        pointer-events: auto;
       }
 
       .enter-link:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px oklch(0% 0 0 / 0.28);
+        background: rgba(45, 212, 191, 0.11);
+        border-color: rgba(45, 212, 191, 0.9);
+        box-shadow: 0 0 16px rgba(45, 212, 191, 0.36);
       }
 
       .enter-link:focus-visible {
@@ -158,46 +181,63 @@
         outline-offset: 3px;
       }
 
-      .entry-burst {
-        position: absolute;
-        right: 6%;
-        top: 14%;
-        width: 11rem;
-        height: 11rem;
-        border-radius: 50%;
-        border: 1px solid oklch(86% 0.12 175 / 0.45);
-        box-shadow: inset 0 0 0 1rem oklch(44% 0.11 185 / 0.2);
-        filter: blur(0.2px);
+      @keyframes flicker {
+        0%, 100% { opacity: 0.08; }
+        40% { opacity: 0.04; }
+        60% { opacity: 0.12; }
       }
 
-      @keyframes scan {
-        0% { transform: translateY(0); }
-        100% { transform: translateY(100%); }
+      @keyframes blink {
+        50% { opacity: 0; }
       }
 
       @media (max-width: 680px) {
-        .entry-card { padding: 1.35rem; }
-        .entry-burst { width: 7rem; height: 7rem; right: 4%; }
+        .entry h1 {
+          font-size: clamp(2.3rem, 12vw, 4.1rem);
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .entry::after { animation: none; }
+        .vhs-flicker { animation: none; }
+        .cursor { animation: none; }
         .enter-link { transition: none; }
       }
     </style>
   </head>
   <body>
+    <div class="vhs-overlay" aria-hidden="true">
+      <div class="vhs-scanlines"></div>
+      <div class="vhs-vignette"></div>
+      <div class="vhs-flicker"></div>
+    </div>
+
     <main class="entry">
-      <div class="entry-burst" aria-hidden="true"></div>
-      <section class="entry-card">
-        <p class="entry-label">Personal website</p>
+      <section>
         <h1 class="glitch-text" data-text="TOBIAS AEI">TOBIAS AEI</h1>
-        <p>Home of a failing bard.</p>
-        <a class="enter-link" href="home.html" aria-label="Enter site">
+        <p class="type-line"><span id="typed-line"></span><span class="cursor" aria-hidden="true"></span></p>
+        <a class="enter-link" id="enter-link" href="home.html" aria-label="Enter site">
           [ Initialize Sequence ]
-          <span aria-hidden="true">→</span>
         </a>
       </section>
     </main>
+    <script>
+      (function () {
+        var fullText = "Home of a failing bard...";
+        var typed = document.getElementById("typed-line");
+        var enter = document.getElementById("enter-link");
+        if (!typed || !enter) return;
+        var i = 0;
+        var timer = setInterval(function () {
+          i += 1;
+          typed.textContent = fullText.slice(0, i);
+          if (i >= fullText.length) {
+            clearInterval(timer);
+            setTimeout(function () {
+              enter.classList.add("is-ready");
+            }, 800);
+          }
+        }, 95);
+      })();
+    </script>
   </body>
 </html>

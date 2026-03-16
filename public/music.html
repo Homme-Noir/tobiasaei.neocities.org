@@ -88,7 +88,7 @@
             if (img) html += "<a href=\"" + url + "\" target=\"_blank\" rel=\"noopener\"><img src=\"" + img + "\" alt=\"\" width=\"120\" height=\"120\" class=\"music-now-art\"></a>";
             html += "<div class=\"music-now-info\"><a href=\"" + url + "\" target=\"_blank\" rel=\"noopener\" class=\"music-now-track\">" + escapeHtml(t.name) + "</a>";
             if (artist) html += "<span class=\"music-now-artist\">" + escapeHtml(artist) + "</span>";
-            html += "<span class=\"music-now-artist\">" + escapeHtml(status) + "</span>";
+            html += "<span class=\"music-now-status\">" + escapeHtml(status) + "</span>";
             html += "</div></div>";
             container.innerHTML = html;
           })

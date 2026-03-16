@@ -116,12 +116,116 @@
     });
   }
 
+  function initNavScrollState() {
+    var shell = document.querySelector(".nav-shell");
+    if (!shell) return;
+    function sync() {
+      var y = window.scrollY || document.documentElement.scrollTop;
+      shell.classList.toggle("is-scrolled", y > 20);
+    }
+    window.addEventListener("scroll", sync, { passive: true });
+    sync();
+  }
+
+  function initPageEntrance() {
+    var main = document.querySelector("main");
+    if (!main) return;
+    main.classList.add("page-enter");
+    window.requestAnimationFrame(function () {
+      main.classList.add("page-enter--active");
+    });
+  }
+
+  function initStaggerReveal() {
+    var groups = [
+      ".directory-grid .directory-card",
+      ".music-track-grid .music-track-tile",
+      ".projects-grid .projects-card",
+      ".writings-entries > li",
+      ".journal-stream .journal-item",
+      ".random-bento .random-tile",
+      ".guestbook-entries .guestbook-entry"
+    ];
+
+    for (var g = 0; g < groups.length; g++) {
+      var nodes = document.querySelectorAll(groups[g]);
+      for (var i = 0; i < nodes.length; i++) {
+        var n = nodes[i];
+        n.classList.add("stagger-in");
+        n.style.setProperty("--stagger-delay", String(i * 70) + "ms");
+      }
+    }
+  }
+
+  function initMobileNav() {
+    var shell = document.querySelector(".nav-shell");
+    var nav = document.getElementById("navbar");
+    if (!shell || !nav) return;
+    if (shell.querySelector(".mobile-nav-toggle")) return;
+
+    var toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "mobile-nav-toggle";
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-label", "Toggle menu");
+    toggle.textContent = "Menu";
+    shell.appendChild(toggle);
+
+    var overlay = document.createElement("div");
+    overlay.className = "mobile-nav-overlay";
+    overlay.setAttribute("hidden", "hidden");
+
+    var panel = document.createElement("div");
+    panel.className = "mobile-nav-panel";
+    var list = nav.querySelector("ul");
+    if (!list) return;
+    panel.appendChild(list.cloneNode(true));
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+
+    function close() {
+      overlay.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+      window.setTimeout(function () {
+        overlay.setAttribute("hidden", "hidden");
+      }, 220);
+    }
+
+    function open() {
+      overlay.removeAttribute("hidden");
+      window.requestAnimationFrame(function () {
+        overlay.classList.add("is-open");
+      });
+      toggle.setAttribute("aria-expanded", "true");
+    }
+
+    toggle.addEventListener("click", function () {
+      if (overlay.classList.contains("is-open")) close();
+      else open();
+    });
+
+    overlay.addEventListener("click", function (e) {
+      if (e.target === overlay) close();
+    });
+
+    var links = overlay.querySelectorAll("a[href]");
+    for (var i = 0; i < links.length; i++) {
+      links[i].addEventListener("click", function () {
+        close();
+      });
+    }
+  }
+
   function runAfterInject() {
     setPageBodyClass();
     setTabTitleSuffix();
     setCurrentPage();
     initScrollToTop();
     initLofiPlayer();
+    initNavScrollState();
+    initPageEntrance();
+    initStaggerReveal();
+    initMobileNav();
   }
 
   var headerPlaceholder = document.getElementById("headerPlaceholder");
