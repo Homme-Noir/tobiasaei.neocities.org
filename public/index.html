@@ -34,9 +34,9 @@
       body {
         font-family: "Space Grotesk", sans-serif;
         color: var(--ink);
-        background: radial-gradient(circle at 12% 8%, oklch(45% 0.14 190 / 0.75) 0%, transparent 45%),
-          radial-gradient(circle at 86% 80%, oklch(65% 0.14 170 / 0.35) 0%, transparent 40%),
-          linear-gradient(140deg, var(--teal-900) 0%, oklch(15% 0.04 220) 100%);
+        background:
+          linear-gradient(145deg, oklch(10% 0.03 220 / 0.7), oklch(18% 0.04 190 / 0.55)),
+          url("backiee-169091.jpg") center / cover no-repeat fixed;
         overflow: hidden;
       }
 
@@ -53,17 +53,12 @@
         content: "";
         position: absolute;
         inset: 0;
-        background: repeating-linear-gradient(
-          to bottom,
-          transparent 0px,
-          transparent 2px,
-          oklch(0% 0 0 / 0.18) 2px,
-          oklch(0% 0 0 / 0.18) 3px
-        );
-        mix-blend-mode: soft-light;
+        background:
+          radial-gradient(circle at 14% 16%, oklch(56% 0.14 188 / 0.45), transparent 42%),
+          radial-gradient(circle at 84% 82%, oklch(66% 0.13 170 / 0.35), transparent 38%);
+        mix-blend-mode: screen;
         pointer-events: none;
         z-index: -1;
-        animation: scan 8s linear infinite;
       }
 
       .entry-card {
@@ -154,12 +149,9 @@
     <main class="entry">
       <div class="entry-burst" aria-hidden="true"></div>
       <section class="entry-card">
-        <p class="entry-label">Personal website / ongoing experiment</p>
+        <p class="entry-label">Personal website</p>
         <h1>Tobias AEI</h1>
-        <p>
-          A mix of editorial calm, playful interaction, and weird web experiments.
-          Music, writing, code, and random things in one place.
-        </p>
+        <p>Home of a failing bard.</p>
         <a class="enter-link" href="home.html" aria-label="Enter site">
           Enter lab
           <span aria-hidden="true">→</span>

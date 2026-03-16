@@ -42,9 +42,13 @@
       (function () {
         var container = document.getElementById("last-played-content");
         if (!container) return;
-        var apiUrl = "https://lastfm-last-played.biancarosa.com.br/Tobias_AEI/latest-song";
-        fetch(apiUrl)
-          .then(function (r) { return r.json(); })
+        var directApiUrl = "https://lastfm-last-played.biancarosa.com.br/Tobias_AEI/latest-song";
+        var apiUrls = [
+          directApiUrl,
+          "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(directApiUrl)
+        ];
+
+        fetchWithFallback(apiUrls)
           .then(function (data) {
             var t = data.track;
             if (!t || !t.name) {
@@ -62,8 +66,22 @@
             container.innerHTML = html;
           })
           .catch(function () {
-            container.innerHTML = "<p class=\"music-loading\">Couldn’t load last played. <a href=\"https://www.last.fm/user/Tobias_AEI\" target=\"_blank\" rel=\"noopener\">View on Last.fm</a>.</p>";
+            container.innerHTML = "<p class=\"music-loading\">Couldn’t load last played.</p>";
           });
+
+        function fetchWithFallback(urls, index) {
+          var i = typeof index === "number" ? index : 0;
+          if (i >= urls.length) return Promise.reject(new Error("No Last.fm source available"));
+          return fetch(urls[i])
+            .then(function (r) {
+              if (!r.ok) throw new Error("Bad response");
+              return r.json();
+            })
+            .catch(function () {
+              return fetchWithFallback(urls, i + 1);
+            });
+        }
+
         function escapeHtml(s) {
           var div = document.createElement("div");
           div.textContent = s;

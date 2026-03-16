@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Guestbook — Tobias AEI" />
+    <title>Tobias_AEI: Guestbook</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="container">
+      <div id="headerPlaceholder"></div>
+      <div class="guestbook-layout">
+        <main>
+          <section class="guestbook-hero">
+            <p class="guestbook-kicker">Guestbook</p>
+            <h1>Leave a note</h1>
+            <p>Drop a message, recommendation, or random thought.</p>
+          </section>
+
+          <section class="guestbook-form-wrap" aria-label="Guestbook form">
+            <form class="guestbook-form" data-guestbook-form>
+              <label>
+                Name
+                <input
+                  type="text"
+                  name="name"
+                  maxlength="40"
+                  required
+                  placeholder="Your name"
+                />
+              </label>
+              <label>
+                Message
+                <textarea
+                  name="message"
+                  maxlength="400"
+                  required
+                  placeholder="Write your message..."
+                ></textarea>
+              </label>
+              <button type="submit">Post message</button>
+            </form>
+          </section>
+
+          <section class="guestbook-list" aria-label="Guestbook entries">
+            <h2>Recent entries</h2>
+            <p class="guestbook-empty" data-guestbook-empty>No messages yet.</p>
+            <ul class="guestbook-entries" data-guestbook-entries></ul>
+          </section>
+        </main>
+      </div>
+      <div id="footerPlaceholder"></div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+      (function () {
+        var key = "tae_guestbook_entries_v1";
+        var form = document.querySelector("[data-guestbook-form]");
+        var list = document.querySelector("[data-guestbook-entries]");
+        var empty = document.querySelector("[data-guestbook-empty]");
+        if (!form || !list || !empty) return;
+
+        function getEntries() {
+          try {
+            var raw = localStorage.getItem(key);
+            if (!raw) return [];
+            var parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? parsed : [];
+          } catch (e) {
+            return [];
+          }
+        }
+
+        function saveEntries(entries) {
+          localStorage.setItem(key, JSON.stringify(entries.slice(0, 50)));
+        }
+
+        function render(entries) {
+          list.innerHTML = "";
+          empty.style.display = entries.length ? "none" : "";
+          for (var i = 0; i < entries.length; i++) {
+            var item = entries[i];
+            var li = document.createElement("li");
+            li.className = "guestbook-entry";
+
+            var meta = document.createElement("p");
+            meta.className = "guestbook-entry-meta";
+            meta.textContent = item.name + " — " + item.date;
+
+            var msg = document.createElement("p");
+            msg.className = "guestbook-entry-message";
+            msg.textContent = item.message;
+
+            li.appendChild(meta);
+            li.appendChild(msg);
+            list.appendChild(li);
+          }
+        }
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var fd = new FormData(form);
+          var name = String(fd.get("name") || "").trim();
+          var message = String(fd.get("message") || "").trim();
+          if (!name || !message) return;
+          var entries = getEntries();
+          entries.unshift({
+            name: name.slice(0, 40),
+            message: message.slice(0, 400),
+            date: new Date().toLocaleString()
+          });
+          saveEntries(entries);
+          render(entries);
+          form.reset();
+        });
+
+        render(getEntries());
+      })();
+    </script>
+  </body>
+</html>

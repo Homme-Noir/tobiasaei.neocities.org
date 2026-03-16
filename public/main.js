@@ -49,9 +49,9 @@
     var main = document.querySelector("main");
     if (!main) return;
     var pathname = window.location.pathname;
-    var file = pathname.split("/").pop();
-    if (!file || file === "index.html" || file === "home.html") return;
+    var file = pathname.split("/").pop() || "";
     var raw = file.replace(/\.html$/, "");
+    if (!raw || raw === "index" || raw === "home") return;
     var title = raw
       .split("_")
       .map(function (w) {
@@ -84,7 +84,7 @@
     btn.id = "scroll-to-top";
     btn.setAttribute("aria-label", "Scroll to top");
     btn.className = "scroll-to-top scroll-to-top--hidden";
-    btn.textContent = "Top";
+    btn.textContent = "↑";
     document.body.appendChild(btn);
 
     btn.addEventListener("click", function (e) {
@@ -136,6 +136,11 @@
 
     audio.addEventListener("ended", function () {
       setPlaying(false);
+    });
+
+    audio.addEventListener("error", function () {
+      setPlaying(false);
+      toggle.textContent = "Lofi offline";
     });
 
     volume.addEventListener("input", function () {
