@@ -15,7 +15,7 @@
   var RADIO_STATIONS = [
     {
       id: "lofigirl",
-      label: "LoFi Girl Inspired",
+      label: "SomaFM: Groove Salad",
       sources: [
         "https://ice1.somafm.com/groovesalad-128-mp3",
         "https://ice2.somafm.com/groovesalad-128-mp3",
@@ -23,7 +23,7 @@
     },
     {
       id: "bootlegboy",
-      label: "Bootleg Boy Inspired",
+      label: "SomaFM: Illinois Street Lounge",
       sources: [
         "https://ice1.somafm.com/illstreet-128-mp3",
         "https://ice2.somafm.com/illstreet-128-mp3",
@@ -31,7 +31,7 @@
     },
     {
       id: "chillhop",
-      label: "Chillhop Inspired",
+      label: "SomaFM: Lush",
       sources: [
         "https://ice1.somafm.com/lush-128-mp3",
         "https://ice2.somafm.com/lush-128-mp3",
