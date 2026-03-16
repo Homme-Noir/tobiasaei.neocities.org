@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
@@ -16,19 +16,21 @@
   <body>
     <div id="container">
       <div id="headerPlaceholder"></div>
-      <div id="flex">
-        <main class="projects-main">
-          <header class="page-header">
-            <h1>Projects</h1>
-            <p class="lead">Things I’ve built or am building.</p>
-          </header>
-          <div class="project-cards">
-            <article class="project-card card">
-              <h2><a href="#">Placeholder project</a></h2>
-              <p>Description and link coming soon.</p>
-              <span class="tags">—</span>
-            </article>
-          </div>
+      <div class="projects-layout">
+        <header class="projects-head">
+          <h1 class="projects-title">Projects</h1>
+          <p class="projects-lead">Things I’ve built or am building.</p>
+        </header>
+        <main class="projects-grid-wrap">
+          <ul class="projects-grid">
+            <li>
+              <article class="projects-card">
+                <h2><a href="#">Placeholder project</a></h2>
+                <p>Description and link coming soon.</p>
+                <span class="projects-tags">—</span>
+              </article>
+            </li>
+          </ul>
         </main>
       </div>
       <div id="footerPlaceholder"></div>

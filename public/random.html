@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
@@ -16,21 +16,20 @@
   <body>
     <div id="container">
       <div id="headerPlaceholder"></div>
-      <div id="flex">
-        <main class="random-main">
-          <h1>Random</h1>
-          <section class="random-block">
-            <h2>Thing of the day</h2>
+      <div class="random-layout">
+        <main class="random-bento">
+          <section class="random-tile random-tile--wide" aria-label="Thing of the day">
+            <h2 class="random-tile-title">Thing of the day</h2>
             <p>—</p>
           </section>
-          <section class="random-block">
-            <h2>Links</h2>
-            <ul class="link-dump">
+          <section class="random-tile" aria-label="Links">
+            <h2 class="random-tile-title">Links</h2>
+            <ul class="random-links">
               <li><a href="#">—</a></li>
             </ul>
           </section>
-          <section class="random-block">
-            <h2>Quote</h2>
+          <section class="random-tile random-tile--tall" aria-label="Quote">
+            <h2 class="random-tile-title">Quote</h2>
             <blockquote>—</blockquote>
           </section>
         </main>

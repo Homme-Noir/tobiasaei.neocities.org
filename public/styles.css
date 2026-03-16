@@ -286,502 +286,564 @@ footer a:hover {
 }
 
 /* ============================================================
-   Page-specific designs (distinct look per section)
+   Section pages: ground-up layouts (no shared sadgirl layout)
+   Minimal chrome: no header image, slim nav, full-width content
 ============================================================ */
 
-/* ----- Music: dark, purple/indigo, player vibe ----- */
+/* ----- Section-page chrome (Music, Writings, Projects, Journal, Random) ----- */
+.page-music #container,
+.page-writings #container,
+.page-projects #container,
+.page-journal #container,
+.page-random #container {
+  max-width: none;
+  width: 100%;
+  padding: 0;
+}
+
+.page-music #header,
+.page-writings #header,
+.page-projects #header,
+.page-journal #header,
+.page-random #header {
+  height: 0;
+  overflow: hidden;
+  background: none;
+}
+
+.page-music .nav-wrap,
+.page-writings .nav-wrap,
+.page-projects .nav-wrap,
+.page-journal .nav-wrap,
+.page-random .nav-wrap {
+  border-radius: 0;
+}
+
+/* ----- Music: player / app layout — split hero + list ----- */
 .page-music body::before {
-  background-color: oklch(12% 0.04 280 / 0.85);
+  background-color: oklch(8% 0.03 280 / 0.95);
 }
 .page-music body {
-  background-color: oklch(14% 0.04 280);
+  background: oklch(10% 0.04 280);
   background-image: none;
-}
-.page-music #header {
-  background-image: none;
-  background-color: oklch(22% 0.08 280);
-  height: 100px;
+  font-family: "Outfit", sans-serif;
+  align-items: stretch;
+  justify-content: flex-start;
 }
 .page-music .nav-wrap {
-  background-color: oklch(18% 0.06 280);
+  background: oklch(14% 0.05 280);
+  min-height: 52px;
+  padding: 0 1.5rem;
 }
 .page-music #navbar li a:hover,
 .page-music #navbar a.active {
-  color: oklch(75% 0.18 300);
+  color: oklch(82% 0.2 300);
 }
-.page-music #flex {
-  background: linear-gradient(180deg, oklch(20% 0.06 280) 0%, oklch(14% 0.05 280) 100%);
+.page-music footer {
+  background: oklch(12% 0.04 280);
+  color: oklch(68% 0.03 280);
 }
-.page-music main.music-main {
-  background-color: transparent;
-  color: oklch(92% 0.02 280);
-  padding: 2rem;
+.page-music footer a,
+.page-music .breadcrumb a {
+  color: oklch(78% 0.2 300);
+}
+
+.music-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 0;
+  max-width: 1200px;
+  margin: 0 auto;
   width: 100%;
 }
-.page-music .now-playing {
-  margin-bottom: 2rem;
+.music-layout main {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+  align-content: start;
+  background: transparent;
 }
-.page-music .recommendations h2 {
-  margin-top: 0;
-  margin-bottom: 0.75rem;
+.music-layout .breadcrumb {
+  grid-column: 1 / -1;
 }
-.page-music .track-list {
+.music-hero {
+  grid-column: 1;
+  padding: 1.5rem;
+  background: oklch(16% 0.06 280);
+  border: 1px solid oklch(28% 0.08 280);
+  border-radius: 16px;
+  align-self: start;
+}
+.music-hero-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: oklch(65% 0.1 300);
+  margin-bottom: 1rem;
+}
+.music-loading {
+  color: oklch(62% 0.03 280);
+  margin: 0;
+}
+.music-now-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+.music-now-info {
+  min-width: 0;
+}
+.music-now-art {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.music-now-track {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: oklch(88% 0.15 300);
+  text-decoration: none;
+  display: block;
+}
+.music-now-track:hover {
+  text-decoration: underline;
+}
+.music-now-artist {
+  font-size: 0.95rem;
+  color: oklch(72% 0.04 280);
+  display: block;
+  margin-top: 0.25rem;
+}
+.music-recs {
+  grid-column: 2;
+  padding: 0 0 0 0.5rem;
+}
+.music-recs-title {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: oklch(70% 0.12 300);
+  margin: 0 0 1rem 0;
+}
+.music-track-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.page-music .track-item {
-  padding: 0.5rem 0;
-  border-bottom: 1px solid oklch(30% 0.08 280);
+.music-track {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid oklch(24% 0.06 280);
   display: block;
 }
-.page-music .track-title {
-  font-weight: 700;
+.music-track-name {
+  font-weight: 600;
   display: block;
+  color: oklch(90% 0.02 280);
 }
-.page-music .track-artist {
+.music-track-artist {
   font-size: 0.9rem;
-  color: oklch(72% 0.03 280);
-}
-.page-music h1, .page-music h2, .page-music h3 {
-  color: oklch(78% 0.2 300);
-}
-.page-music .box, .page-music .last-played-card {
-  background-color: oklch(22% 0.08 280);
-  border-color: oklch(35% 0.1 280);
-}
-.page-music .last-played-track, .page-music footer a {
-  color: oklch(80% 0.2 300);
-}
-.page-music .breadcrumb a {
-  color: oklch(80% 0.2 300);
-}
-.page-music .text-muted {
-  color: oklch(70% 0.03 280);
+  color: oklch(68% 0.03 280);
 }
 
-/* ----- Writings: light paper, serif, single column ----- */
+/* ----- Writings: editorial single-column — paper, serif ----- */
 .page-writings body::before {
-  background-color: oklch(97% 0.01 85 / 0.4);
+  background-color: oklch(98% 0.005 85 / 0.6);
 }
 .page-writings body {
-  background-color: oklch(94% 0.02 85);
+  background: oklch(96% 0.01 85);
   background-image: none;
-  font-family: Georgia, "Times New Roman", serif;
-}
-.page-writings #header {
-  background-image: none;
-  background-color: oklch(88% 0.03 75);
-  height: 80px;
-  border-bottom: 2px solid oklch(75% 0.06 75);
+  font-family: "Source Serif 4", Georgia, serif;
+  align-items: flex-start;
+  justify-content: center;
 }
 .page-writings .nav-wrap {
-  background-color: oklch(90% 0.03 75);
+  background: oklch(100% 0 0);
+  border-bottom: 1px solid oklch(88% 0.02 75);
+  box-shadow: 0 1px 0 oklch(0% 0 0 / 0.04);
 }
 .page-writings #navbar li a:hover,
 .page-writings #navbar a.active {
-  color: oklch(45% 0.12 45);
+  color: oklch(38% 0.12 45);
 }
-.page-writings #flex {
-  background-color: oklch(98% 0.01 85);
-  max-width: 720px;
-  margin: 0 auto;
-  box-shadow: 0 0 40px oklch(0% 0 0 / 0.08);
-}
-.page-writings aside {
-  display: none;
-}
-.page-writings main.writings-main {
-  background-color: transparent;
-  color: oklch(25% 0.03 75);
-  padding: 2rem 3rem;
-  max-width: 65ch;
-  margin: 0 auto;
-}
-.page-writings .page-header {
-  margin-bottom: 2rem;
-}
-.page-writings .page-header .lead {
-  margin: 0.25rem 0 0 0;
-  font-size: 1.1rem;
+.page-writings footer {
+  background: oklch(94% 0.02 75);
   color: oklch(45% 0.04 75);
 }
-.page-writings .writings-list {
+.page-writings footer a,
+.page-writings .breadcrumb a {
+  color: oklch(42% 0.12 45);
+}
+
+.writings-layout {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 2rem 4rem;
+}
+.writings-content {
+  background: transparent;
+  padding: 0;
+}
+.writings-mast {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+.writings-title {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 600;
+  font-size: 2.5rem;
+  color: oklch(28% 0.06 45);
+  margin: 0 0 0.25rem 0;
+}
+.writings-subtitle {
+  font-size: 1.05rem;
+  color: oklch(48% 0.03 75);
+  margin: 0;
+  font-style: italic;
+}
+.writings-entries {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.page-writings .writing-entry {
-  margin-bottom: 2rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid oklch(85% 0.04 75);
+.writings-entry {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid oklch(90% 0.02 75);
 }
-.page-writings .writing-entry h2 {
-  margin: 0 0 0.25rem 0;
-  font-size: 1.25rem;
+.writings-entry h2 {
+  margin: 0 0 0.35rem 0;
+  font-size: 1.35rem;
+  font-weight: 600;
 }
-.page-writings .writing-entry h2 a {
-  color: oklch(40% 0.1 45);
+.writings-entry h2 a {
+  color: oklch(32% 0.1 45);
   text-decoration: none;
 }
-.page-writings .writing-entry h2 a:hover {
+.writings-entry h2 a:hover {
   text-decoration: underline;
 }
-.page-writings .writing-entry time {
+.writings-entry time {
   font-size: 0.85rem;
-  color: oklch(55% 0.03 75);
+  color: oklch(52% 0.03 75);
 }
-.page-writings .writing-entry .excerpt {
-  margin: 0.5rem 0 0 0;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-.page-writings h1, .page-writings h2, .page-writings h3 {
-  color: oklch(40% 0.1 45);
-  font-weight: 700;
-}
-.page-writings .box {
-  background-color: oklch(92% 0.02 85);
-  border-color: oklch(80% 0.04 75);
-}
-.page-writings .text-muted {
-  color: oklch(50% 0.03 75);
-}
-.page-writings footer {
-  background-color: oklch(88% 0.03 75);
-  color: oklch(45% 0.04 75);
-}
-.page-writings footer a {
-  color: oklch(45% 0.12 45);
-}
-.page-writings .breadcrumb a {
-  color: oklch(45% 0.12 45);
+.writings-excerpt {
+  margin: 0.75rem 0 0 0;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: oklch(35% 0.03 75);
 }
 
-/* ----- Projects: cool gray/blue, grid, tech feel ----- */
+/* ----- Projects: full-bleed grid — portfolio / dev ----- */
 .page-projects body::before {
-  background-color: oklch(18% 0.02 250 / 0.75);
+  background-color: oklch(12% 0.02 250 / 0.9);
 }
 .page-projects body {
-  background-color: oklch(16% 0.03 250);
+  background: oklch(14% 0.03 250);
   background-image: none;
-}
-.page-projects #header {
-  background-image: none;
-  background-color: oklch(22% 0.05 250);
-  height: 70px;
+  font-family: "DM Sans", sans-serif;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 .page-projects .nav-wrap {
-  background-color: oklch(20% 0.04 250);
+  background: oklch(18% 0.04 250);
+  min-height: 56px;
+  padding: 0 2rem;
 }
 .page-projects #navbar li a:hover,
 .page-projects #navbar a.active {
-  color: oklch(72% 0.15 250);
+  color: oklch(78% 0.18 250);
 }
-.page-projects aside {
-  display: none;
+.page-projects footer {
+  background: oklch(16% 0.04 250);
+  color: oklch(70% 0.03 250);
 }
-.page-projects #flex {
-  background-color: transparent;
+.page-projects footer a,
+.page-projects .breadcrumb a {
+  color: oklch(80% 0.15 250);
 }
-.page-projects main.projects-main {
-  background-color: transparent;
-  color: oklch(88% 0.02 250);
+
+.projects-layout {
+  width: 100%;
   padding: 2rem;
-  display: block;
+  max-width: 1400px;
+  margin: 0 auto;
 }
-.page-projects .page-header {
-  margin-bottom: 1.5rem;
+.projects-head {
+  margin-bottom: 2rem;
+  padding: 0 0 1rem 0;
+  border-bottom: 1px solid oklch(28% 0.06 250);
 }
-.page-projects .page-header .lead {
-  margin: 0.25rem 0 0 0;
+.projects-title {
+  font-family: "Space Mono", monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: oklch(88% 0.06 250);
+  margin: 0 0 0.25rem 0;
+}
+.projects-lead {
+  font-size: 1rem;
   color: oklch(72% 0.04 250);
+  margin: 0;
 }
-.page-projects .project-cards {
+.projects-grid-wrap {
+  background: transparent;
+  padding: 0;
+}
+.projects-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
 }
-.page-projects .project-card.card {
-  background-color: oklch(22% 0.06 250);
-  border: 1px solid oklch(35% 0.08 250);
-  border-radius: 8px;
-  padding: 1.25rem;
+.projects-card {
+  background: oklch(20% 0.05 250);
+  border: 1px solid oklch(32% 0.06 250);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-.page-projects .project-card h2 {
+.projects-card:hover {
+  border-color: oklch(45% 0.1 250);
+  box-shadow: 0 8px 24px oklch(0% 0 0 / 0.2);
+}
+.projects-card h2 {
   margin: 0 0 0.5rem 0;
   font-size: 1.1rem;
+  font-weight: 700;
 }
-.page-projects .project-card h2 a {
-  color: oklch(78% 0.15 250);
+.projects-card h2 a {
+  color: oklch(85% 0.1 250);
   text-decoration: none;
 }
-.page-projects .project-card h2 a:hover {
+.projects-card h2 a:hover {
   text-decoration: underline;
 }
-.page-projects .project-card p {
+.projects-card p {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: oklch(78% 0.03 250);
+  line-height: 1.5;
 }
-.page-projects .project-card .tags {
+.projects-tags {
   display: inline-block;
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
+  font-family: "Space Mono", monospace;
   font-size: 0.8rem;
   color: oklch(65% 0.05 250);
 }
-.page-projects h1, .page-projects h2, .page-projects h3 {
-  color: oklch(75% 0.12 250);
-}
-.page-projects .text-muted {
-  color: oklch(68% 0.03 250);
-}
-.page-projects footer {
-  background-color: oklch(20% 0.04 250);
-}
-.page-projects footer a, .page-projects .breadcrumb a {
-  color: oklch(75% 0.15 250);
-}
 
-/* ----- Journal: warm notebook, soft serif ----- */
+/* ----- Journal: stream / timeline — date margin, no sidebar ----- */
 .page-journal body::before {
-  background-color: oklch(92% 0.03 75 / 0.5);
+  background-color: oklch(92% 0.02 55 / 0.5);
 }
 .page-journal body {
-  background-color: oklch(88% 0.04 65);
+  background: oklch(90% 0.03 55);
   background-image: none;
-  font-family: Georgia, "Times New Roman", serif;
-}
-.page-journal #header {
-  background-image: none;
-  background-color: oklch(82% 0.06 55);
-  height: 80px;
-  border-bottom: 1px solid oklch(70% 0.08 55);
+  font-family: "Literata", Georgia, serif;
+  align-items: flex-start;
+  justify-content: center;
 }
 .page-journal .nav-wrap {
-  background-color: oklch(85% 0.05 55);
+  background: oklch(94% 0.03 55);
+  border-bottom: 1px solid oklch(80% 0.06 55);
 }
 .page-journal #navbar li a:hover,
 .page-journal #navbar a.active {
   color: oklch(42% 0.15 35);
 }
-.page-journal #flex {
-  background-color: oklch(96% 0.02 75);
-  max-width: 680px;
-  margin: 0 auto;
-  box-shadow: 0 2px 24px oklch(0% 0 0 / 0.06);
-}
-.page-journal aside.journal-sidebar {
-  background-color: oklch(92% 0.03 65);
-  border-right: 1px solid oklch(80% 0.05 55);
-  width: 160px;
-  padding: 1.25rem;
-}
-.page-journal .topic-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.page-journal .topic-list a {
-  color: oklch(42% 0.12 40);
-  text-decoration: none;
-}
-.page-journal .topic-list a:hover {
-  text-decoration: underline;
-}
-.page-journal main.journal-main {
-  background-color: transparent;
-  color: oklch(28% 0.04 55);
-  padding: 2rem;
-}
-.page-journal .journal-entries {
-  margin-top: 1rem;
-}
-.page-journal .journal-entry {
-  margin-bottom: 2rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid oklch(88% 0.04 55);
-}
-.page-journal .journal-entry time {
-  display: block;
-  font-size: 0.85rem;
-  color: oklch(50% 0.05 55);
-  margin-bottom: 0.25rem;
-}
-.page-journal .journal-entry h2 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.2rem;
-}
-.page-journal .journal-entry p {
-  margin: 0;
-  line-height: 1.5;
-}
-.page-journal h1, .page-journal h2, .page-journal h3 {
-  color: oklch(42% 0.12 40);
-}
-.page-journal .box {
-  background-color: oklch(92% 0.03 65);
-  border-color: oklch(78% 0.06 55);
-}
-.page-journal .text-muted {
-  color: oklch(50% 0.04 55);
-}
 .page-journal footer {
-  background-color: oklch(82% 0.05 55);
+  background: oklch(88% 0.04 55);
   color: oklch(45% 0.04 55);
 }
-.page-journal footer a, .page-journal .breadcrumb a {
+.page-journal footer a,
+.page-journal .breadcrumb a {
   color: oklch(48% 0.12 35);
 }
 
-/* ----- Random: teal/green accent, misc vibe ----- */
+.journal-layout {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+}
+.journal-head {
+  margin-bottom: 2rem;
+}
+.journal-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: oklch(35% 0.1 40);
+  margin: 0 0 1rem 0;
+}
+.journal-topics {
+  margin: 0;
+}
+.journal-topic-pills {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.journal-pill {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  font-family: "Red Hat Mono", monospace;
+  font-size: 0.85rem;
+  color: oklch(45% 0.08 40);
+  background: oklch(96% 0.02 55);
+  border: 1px solid oklch(82% 0.05 55);
+  border-radius: 999px;
+  text-decoration: none;
+}
+.journal-pill:hover,
+.journal-pill--active {
+  background: oklch(40% 0.1 40);
+  color: oklch(98% 0.02 55);
+  border-color: oklch(40% 0.1 40);
+}
+.journal-stream {
+  background: transparent;
+  padding: 0;
+}
+.journal-item {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid oklch(86% 0.04 55);
+}
+.journal-date {
+  font-family: "Red Hat Mono", monospace;
+  font-size: 0.8rem;
+  color: oklch(52% 0.06 55);
+  margin: 0.2rem 0 0 0;
+}
+.journal-body {
+  min-width: 0;
+}
+.journal-item-title {
+  margin: 0 0 0.35rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: oklch(32% 0.08 40);
+}
+.journal-item p {
+  margin: 0;
+  line-height: 1.6;
+  color: oklch(30% 0.04 55);
+}
+
+/* ----- Random: bento grid — asymmetric tiles ----- */
 .page-random body::before {
-  background-color: oklch(15% 0.03 180 / 0.8);
+  background-color: oklch(11% 0.03 170 / 0.9);
 }
 .page-random body {
-  background-color: oklch(14% 0.04 180);
+  background: oklch(13% 0.04 170);
   background-image: none;
-}
-.page-random #header {
-  background-image: none;
-  background-color: oklch(25% 0.08 170);
-  height: 90px;
+  font-family: "Figtree", sans-serif;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 .page-random .nav-wrap {
-  background-color: oklch(20% 0.05 170);
+  background: oklch(18% 0.05 170);
+  min-height: 52px;
+  padding: 0 1.5rem;
 }
 .page-random #navbar li a:hover,
 .page-random #navbar a.active {
-  color: oklch(78% 0.18 160);
+  color: oklch(82% 0.2 160);
 }
-.page-random #flex {
-  background: radial-gradient(ellipse at 50% 0%, oklch(22% 0.06 170) 0%, oklch(14% 0.04 180) 70%);
+.page-random footer {
+  background: oklch(15% 0.05 170);
+  color: oklch(72% 0.03 170);
 }
-.page-random aside {
-  background-color: oklch(20% 0.06 170);
-  border-right: 1px solid oklch(32% 0.08 170);
+.page-random footer a,
+.page-random .breadcrumb a {
+  color: oklch(80% 0.2 160);
 }
-.page-random main.random-main {
-  background-color: transparent;
-  color: oklch(90% 0.02 170);
-  padding: 2rem;
+
+.random-layout {
   width: 100%;
+  padding: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
 }
-.page-random .random-block {
-  margin-bottom: 2rem;
+.random-bento {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(140px, auto);
+  gap: 1.25rem;
+  background: transparent;
+  padding: 0;
+}
+.random-bento .breadcrumb {
+  grid-column: 1 / -1;
+}
+.random-tile {
+  background: oklch(18% 0.06 170);
+  border: 1px solid oklch(28% 0.08 170);
+  border-radius: 14px;
   padding: 1.25rem;
-  background-color: oklch(20% 0.05 170);
-  border: 1px solid oklch(32% 0.08 170);
-  border-radius: 12px;
 }
-.page-random .random-block h2 {
+.random-tile--wide {
+  grid-column: span 2;
+}
+.random-tile--tall {
+  grid-row: span 2;
+}
+.random-tile-title {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: oklch(72% 0.15 160);
   margin: 0 0 0.75rem 0;
-  font-size: 1rem;
 }
-.page-random .random-block p,
-.page-random .random-block blockquote {
+.random-tile p,
+.random-tile blockquote {
   margin: 0;
   font-size: 0.95rem;
+  color: oklch(88% 0.02 170);
+  line-height: 1.5;
 }
-.page-random .link-dump {
+.random-tile blockquote {
+  border-left: 3px solid oklch(50% 0.15 160);
+  padding-left: 1rem;
+  font-style: italic;
+}
+.random-links {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.page-random .link-dump a {
-  color: oklch(78% 0.18 160);
+.random-links a {
+  color: oklch(82% 0.18 160);
   text-decoration: none;
 }
-.page-random .link-dump a:hover {
-  text-decoration: underline;
-}
-.page-random blockquote {
-  border-left: 3px solid oklch(50% 0.15 160);
-  padding-left: 1rem;
-  font-style: italic;
-  color: oklch(82% 0.02 170);
-}
-.page-random h1, .page-random h2, .page-random h3 {
-  color: oklch(75% 0.2 160);
-}
-.page-random .box {
-  background-color: oklch(22% 0.06 170);
-  border-color: oklch(35% 0.08 170);
-  border-radius: 12px;
-}
-.page-random .text-muted {
-  color: oklch(72% 0.03 170);
-}
-.page-random footer {
-  background-color: oklch(18% 0.05 170);
-}
-.page-random footer a, .page-random .breadcrumb a {
-  color: oklch(78% 0.18 160);
-}
-
-/* Shared: ensure #container doesn't constrain Writings/Projects/Journal width */
-.page-writings #container,
-.page-projects #container,
-.page-journal #container {
-  max-width: 100%;
-  padding: 0;
-}
-
-.last-played {
-  margin-bottom: 1.5rem;
-}
-
-.last-played h2 {
-  margin-top: 0;
-  margin-bottom: 0.75rem;
-}
-
-.last-played-card {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  background-color: var(--secondary-color);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  max-width: 400px;
-}
-
-.last-played-art {
-  flex-shrink: 0;
-  width: 64px;
-  height: 64px;
-  border-radius: 4px;
-  object-fit: cover;
-}
-
-.last-played-info {
-  min-width: 0;
-}
-
-.last-played-track {
-  font-weight: 700;
-  color: var(--accent-color);
-  text-decoration: none;
-}
-
-.last-played-track:hover {
+.random-links a:hover {
   text-decoration: underline;
 }
 
-.last-played-artist {
-  display: block;
-  font-size: 0.95rem;
-  color: var(--text-muted);
-  margin-top: 0.2em;
-}
-
-.page-music .card,
-.page-projects .card {
-  background-color: var(--secondary-color);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  padding: 1rem;
+/* Breadcrumbs on section pages */
+.page-music .breadcrumb,
+.page-writings .breadcrumb,
+.page-projects .breadcrumb,
+.page-journal .breadcrumb,
+.page-random .breadcrumb {
   margin-bottom: 1rem;
 }
 
@@ -814,20 +876,48 @@ footer a:hover {
     justify-content: center;
   }
 
-  .page-writings #flex,
-  .page-journal #flex {
-    max-width: 100%;
-  }
-
-  .page-writings main {
-    padding: 1.5rem 1.25rem;
-  }
-
-  .page-projects main {
+  /* Section pages: new layouts */
+  .music-layout main {
+    grid-template-columns: 1fr;
     padding: 1.5rem;
   }
+  .music-hero {
+    grid-column: 1;
+  }
+  .music-recs {
+    grid-column: 1;
+    padding: 0;
+  }
 
-  .page-projects .project-cards {
+  .writings-layout {
+    padding: 2rem 1.25rem 3rem;
+  }
+  .writings-title {
+    font-size: 2rem;
+  }
+
+  .projects-layout {
+    padding: 1.5rem;
+  }
+  .projects-grid {
     grid-template-columns: 1fr;
+  }
+
+  .journal-item {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .journal-date {
+    margin: 0 0 0.25rem 0;
+  }
+
+  .random-bento {
+    grid-template-columns: 1fr;
+  }
+  .random-tile--wide {
+    grid-column: span 1;
+  }
+  .random-tile--tall {
+    grid-row: span 1;
   }
 }

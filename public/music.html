@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;500;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
@@ -16,21 +16,20 @@
   <body>
     <div id="container">
       <div id="headerPlaceholder"></div>
-      <div id="flex">
-        <main class="music-main">
-          <h1>Music</h1>
-          <section class="now-playing" aria-label="Last played on Last.fm">
-            <h2>Now playing</h2>
+      <div class="music-layout">
+        <main>
+          <section class="music-hero" aria-label="Last played on Last.fm">
+            <div class="music-hero-label">Now playing</div>
             <div id="last-played-content">
-              <p class="text-muted">Loading…</p>
+              <p class="music-loading">Loading…</p>
             </div>
           </section>
-          <section class="recommendations" aria-label="Recommendations">
-            <h2>Recommendations</h2>
-            <ul class="track-list">
-              <li class="track-item">
-                <span class="track-title">—</span>
-                <span class="track-artist">More soon</span>
+          <section class="music-recs" aria-label="Recommendations">
+            <h2 class="music-recs-title">Recommendations</h2>
+            <ul class="music-track-list">
+              <li class="music-track">
+                <span class="music-track-name">—</span>
+                <span class="music-track-artist">More soon</span>
               </li>
             </ul>
           </section>
@@ -49,21 +48,21 @@
           .then(function (data) {
             var t = data.track;
             if (!t || !t.name) {
-              container.innerHTML = "<p class=\"text-muted\">No recent track.</p>";
+              container.innerHTML = "<p class=\"music-loading\">No recent track.</p>";
               return;
             }
             var artist = t.artist && t.artist["#text"] ? t.artist["#text"] : "";
             var img = (t.image && t.image[2] && t.image[2]["#text"]) ? t.image[2]["#text"] : "";
             var url = t.url || "#";
-            var html = "<div class=\"last-played-card\">";
-            if (img) html += "<a href=\"" + url.replace(/"/g, "&quot;") + "\" target=\"_blank\" rel=\"noopener\"><img src=\"" + img.replace(/"/g, "&quot;") + "\" alt=\"\" width=\"64\" height=\"64\" class=\"last-played-art\"></a>";
-            html += "<div class=\"last-played-info\"><a href=\"" + url.replace(/"/g, "&quot;") + "\" target=\"_blank\" rel=\"noopener\" class=\"last-played-track\">" + escapeHtml(t.name) + "</a>";
-            if (artist) html += " <span class=\"last-played-artist\">" + escapeHtml(artist) + "</span>";
+            var html = "<div class=\"music-now-card\">";
+            if (img) html += "<a href=\"" + url.replace(/"/g, "&quot;") + "\" target=\"_blank\" rel=\"noopener\"><img src=\"" + img.replace(/"/g, "&quot;") + "\" alt=\"\" width=\"120\" height=\"120\" class=\"music-now-art\"></a>";
+            html += "<div class=\"music-now-info\"><a href=\"" + url.replace(/"/g, "&quot;") + "\" target=\"_blank\" rel=\"noopener\" class=\"music-now-track\">" + escapeHtml(t.name) + "</a>";
+            if (artist) html += " <span class=\"music-now-artist\">" + escapeHtml(artist) + "</span>";
             html += "</div></div>";
             container.innerHTML = html;
           })
           .catch(function () {
-            container.innerHTML = "<p class=\"text-muted\">Couldn’t load last played. <a href=\"https://www.last.fm/user/Tobias_AEI\" target=\"_blank\" rel=\"noopener\">View on Last.fm</a>.</p>";
+            container.innerHTML = "<p class=\"music-loading\">Couldn’t load last played. <a href=\"https://www.last.fm/user/Tobias_AEI\" target=\"_blank\" rel=\"noopener\">View on Last.fm</a>.</p>";
           });
         function escapeHtml(s) {
           var div = document.createElement("div");

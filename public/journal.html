@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=Red+Hat+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
@@ -16,22 +16,23 @@
   <body>
     <div id="container">
       <div id="headerPlaceholder"></div>
-      <div id="flex">
-        <aside id="leftSidebar" class="journal-sidebar">
-          <h2>Topics</h2>
-          <ul class="topic-list">
-            <li><a href="#">All</a></li>
-          </ul>
-        </aside>
-        <main class="journal-main">
-          <h1>Journal</h1>
-          <div class="journal-entries">
-            <article class="journal-entry">
-              <time datetime="2026-03-01">1 Mar 2026</time>
-              <h2>Placeholder entry</h2>
+      <div class="journal-layout">
+        <header class="journal-head">
+          <h1 class="journal-title">Journal</h1>
+          <nav class="journal-topics" aria-label="Topics">
+            <ul class="journal-topic-pills">
+              <li><a href="#" class="journal-pill journal-pill--active">All</a></li>
+            </ul>
+          </nav>
+        </header>
+        <main class="journal-stream">
+          <article class="journal-item">
+            <time class="journal-date" datetime="2026-03-01">1 Mar 2026</time>
+            <div class="journal-body">
+              <h2 class="journal-item-title">Placeholder entry</h2>
               <p>Nothing here yet. Coming soon.</p>
-            </article>
-          </div>
+            </div>
+          </article>
         </main>
       </div>
       <div id="footerPlaceholder"></div>
