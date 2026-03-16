@@ -42,26 +42,27 @@
       (function () {
         var container = document.getElementById("last-played-content");
         if (!container) return;
-        var directApiUrl = "https://lastfm-last-played.biancarosa.com.br/Tobias_AEI/latest-song";
-        var apiUrls = [
-          directApiUrl,
-          "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(directApiUrl)
-        ];
+        var LASTFM_API_KEY = "d74f9fdb9c79a50ffac2ca0700892ca1";
+        var LASTFM_USER = "Tobias_AEI";
 
-        fetchWithFallback(apiUrls)
-          .then(function (data) {
-            var t = data.track;
+        fetchRecentTrack()
+          .then(function (t) {
             if (!t || !t.name) {
               container.innerHTML = "<p class=\"music-loading\">No recent track.</p>";
               return;
             }
             var artist = t.artist && t.artist["#text"] ? t.artist["#text"] : "";
-            var img = (t.image && t.image[2] && t.image[2]["#text"]) ? t.image[2]["#text"] : "";
-            var url = t.url || "#";
+            var img = getTrackImage(t.image);
+            var url = safeUrl(t.url);
+            var isNowPlaying = !!(t["@attr"] && t["@attr"].nowplaying === "true");
+            var status = isNowPlaying
+              ? "Scrobbling now"
+              : (t.date && t.date["#text"] ? t.date["#text"] : "Recently played");
             var html = "<div class=\"music-now-card\">";
-            if (img) html += "<a href=\"" + url.replace(/"/g, "&quot;") + "\" target=\"_blank\" rel=\"noopener\"><img src=\"" + img.replace(/"/g, "&quot;") + "\" alt=\"\" width=\"120\" height=\"120\" class=\"music-now-art\"></a>";
-            html += "<div class=\"music-now-info\"><a href=\"" + url.replace(/"/g, "&quot;") + "\" target=\"_blank\" rel=\"noopener\" class=\"music-now-track\">" + escapeHtml(t.name) + "</a>";
-            if (artist) html += " <span class=\"music-now-artist\">" + escapeHtml(artist) + "</span>";
+            if (img) html += "<a href=\"" + url + "\" target=\"_blank\" rel=\"noopener\"><img src=\"" + img + "\" alt=\"\" width=\"120\" height=\"120\" class=\"music-now-art\"></a>";
+            html += "<div class=\"music-now-info\"><a href=\"" + url + "\" target=\"_blank\" rel=\"noopener\" class=\"music-now-track\">" + escapeHtml(t.name) + "</a>";
+            if (artist) html += "<span class=\"music-now-artist\">" + escapeHtml(artist) + "</span>";
+            html += "<span class=\"music-now-artist\">" + escapeHtml(status) + "</span>";
             html += "</div></div>";
             container.innerHTML = html;
           })
@@ -69,17 +70,68 @@
             container.innerHTML = "<p class=\"music-loading\">Couldn’t load last played.</p>";
           });
 
-        function fetchWithFallback(urls, index) {
-          var i = typeof index === "number" ? index : 0;
-          if (i >= urls.length) return Promise.reject(new Error("No Last.fm source available"));
-          return fetch(urls[i])
-            .then(function (r) {
-              if (!r.ok) throw new Error("Bad response");
-              return r.json();
-            })
-            .catch(function () {
-              return fetchWithFallback(urls, i + 1);
-            });
+        function fetchRecentTrack() {
+          var endpoint =
+            "https://ws.audioscrobbler.com/2.0/?" +
+            "method=user.getrecenttracks" +
+            "&user=" +
+            encodeURIComponent(LASTFM_USER) +
+            "&api_key=" +
+            encodeURIComponent(LASTFM_API_KEY) +
+            "&limit=1&format=json";
+          return jsonp(endpoint).then(function (data) {
+            if (!data || !data.recenttracks || !data.recenttracks.track || !data.recenttracks.track[0]) {
+              throw new Error("No recent tracks");
+            }
+            return data.recenttracks.track[0];
+          });
+        }
+
+        function jsonp(url) {
+          return new Promise(function (resolve, reject) {
+            var callbackName = "lastfmCb_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+            var script = document.createElement("script");
+            var timeout = window.setTimeout(function () {
+              cleanup();
+              reject(new Error("Last.fm request timed out"));
+            }, 10000);
+
+            window[callbackName] = function (data) {
+              cleanup();
+              resolve(data);
+            };
+
+            function cleanup() {
+              window.clearTimeout(timeout);
+              if (script.parentNode) script.parentNode.removeChild(script);
+              try {
+                delete window[callbackName];
+              } catch (e) {
+                window[callbackName] = undefined;
+              }
+            }
+
+            script.src = url + "&callback=" + encodeURIComponent(callbackName);
+            script.onerror = function () {
+              cleanup();
+              reject(new Error("Last.fm script load failed"));
+            };
+            document.body.appendChild(script);
+          });
+        }
+
+        function getTrackImage(images) {
+          if (!images || !images.length) return "";
+          for (var i = images.length - 1; i >= 0; i--) {
+            if (images[i] && images[i]["#text"]) return images[i]["#text"].replace(/"/g, "&quot;");
+          }
+          return "";
+        }
+
+        function safeUrl(url) {
+          var s = String(url || "").trim();
+          if (s.indexOf("http://") === 0 || s.indexOf("https://") === 0) return s.replace(/"/g, "&quot;");
+          return "https://www.last.fm/user/" + encodeURIComponent(LASTFM_USER);
         }
 
         function escapeHtml(s) {
