@@ -1,0 +1,44 @@
+name: Sync Spotify Playlists
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 */3 * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: spotify-playlist-sync
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Sync playlists from Spotify
+        env:
+          SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+          SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+          SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN }}
+        run: python scripts/sync_spotify_playlists.py
+
+      - name: Commit playlist updates
+        run: |
+          if git diff --quiet -- public/data/spotify-playlists.json; then
+            echo "No playlist changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/spotify-playlists.json
+          git commit -m "chore: sync spotify playlists"
+          git push
