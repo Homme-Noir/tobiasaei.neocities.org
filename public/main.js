@@ -105,23 +105,71 @@
     updateVisibility();
   }
 
+  function initLofiPlayer() {
+    var root = document.querySelector("[data-lofi-player]");
+    if (!root) return;
+    var toggle = root.querySelector("[data-lofi-toggle]");
+    var volume = root.querySelector("[data-lofi-volume]");
+    var audio = root.querySelector("[data-lofi-audio]");
+    if (!toggle || !volume || !audio) return;
+
+    audio.volume = Number(volume.value || 0.45);
+
+    function setPlaying(isPlaying) {
+      toggle.classList.toggle("is-playing", isPlaying);
+      toggle.setAttribute("aria-pressed", String(isPlaying));
+      toggle.textContent = isPlaying ? "Pause lofi" : "Play lofi";
+    }
+
+    toggle.addEventListener("click", function () {
+      if (audio.paused) {
+        audio.play().then(function () {
+          setPlaying(true);
+        }).catch(function () {
+          setPlaying(false);
+        });
+      } else {
+        audio.pause();
+        setPlaying(false);
+      }
+    });
+
+    audio.addEventListener("ended", function () {
+      setPlaying(false);
+    });
+
+    volume.addEventListener("input", function () {
+      var next = Number(volume.value);
+      if (!Number.isNaN(next)) audio.volume = next;
+    });
+  }
+
   function runAfterInject() {
     setPageBodyClass();
     setTabTitleSuffix();
     setCurrentPage();
     insertBreadcrumbs();
     initScrollToTop();
+    initLofiPlayer();
   }
 
   var headerPlaceholder = document.getElementById("headerPlaceholder");
   var footerPlaceholder = document.getElementById("footerPlaceholder");
 
+  var sectionPages = ["music", "writings", "projects", "journal", "random"];
+  var pathname = window.location.pathname;
+  var file = pathname.split("/").pop() || "";
+  var baseName = file.replace(/\.html$/, "");
+  var isSectionPage = sectionPages.indexOf(baseName) !== -1;
+  var headerFile = isSectionPage ? "includes/header-" + baseName + ".html" : "includes/header.html";
+  var footerFile = isSectionPage ? "includes/footer-" + baseName + ".html" : "includes/footer.html";
+
   if (headerPlaceholder && footerPlaceholder) {
     Promise.all([
-      fetch(base + "includes/header.html").then(function (r) {
+      fetch(base + headerFile).then(function (r) {
         return r.text();
       }),
-      fetch(base + "includes/footer.html").then(function (r) {
+      fetch(base + footerFile).then(function (r) {
         return r.text();
       }),
     ])

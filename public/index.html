@@ -8,170 +8,163 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400&display=swap"
       rel="stylesheet"
     />
     <style>
       :root {
-        --glitch-white: oklch(99% 0.01 100);
-        --glitch-red: oklch(62% 0.27 29);
-        --glitch-blue: oklch(48% 0.25 264);
-        --scanline-dark: oklch(0% 0 0 / 0.35);
+        --ink: oklch(97% 0.01 190);
+        --teal-900: oklch(22% 0.06 200);
+        --teal-700: oklch(42% 0.11 195);
+        --teal-500: oklch(58% 0.13 185);
+        --teal-300: oklch(82% 0.08 175);
+        --accent: oklch(75% 0.16 45);
+      }
+
+      * {
+        box-sizing: border-box;
       }
 
       html,
       body {
         margin: 0;
-        padding: 0;
-        height: 100%;
-        font-family: "Press Start 2P", monospace;
+        min-height: 100%;
       }
 
-      .vhs-background {
-        position: relative;
-        width: 100%;
-        height: 100vh;
-        background-image: url("backiee-169091.jpg");
-        background-size: cover;
-        background-position: center;
+      body {
+        font-family: "Space Grotesk", sans-serif;
+        color: var(--ink);
+        background: radial-gradient(circle at 12% 8%, oklch(45% 0.14 190 / 0.75) 0%, transparent 45%),
+          radial-gradient(circle at 86% 80%, oklch(65% 0.14 170 / 0.35) 0%, transparent 40%),
+          linear-gradient(140deg, var(--teal-900) 0%, oklch(15% 0.04 220) 100%);
         overflow: hidden;
       }
 
-      /* === Scanlines === */
-      .scanlines {
+      .entry {
+        position: relative;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 1.5rem;
+        isolation: isolate;
+      }
+
+      .entry::before {
+        content: "";
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 300%;
+        inset: 0;
         background: repeating-linear-gradient(
           to bottom,
           transparent 0px,
-          transparent 1px,
-          var(--scanline-dark) 1px,
-          var(--scanline-dark) 2px
+          transparent 2px,
+          oklch(0% 0 0 / 0.18) 2px,
+          oklch(0% 0 0 / 0.18) 3px
         );
-        animation: scan 2s linear infinite;
+        mix-blend-mode: soft-light;
         pointer-events: none;
-        z-index: 2;
+        z-index: -1;
+        animation: scan 8s linear infinite;
+      }
+
+      .entry-card {
+        max-width: 48rem;
+        width: min(100%, 48rem);
+        padding: 2rem;
+        border: 1px solid oklch(80% 0.1 180 / 0.35);
+        border-radius: 1.2rem;
+        background: oklch(17% 0.05 205 / 0.55);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 18px 64px oklch(0% 0 0 / 0.35);
+      }
+
+      .entry-label {
+        margin: 0 0 0.85rem 0;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.75rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--teal-300);
+      }
+
+      .entry h1 {
+        margin: 0;
+        font-size: clamp(2rem, 6vw, 4rem);
+        line-height: 1;
+      }
+
+      .entry p {
+        margin: 1rem 0 1.8rem;
+        max-width: 44ch;
+        color: oklch(90% 0.03 195);
+      }
+
+      .enter-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        font-weight: 700;
+        color: var(--ink);
+        text-decoration: none;
+        border: 1px solid oklch(84% 0.07 170 / 0.45);
+        border-radius: 999px;
+        padding: 0.75rem 1rem;
+        background: linear-gradient(135deg, oklch(60% 0.13 182 / 0.75), oklch(70% 0.1 170 / 0.62));
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .enter-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px oklch(0% 0 0 / 0.28);
+      }
+
+      .enter-link:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      .entry-burst {
+        position: absolute;
+        right: 6%;
+        top: 14%;
+        width: 11rem;
+        height: 11rem;
+        border-radius: 50%;
+        border: 1px solid oklch(86% 0.12 175 / 0.45);
+        box-shadow: inset 0 0 0 1rem oklch(44% 0.11 185 / 0.2);
+        filter: blur(0.2px);
       }
 
       @keyframes scan {
-        0% {
-          transform: translateY(0);
-        }
-        100% {
-          transform: translateY(-100%);
-        }
+        0% { transform: translateY(0); }
+        100% { transform: translateY(100%); }
       }
 
-      /* === TV Static Overlay === */
-      .tv-static {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url("webb-dark.png");
-        opacity: 0.04;
-        pointer-events: none;
-        z-index: 3;
-        mix-blend-mode: multiply;
+      @media (max-width: 680px) {
+        .entry-card { padding: 1.35rem; }
+        .entry-burst { width: 7rem; height: 7rem; right: 4%; }
       }
 
-      /* === Glitch Text === */
-      .glitch-text {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 10;
-        font-size: 3rem;
-        color: var(--glitch-white);
-        text-shadow: 2px 0 var(--glitch-red), -2px 0 var(--glitch-blue);
-        animation: glitch 2.5s infinite;
-        transition: filter 0.2s ease-in-out;
-        cursor: pointer;
-      }
-
-      .glitch-text:hover {
-        filter: brightness(1.15);
-      }
-
-      .glitch-text:focus-visible {
-        outline: 3px solid var(--glitch-white);
-        outline-offset: 4px;
-      }
-
-      @keyframes glitch {
-        0%,
-        90%,
-        100% {
-          text-shadow: 2px 0 var(--glitch-red), -2px 0 var(--glitch-blue);
-          transform: translate(-50%, -50%) translate(0, 0);
-        }
-        92% {
-          text-shadow: 3px 1px var(--glitch-red), -3px -1px var(--glitch-blue);
-          transform: translate(-50%, -50%) translate(-2px, 1px);
-        }
-        94% {
-          text-shadow: -2px -1px var(--glitch-red), 2px 1px var(--glitch-blue);
-          transform: translate(-50%, -50%) translate(2px, -1px);
-        }
-        96% {
-          text-shadow: 2px -1px var(--glitch-red), -2px 1px var(--glitch-blue);
-          transform: translate(-50%, -50%) translate(-1px, 2px);
-        }
-        98% {
-          text-shadow: -1px 2px var(--glitch-red), 1px -2px var(--glitch-blue);
-          transform: translate(-50%, -50%) translate(1px, -2px);
-        }
-      }
-
-      /* === Flicker Effect === */
-      .flicker-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: transparent;
-        animation: flicker 2s infinite;
-        z-index: 1;
-        pointer-events: none;
-      }
-
-      @keyframes flicker {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        5%,
-        45%,
-        55%,
-        95% {
-          opacity: 0.98;
-        }
-        10%,
-        90% {
-          opacity: 0.92;
-        }
-      }
-
-      /* === Responsive Text Scaling === */
-      @media (max-width: 768px) {
-        .glitch-text {
-          font-size: 0.9rem;
-        }
+      @media (prefers-reduced-motion: reduce) {
+        .entry::before { animation: none; }
+        .enter-link { transition: none; }
       }
     </style>
   </head>
   <body>
-    <div class="vhs-background">
-      <div class="flicker-overlay" aria-hidden="true"></div>
-      <div class="scanlines" aria-hidden="true"></div>
-      <div class="tv-static" aria-hidden="true"></div>
-      <a class="glitch-text" href="home.html" aria-label="Enter site">Press to Enter</a>
-    </div>
+    <main class="entry">
+      <div class="entry-burst" aria-hidden="true"></div>
+      <section class="entry-card">
+        <p class="entry-label">Personal website / ongoing experiment</p>
+        <h1>Tobias AEI</h1>
+        <p>
+          A mix of editorial calm, playful interaction, and weird web experiments.
+          Music, writing, code, and random things in one place.
+        </p>
+        <a class="enter-link" href="home.html" aria-label="Enter site">
+          Enter lab
+          <span aria-hidden="true">→</span>
+        </a>
+      </section>
+    </main>
   </body>
 </html>

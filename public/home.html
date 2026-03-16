@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Tobias AEI — home. Welcome to the lab." />
+    <meta name="description" content="Tobias AEI — digital lab, notes, projects, and sound." />
     <title>Tobias_AEI: Home</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
@@ -16,33 +16,61 @@
   <body>
     <div id="container">
       <div id="headerPlaceholder"></div>
-      <div id="flex">
-        <aside id="leftSidebar">
-          <h2>Updates</h2>
-          <div class="box">
-            <p>Placeholder</p>
-          </div>
-          <p class="text-muted">More updates coming soon...</p>
-        </aside>
-        <main>
-          <h1>Welcome to my lab</h1>
-          <p>- Cat Ipsum -</p>
-          <p>
-            Rub my belly hiss swipe at owner's legs sniff catnip and act crazy
-            growl at dogs in my sleep sit on the laptop for hiss at vacuum
-            cleaner i like to spend my days sleeping and eating fishes that my
-            human fished for me.
+      <main class="home-main">
+        <section class="home-hero reveal">
+          <p class="home-kicker">Digital notebook / personal archive</p>
+          <h1>Welcome to the lab.</h1>
+          <p class="home-lead">
+            A colorful home for music logs, writing drafts, project dev notes, and
+            experimental web ideas.
           </p>
-          <p>
-            Head nudges eat my own ears. Hey! you there, with the hands why
-            can't I catch that stupid red dot, shed everywhere shed everywhere
-            stretching attack your ankles chase the red dot, hairball run catnip
-            eat the grass sniff, or roll over and sun my belly curl up and sleep
-            on the freshly laundered towels.
-          </p>
-        </main>
-      </div>
+        </section>
+
+        <section class="home-cards reveal" aria-label="Explore sections">
+          <a class="home-card" href="music.html">
+            <h2>Music</h2>
+            <p>Now playing, recs, and listening trails.</p>
+          </a>
+          <a class="home-card" href="writings.html">
+            <h2>Writings</h2>
+            <p>Poetry, fragments, and short pieces.</p>
+          </a>
+          <a class="home-card" href="projects.html">
+            <h2>Projects</h2>
+            <p>Builds, experiments, and shipped ideas.</p>
+          </a>
+          <a class="home-card" href="journal.html">
+            <h2>Journal</h2>
+            <p>Notes from days that mattered.</p>
+          </a>
+          <a class="home-card home-card--wide" href="random.html">
+            <h2>Random</h2>
+            <p>Links, visuals, thoughts, and everything in-between.</p>
+          </a>
+        </section>
+      </main>
       <div id="footerPlaceholder"></div>
+    </div>
+    <div class="lofi-player" data-lofi-player>
+      <button type="button" class="lofi-toggle" data-lofi-toggle aria-pressed="false">
+        Play lofi
+      </button>
+      <label class="lofi-volume-wrap">
+        <span class="sr-only">Lofi volume</span>
+        <input
+          type="range"
+          class="lofi-volume"
+          data-lofi-volume
+          min="0"
+          max="1"
+          step="0.05"
+          value="0.45"
+          aria-label="Lofi volume"
+        />
+      </label>
+      <audio data-lofi-audio preload="none">
+        <source src="https://stream.zeno.fm/hqbrk7skwxhvv" type="audio/mpeg" />
+      </audio>
     </div>
     <script src="main.js"></script>
   </body>
