@@ -71,7 +71,13 @@
             var raw = localStorage.getItem(key);
             if (!raw) return [];
             var parsed = JSON.parse(raw);
-            return Array.isArray(parsed) ? parsed : [];
+            if (!Array.isArray(parsed)) return [];
+            for (var i = 0; i < parsed.length; i++) {
+              if (!parsed[i].id) parsed[i].id = "e_" + Date.now() + "_" + i;
+              if (!parsed[i].name) parsed[i].name = "Anonymous";
+              if (!Array.isArray(parsed[i].replies)) parsed[i].replies = [];
+            }
+            return parsed;
           } catch (e) {
             return [];
           }
@@ -97,8 +103,62 @@
             msg.className = "guestbook-entry-message";
             msg.textContent = item.message;
 
+            var replies = document.createElement("ul");
+            replies.className = "guestbook-replies";
+            var replyItems = Array.isArray(item.replies) ? item.replies : [];
+            for (var r = 0; r < replyItems.length; r++) {
+              var rep = replyItems[r];
+              var rLi = document.createElement("li");
+              rLi.className = "guestbook-reply";
+
+              var rMeta = document.createElement("p");
+              rMeta.className = "guestbook-entry-meta";
+              rMeta.textContent = rep.name + " — " + rep.date;
+
+              var rMsg = document.createElement("p");
+              rMsg.className = "guestbook-entry-message";
+              rMsg.textContent = rep.message;
+
+              rLi.appendChild(rMeta);
+              rLi.appendChild(rMsg);
+              replies.appendChild(rLi);
+            }
+
+            var replyForm = document.createElement("form");
+            replyForm.className = "guestbook-reply-form";
+            replyForm.innerHTML =
+              '<label>Reply as (Optional)<input type="text" name="name" maxlength="40" placeholder="Anonymous" /></label>' +
+              '<label>Reply *<textarea name="message" maxlength="400" required placeholder="Write a reply..."></textarea></label>' +
+              '<button type="submit">Reply</button>';
+            replyForm.addEventListener("submit", function (entryId) {
+              return function (ev) {
+                ev.preventDefault();
+                var fd = new FormData(ev.currentTarget);
+                var name = String(fd.get("name") || "").trim();
+                var message = String(fd.get("message") || "").trim();
+                if (!message) return;
+                var updated = getEntries();
+                for (var k = 0; k < updated.length; k++) {
+                  if (updated[k].id === entryId) {
+                    if (!Array.isArray(updated[k].replies)) updated[k].replies = [];
+                    updated[k].replies.push({
+                      id: "r_" + Date.now() + "_" + Math.floor(Math.random() * 10000),
+                      name: (name || "Anonymous").slice(0, 40),
+                      message: message.slice(0, 400),
+                      date: new Date().toLocaleString()
+                    });
+                    break;
+                  }
+                }
+                saveEntries(updated);
+                render(updated);
+              };
+            }(item.id));
+
             li.appendChild(meta);
             li.appendChild(msg);
+            li.appendChild(replies);
+            li.appendChild(replyForm);
             list.appendChild(li);
           }
         }
@@ -108,12 +168,14 @@
           var fd = new FormData(form);
           var name = String(fd.get("name") || "").trim();
           var message = String(fd.get("message") || "").trim();
-          if (!name || !message) return;
+          if (!message) return;
           var entries = getEntries();
           entries.unshift({
-            name: name.slice(0, 40),
+            id: "e_" + Date.now() + "_" + Math.floor(Math.random() * 10000),
+            name: (name || "Anonymous").slice(0, 40),
             message: message.slice(0, 400),
-            date: new Date().toLocaleString()
+            date: new Date().toLocaleString(),
+            replies: []
           });
           saveEntries(entries);
           render(entries);

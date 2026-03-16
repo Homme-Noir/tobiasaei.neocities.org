@@ -22,6 +22,11 @@
             <h1>Inner Monologue</h1>
             <p>Timestamped fragments of thoughts.</p>
           </header>
+          <div class="writings-filter journal-filter" role="tablist" aria-label="Journal filters">
+            <button type="button" class="journal-filter-btn active" data-journal-filter="journal">[Journal]</button>
+            <button type="button" class="journal-filter-btn" data-journal-filter="indexes">[Indexes]</button>
+            <button type="button" class="journal-filter-btn" data-journal-filter="all">[All]</button>
+          </div>
           <div id="journal-entries"></div>
         </main>
       </div>
@@ -31,49 +36,9 @@
       (function () {
         var root = document.getElementById("journal-entries");
         if (!root) return;
-
-        var entries = [
-          {
-            fileName: "Conversations with myself",
-            datetime: "Forgotten",
-            body: "I started writing down the late-night conversations I have with myself. Somewhere between doubt and stubborn hope, I keep finding reasons to continue."
-          },
-          {
-            fileName: "life",
-            datetime: "Forgotten",
-            body: "If I do not define a goal, I drift. Discipline, perseverance, and deliberate practice remain the strongest framework I trust."
-          },
-          {
-            fileName: "myself",
-            datetime: "Forgotten",
-            body: "I felt incomplete and I was floating. I do not want to stay static, and I keep trying to replace apathy with deliberate action."
-          },
-          {
-            fileName: "beauty",
-            datetime: "Forgotten",
-            body: "Beauty is in the eye of the beholder, but I still question what beauty means and why we surrender to it."
-          },
-          {
-            fileName: "love",
-            datetime: "Forgotten",
-            body: "Relationships should not be built on assumptions. If people care, they should talk honestly and solve things without noise."
-          },
-          {
-            fileName: "money",
-            datetime: "Forgotten",
-            body: "I want wealth, not fleeting riches. Sustainable cashflow and long-term stability matter more than showy success."
-          },
-          {
-            fileName: "random stuff",
-            datetime: "Forgotten",
-            body: "A fragmented notebook of thoughts, ideas, anxieties, and reminders that still map who I am becoming."
-          },
-          {
-            fileName: "Vanessa's gift",
-            datetime: "Forgotten",
-            body: "A stitched index of linked personal notes: beauty, life, myself, love, money, and scattered thoughts."
-          }
-        ];
+        var filterButtons = document.querySelectorAll(".journal-filter-btn");
+        var entries = [];
+        var activeFilter = "journal";
 
         function esc(s) {
           var el = document.createElement("div");
@@ -81,16 +46,77 @@
           return el.innerHTML;
         }
 
-        var html = "";
-        for (var i = 0; i < entries.length; i++) {
-          html += "<article class=\"journal-item\">";
-          html += "<time class=\"journal-date\" datetime=\"\">" + esc(entries[i].datetime || "Forgotten") + "</time>";
-          html += "<div class=\"journal-body\">";
-          html += "<h2 class=\"journal-item-title\">" + esc(entries[i].fileName) + "</h2>";
-          html += "<p>" + esc(entries[i].body) + "</p>";
-          html += "</div></article>";
+        function firstMeaningfulLine(content) {
+          var lines = String(content || "").split(/\r?\n/);
+          for (var i = 0; i < lines.length; i++) {
+            var ln = lines[i].trim();
+            if (ln) return ln;
+          }
+          return "";
         }
-        root.innerHTML = html;
+
+        function visibleEntries() {
+          if (activeFilter === "all") return entries.slice();
+          if (activeFilter === "indexes") {
+            return entries.filter(function (e) {
+              return !!e.isIndex;
+            });
+          }
+          return entries.filter(function (e) {
+            return !e.isIndex;
+          });
+        }
+
+        function render() {
+          var current = visibleEntries();
+          if (!current.length) {
+            root.innerHTML =
+              "<article class=\"journal-item\"><time class=\"journal-date\" datetime=\"\">Forgotten</time><div class=\"journal-body\"><h2 class=\"journal-item-title\">No entries</h2><p>No notes match this filter.</p></div></article>";
+            return;
+          }
+          var html = "";
+          for (var i = 0; i < current.length; i++) {
+            var entry = current[i] || {};
+            var datetime = entry.datetime || "Forgotten";
+            var title = entry.title || "Untitled";
+            var body = String(entry.content || "");
+            var preview = firstMeaningfulLine(body);
+            html += "<article class=\"journal-item\">";
+            html += "<time class=\"journal-date\" datetime=\"\">" + esc(datetime) + "</time>";
+            html += "<div class=\"journal-body\">";
+            html += "<h2 class=\"journal-item-title\">" + esc(title) + "</h2>";
+            if (preview) html += "<p>" + esc(preview) + "</p>";
+            html += "<pre class=\"vault-text\">" + esc(body) + "</pre>";
+            html += "</div></article>";
+          }
+          root.innerHTML = html;
+        }
+
+        for (var i = 0; i < filterButtons.length; i++) {
+          filterButtons[i].addEventListener("click", function () {
+            var next = this.getAttribute("data-journal-filter") || "journal";
+            activeFilter = next;
+            for (var j = 0; j < filterButtons.length; j++) {
+              filterButtons[j].classList.toggle("active", filterButtons[j] === this);
+            }
+            render();
+          });
+        }
+
+        fetch("data/vault-journal.json", { cache: "no-store" })
+          .then(function (res) {
+            if (!res.ok) throw new Error("Journal unavailable");
+            return res.json();
+          })
+          .then(function (data) {
+            if (!Array.isArray(data)) data = [];
+            entries = data;
+            render();
+          })
+          .catch(function () {
+            root.innerHTML =
+              "<article class=\"journal-item\"><time class=\"journal-date\" datetime=\"\">Forgotten</time><div class=\"journal-body\"><h2 class=\"journal-item-title\">Journal unavailable</h2><p>Vault export could not be loaded.</p></div></article>";
+          });
       })();
     </script>
     <script src="main.js"></script>
