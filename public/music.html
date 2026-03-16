@@ -19,8 +19,8 @@
       <div class="music-layout">
         <main class="music-main">
           <header class="page-head">
-            <h1>Sonic Landscapes</h1>
-            <p>The frequencies that keep the engine running.</p>
+            <h1>Music Landscapes</h1>
+            <p>The sounds that keep me alive.</p>
           </header>
 
           <section class="music-hero" aria-label="Last played on Last.fm">
@@ -31,33 +31,20 @@
           </section>
 
           <section class="music-recs" aria-label="Top tracks">
-            <h2 class="music-recs-title">Heavy Rotation</h2>
-            <ul class="music-track-list music-track-grid">
-              <li class="music-track-tile"><span class="music-track-name">Midnight City</span><span class="music-track-artist">M83</span></li>
-              <li class="music-track-tile"><span class="music-track-name">Space Song</span><span class="music-track-artist">Beach House</span></li>
-              <li class="music-track-tile"><span class="music-track-name">Cherry-coloured Funk</span><span class="music-track-artist">Cocteau Twins</span></li>
-              <li class="music-track-tile"><span class="music-track-name">Nights</span><span class="music-track-artist">Frank Ocean</span></li>
-              <li class="music-track-tile"><span class="music-track-name">Lover, You Should've Come Over</span><span class="music-track-artist">Jeff Buckley</span></li>
-              <li class="music-track-tile"><span class="music-track-name">Apocalypse</span><span class="music-track-artist">Cigarettes After Sex</span></li>
-              <li class="music-track-tile"><span class="music-track-name">Chamber Of Reflection</span><span class="music-track-artist">Mac DeMarco</span></li>
-              <li class="music-track-tile"><span class="music-track-name">Myth</span><span class="music-track-artist">Beach House</span></li>
+            <h2 class="music-recs-title">Top Weekly Tracks</h2>
+            <ul id="weekly-top-tracks" class="music-track-list music-track-grid">
+              <li class="music-track-tile"><span class="music-track-name">Loading weekly tracks…</span><span class="music-track-artist">Last.fm</span></li>
             </ul>
           </section>
 
-          <section class="music-curated" aria-label="Curated frequencies">
-            <h2 class="music-recs-title">Curated Frequencies</h2>
-            <article class="curated-item">
-              <h3>For late night coding</h3>
-              <p>Ambient electronic, minimal techno, and drone.</p>
-            </article>
-            <article class="curated-item">
-              <h3>Melancholic Sundays</h3>
-              <p>Acoustic guitars, soft vocals, and rain sounds.</p>
-            </article>
-            <article class="curated-item">
-              <h3>VHS Memories</h3>
-              <p>Synthwave and 80s nostalgia.</p>
-            </article>
+          <section class="music-curated" aria-label="Curated Playlists">
+            <h2 class="music-recs-title">Curated Playlists</h2>
+            <div id="curated-playlists">
+              <article class="curated-item">
+                <h3>Loading curated playlists…</h3>
+                <p>Building picks from your listening profile.</p>
+              </article>
+            </div>
           </section>
         </main>
       </div>
@@ -67,9 +54,58 @@
     <script>
       (function () {
         var container = document.getElementById("last-played-content");
+        var weeklyContainer = document.getElementById("weekly-top-tracks");
+        var curatedContainer = document.getElementById("curated-playlists");
         if (!container) return;
         var LASTFM_API_KEY = "d74f9fdb9c79a50ffac2ca0700892ca1";
         var LASTFM_USER = "Tobias_AEI";
+        var SPOTIFY_PLAYLIST_POOL = [
+          {
+            name: "lofi beats",
+            url: "https://open.spotify.com/search/lofi%20beats%20playlist",
+            note: "Low-tempo loops for deep focus sessions."
+          },
+          {
+            name: "japanese city pop",
+            url: "https://open.spotify.com/search/japanese%20city%20pop%20playlist",
+            note: "Warm retro grooves and neon nostalgia."
+          },
+          {
+            name: "ambient coding",
+            url: "https://open.spotify.com/search/ambient%20coding%20playlist",
+            note: "Soft textures for long coding nights."
+          },
+          {
+            name: "late night jazzhop",
+            url: "https://open.spotify.com/search/jazzhop%20playlist",
+            note: "Jazz-infused beats for slow evenings."
+          },
+          {
+            name: "dreamy indie",
+            url: "https://open.spotify.com/search/dreamy%20indie%20playlist",
+            note: "Floating guitars and hazy vocals."
+          },
+          {
+            name: "melancholic alt",
+            url: "https://open.spotify.com/search/melancholic%20alternative%20playlist",
+            note: "A softer mood for reflective hours."
+          },
+          {
+            name: "synthwave night drive",
+            url: "https://open.spotify.com/search/synthwave%20night%20drive%20playlist",
+            note: "Neon tempos and cinematic momentum."
+          },
+          {
+            name: "post-rock focus",
+            url: "https://open.spotify.com/search/post-rock%20playlist",
+            note: "Instrumental crescendos and clarity."
+          },
+          {
+            name: "chill electronic",
+            url: "https://open.spotify.com/search/chill%20electronic%20playlist",
+            note: "Digital calm for background listening."
+          }
+        ];
 
         fetchRecentTrack()
           .then(function (t) {
@@ -95,6 +131,13 @@
           .catch(function () {
             container.innerHTML = "<p class=\"music-loading\">Couldn’t load last played.</p>";
           });
+        fetchWeeklyTopTracks()
+          .then(renderWeeklyTracks)
+          .catch(function () {
+            if (!weeklyContainer) return;
+            weeklyContainer.innerHTML = "<li class=\"music-track-tile\"><span class=\"music-track-name\">Couldn’t load weekly tracks.</span><span class=\"music-track-artist\">Try again later</span></li>";
+          });
+        renderCuratedPlaylists();
 
         function fetchRecentTrack() {
           var endpoint =
@@ -110,6 +153,68 @@
               throw new Error("No recent tracks");
             }
             return data.recenttracks.track[0];
+          });
+        }
+
+        function fetchWeeklyTopTracks() {
+          var endpoint =
+            "https://ws.audioscrobbler.com/2.0/?" +
+            "method=user.gettoptracks" +
+            "&user=" +
+            encodeURIComponent(LASTFM_USER) +
+            "&api_key=" +
+            encodeURIComponent(LASTFM_API_KEY) +
+            "&period=7day&limit=8&format=json";
+          return jsonp(endpoint).then(function (data) {
+            if (!data || !data.toptracks || !data.toptracks.track || !data.toptracks.track.length) {
+              throw new Error("No weekly tracks");
+            }
+            return data.toptracks.track;
+          });
+        }
+
+        function renderWeeklyTracks(tracks) {
+          if (!weeklyContainer) return;
+          var html = "";
+          for (var i = 0; i < tracks.length; i++) {
+            var track = tracks[i];
+            if (!track || !track.name) continue;
+            var artist = track.artist && track.artist.name ? track.artist.name : "Unknown artist";
+            var plays = track.playcount ? " · " + track.playcount + " plays" : "";
+            html += "<li class=\"music-track-tile\">";
+            html += "<span class=\"music-track-name\">" + escapeHtml(track.name) + "</span>";
+            html += "<span class=\"music-track-artist\">" + escapeHtml(artist + plays) + "</span>";
+            html += "</li>";
+          }
+          weeklyContainer.innerHTML = html || "<li class=\"music-track-tile\"><span class=\"music-track-name\">No weekly tracks yet.</span><span class=\"music-track-artist\">Last.fm</span></li>";
+        }
+
+        function renderCuratedPlaylists() {
+          if (!curatedContainer) return;
+          var picks = getRotatingPlaylists();
+          var html = "";
+          for (var i = 0; i < picks.length; i++) {
+            html += "<article class=\"curated-item\">";
+            html += "<h3><a href=\"" + escapeHtml(picks[i].url) + "\" target=\"_blank\" rel=\"noopener\">" + escapeHtml(capitalizeWords(picks[i].name)) + "</a></h3>";
+            html += "<p>" + escapeHtml(picks[i].note) + "</p>";
+            html += "</article>";
+          }
+          curatedContainer.innerHTML = html;
+        }
+
+        function getRotatingPlaylists() {
+          var cycle = Math.floor(Date.now() / (3 * 24 * 60 * 60 * 1000));
+          var start = cycle % SPOTIFY_PLAYLIST_POOL.length;
+          var picks = [];
+          for (var i = 0; i < 3; i++) {
+            picks.push(SPOTIFY_PLAYLIST_POOL[(start + i) % SPOTIFY_PLAYLIST_POOL.length]);
+          }
+          return picks;
+        }
+
+        function capitalizeWords(s) {
+          return String(s || "").replace(/\b([a-z])/g, function (m) {
+            return m.toUpperCase();
           });
         }
 
