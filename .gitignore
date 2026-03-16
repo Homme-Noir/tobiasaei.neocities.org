@@ -21,6 +21,8 @@ desktop.ini
 # Logs and cache
 *.log
 .cache/
+__pycache__/
+*.pyc
 
 # Optional: uncomment if you add a build step
 # node_modules/
