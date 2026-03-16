@@ -12,8 +12,6 @@
   var TAB_SUFFIX = " | Tobias AEI";
   var SCROLL_THRESHOLD = 300;
   var RADIO_STATE_KEY = "taeiRadioStateV1";
-  var RADIO_COMMAND_KEY = "taeiRadioCommandV1";
-  var RADIO_WINDOW_NAME = "taeiRadioPlayerWindow";
   var RADIO_STATIONS = [
     {
       id: "lofigirl",
@@ -123,7 +121,14 @@
     var volume = root.querySelector("[data-lofi-volume]");
     var station = root.querySelector("[data-lofi-station]");
     if (!toggle || !volume || !station) return;
-    var carrierWindow = null;
+    var audio = root.querySelector("[data-lofi-audio]");
+    if (!audio) {
+      audio = document.createElement("audio");
+      audio.setAttribute("data-lofi-audio", "");
+      audio.preload = "none";
+      audio.style.display = "none";
+      root.appendChild(audio);
+    }
 
     function readState() {
       try {
@@ -178,6 +183,25 @@
       };
     }
 
+    function setSourceForStation(stationId) {
+      var next = resolveStation(stationId);
+      if (station.value !== next.id) station.value = next.id;
+      var nextSrc = next.sources && next.sources.length ? next.sources[0] : "";
+      if (!nextSrc) return;
+      if (audio.src !== nextSrc) {
+        audio.src = nextSrc;
+      }
+    }
+
+    function setVolume(v) {
+      var next = Number(v);
+      if (Number.isNaN(next)) next = 0.45;
+      if (next < 0) next = 0;
+      if (next > 1) next = 1;
+      volume.value = String(next);
+      audio.volume = next;
+    }
+
     function setPlaying(playing) {
       isPlaying = !!playing;
       toggle.classList.toggle("is-playing", isPlaying);
@@ -186,96 +210,51 @@
       writeState(currentState(isPlaying));
     }
 
-    function sendCommand(type, payload) {
-      var message = {
-        id: Date.now() + "_" + Math.floor(Math.random() * 10000),
-        type: type,
-        payload: payload || {},
-      };
-      try {
-        window.localStorage.setItem(RADIO_COMMAND_KEY, JSON.stringify(message));
-      } catch (err) {
-        /* no-op: storage unavailable */
-      }
-    }
-
-    function openCarrierWindow(isUserGesture) {
-      try {
-        if (!carrierWindow || carrierWindow.closed) {
-          var features = "popup=yes,width=420,height=240";
-          carrierWindow = window.open(base + "radio-player.html", RADIO_WINDOW_NAME, features);
-          if (carrierWindow && carrierWindow.focus && isUserGesture) carrierWindow.focus();
-        }
-      } catch (err) {
-        carrierWindow = null;
-      }
+    function playAudio() {
+      return audio.play().then(function () {
+        setPlaying(true);
+      }).catch(function () {
+        setPlaying(false);
+      });
     }
 
     toggle.addEventListener("click", function () {
       if (!isPlaying) {
-        openCarrierWindow(true);
-        sendCommand("play", {
-          stationId: station.value,
-          volume: Number(volume.value || 0.45),
-        });
-        setPlaying(true);
+        setSourceForStation(station.value);
+        setVolume(volume.value);
+        playAudio();
       } else {
-        sendCommand("pause");
+        audio.pause();
         setPlaying(false);
       }
     });
 
     station.addEventListener("change", function () {
       var next = resolveStation(station.value);
-      sendCommand("set-station", {
-        stationId: next.id,
-        autoplay: !!isPlaying,
-      });
-      writeState(currentState(isPlaying));
+      setSourceForStation(next.id);
       if (isPlaying) {
-        openCarrierWindow(true);
+        playAudio();
+      } else {
+        writeState(currentState(false));
       }
     });
 
     volume.addEventListener("input", function () {
-      var next = Number(volume.value);
-      if (Number.isNaN(next)) return;
-      sendCommand("set-volume", {
-        volume: next,
-      });
+      setVolume(volume.value);
       writeState(currentState(isPlaying));
     });
 
-    window.addEventListener("storage", function (event) {
-      if (event.key !== RADIO_STATE_KEY || !event.newValue) return;
-      try {
-        var next = JSON.parse(event.newValue);
-        if (!next || typeof next !== "object") return;
-        var nextStation = resolveStation(next.stationId);
-        station.value = nextStation.id;
-        var nextVolume = Number(next.volume);
-        if (!Number.isNaN(nextVolume)) volume.value = String(Math.max(0, Math.min(1, nextVolume)));
-        isPlaying = !!next.isPlaying;
-        toggle.classList.toggle("is-playing", isPlaying);
-        toggle.setAttribute("aria-pressed", String(isPlaying));
-        toggle.textContent = isPlaying ? "Pause radio" : "Play radio";
-      } catch (err) {
-        /* no-op: invalid data */
-      }
+    audio.addEventListener("ended", function () {
+      setPlaying(false);
+    });
+    audio.addEventListener("error", function () {
+      setPlaying(false);
     });
 
-    if (isPlaying) {
-      toggle.classList.add("is-playing");
-      toggle.setAttribute("aria-pressed", "true");
-      toggle.textContent = "Pause radio";
-      openCarrierWindow(false);
-      sendCommand("sync", {
-        stationId: station.value,
-        volume: Number(volume.value || 0.45),
-      });
-    } else {
-      setPlaying(false);
-    }
+    setSourceForStation(currentStation.id);
+    setVolume(desiredVolume);
+    if (isPlaying) playAudio();
+    else setPlaying(false);
   }
 
   function initNavScrollState() {
