@@ -4,13 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Tobias AEI — digital lab, notes, projects, and sound." />
-    <title>Tobias_AEI: Home</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
+    <title>Tobias_AEI | Home</title>
+    <link rel="stylesheet" href="https://www.nerdfonts.com/assets/css/webfont.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -21,7 +16,7 @@
           <h1>Welcome to my corner <span>of the digital world.</span></h1>
           <div class="home-copy">
             <p>
-              Tobi here 👋. This is a repository for fragments - incomplete projects,
+              Tobi here <span class="home-inline-icon nf nf-md-hand_wave" aria-hidden="true"></span>. This is a repository for fragments - incomplete projects,
               poetry without rhyme, and thoughts that don't settle.
             </p>
             <p>
@@ -29,6 +24,11 @@
               intent is sincere.
             </p>
           </div>
+          <p class="home-visitor-counter" aria-live="polite">
+            <span class="nf nf-md-account_group home-counter-icon" aria-hidden="true"></span>
+            <span class="home-counter-label">Unique visitors</span>
+            <strong id="unique-visitors-count">--</strong>
+          </p>
         </section>
 
         <section class="home-directory reveal" aria-label="Directory index">
@@ -63,6 +63,53 @@
       </main>
       <div id="footerPlaceholder"></div>
     </div>
+    <script>
+      (function () {
+        var countEl = document.getElementById("unique-visitors-count");
+        if (!countEl) return;
+
+        var namespace = "tobiasaei-neocities";
+        var key = "unique-visitors";
+        var countedFlagKey = "taeUniqueVisitorCountedV1";
+        var base = "https://api.counterapi.dev/v1/" + encodeURIComponent(namespace) + "/" + encodeURIComponent(key);
+
+        function setCount(value) {
+          var n = Number(value);
+          countEl.textContent = Number.isFinite(n) && n >= 0 ? String(Math.floor(n)) : "--";
+        }
+
+        function fetchJson(url) {
+          return fetch(url, { cache: "no-store" }).then(function (res) {
+            if (!res.ok) throw new Error("Counter unavailable");
+            return res.json();
+          });
+        }
+
+        var hasCounted = false;
+        try {
+          hasCounted = localStorage.getItem(countedFlagKey) === "1";
+        } catch (e) {
+          hasCounted = true;
+        }
+
+        var url = hasCounted ? base + "/" : base + "/up";
+
+        fetchJson(url)
+          .then(function (payload) {
+            setCount(payload && payload.count);
+            if (!hasCounted) {
+              try {
+                localStorage.setItem(countedFlagKey, "1");
+              } catch (e) {
+                /* ignore storage failures */
+              }
+            }
+          })
+          .catch(function () {
+            countEl.textContent = "offline";
+          });
+      })();
+    </script>
     <script src="main.js"></script>
   </body>
 </html>
