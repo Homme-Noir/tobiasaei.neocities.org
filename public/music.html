@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Music — Tobias AEI" />
+    <title>Tobias_AEI: Music</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="container">
+      <div id="headerPlaceholder"></div>
+      <div id="flex">
+        <aside id="leftSidebar">
+          <h2>Updates</h2>
+          <div class="box">
+            <p>Placeholder</p>
+          </div>
+          <p class="text-muted">More updates coming soon...</p>
+        </aside>
+        <main>
+          <h1>Music</h1>
+          <section class="last-played" aria-label="Last played on Last.fm">
+            <h2>Last played</h2>
+            <div id="last-played-content">
+              <p class="text-muted">Loading…</p>
+            </div>
+          </section>
+          <p class="text-muted" style="margin-top: 1.5em;">More recommendations coming soon.</p>
+        </main>
+      </div>
+      <div id="footerPlaceholder"></div>
+    </div>
+    <script src="main.js"></script>
+    <script>
+      (function () {
+        var container = document.getElementById("last-played-content");
+        if (!container) return;
+        var apiUrl = "https://lastfm-last-played.biancarosa.com.br/Tobias_AEI/latest-song";
+        fetch(apiUrl)
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            var t = data.track;
+            if (!t || !t.name) {
+              container.innerHTML = "<p class=\"text-muted\">No recent track.</p>";
+              return;
+            }
+            var artist = t.artist && t.artist["#text"] ? t.artist["#text"] : "";
+            var img = (t.image && t.image[2] && t.image[2]["#text"]) ? t.image[2]["#text"] : "";
+            var url = t.url || "#";
+            var html = "<div class=\"last-played-card\">";
+            if (img) html += "<a href=\"" + url.replace(/"/g, "&quot;") + "\" target=\"_blank\" rel=\"noopener\"><img src=\"" + img.replace(/"/g, "&quot;") + "\" alt=\"\" width=\"64\" height=\"64\" class=\"last-played-art\"></a>";
+            html += "<div class=\"last-played-info\"><a href=\"" + url.replace(/"/g, "&quot;") + "\" target=\"_blank\" rel=\"noopener\" class=\"last-played-track\">" + escapeHtml(t.name) + "</a>";
+            if (artist) html += " <span class=\"last-played-artist\">" + escapeHtml(artist) + "</span>";
+            html += "</div></div>";
+            container.innerHTML = html;
+          })
+          .catch(function () {
+            container.innerHTML = "<p class=\"text-muted\">Couldn’t load last played. <a href=\"https://www.last.fm/user/Tobias_AEI\" target=\"_blank\" rel=\"noopener\">View on Last.fm</a>.</p>";
+          });
+        function escapeHtml(s) {
+          var div = document.createElement("div");
+          div.textContent = s;
+          return div.innerHTML;
+        }
+      })();
+    </script>
+  </body>
+</html>

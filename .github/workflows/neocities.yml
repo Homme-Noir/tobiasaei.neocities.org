@@ -1,0 +1,28 @@
+# Deploy to Neocities on push to main
+# See: https://petrapixel.neocities.org/coding/git-tutorial#neocities
+# 1. Get your API key from https://neocities.org/settings#api_key
+# 2. Add it as a GitHub secret: NEOCITIES_API_TOKEN (Settings → Secrets and variables → Actions)
+
+name: Deploy to Neocities
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: deploy-to-neocities
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to Neocities
+        uses: bcomnes/deploy-to-neocities@v3
+        with:
+          api_key: ${{ secrets.NEOCITIES_API_TOKEN }}
+          cleanup: true
+          dist_dir: public

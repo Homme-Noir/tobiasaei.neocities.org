@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Tobias AEI — personal site. Enter the lab." />
+    <title>Tobias_AEI: Start</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --glitch-white: oklch(99% 0.01 100);
+        --glitch-red: oklch(62% 0.27 29);
+        --glitch-blue: oklch(48% 0.25 264);
+        --scanline-dark: oklch(0% 0 0 / 0.35);
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: "Press Start 2P", monospace;
+      }
+
+      .vhs-background {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        background-image: url("backiee-169091.jpg");
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
+      }
+
+      /* === Scanlines === */
+      .scanlines {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 300%;
+        background: repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 1px,
+          var(--scanline-dark) 1px,
+          var(--scanline-dark) 2px
+        );
+        animation: scan 2s linear infinite;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      @keyframes scan {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(-100%);
+        }
+      }
+
+      /* === TV Static Overlay === */
+      .tv-static {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("webb-dark.png");
+        opacity: 0.04;
+        pointer-events: none;
+        z-index: 3;
+        mix-blend-mode: multiply;
+      }
+
+      /* === Glitch Text === */
+      .glitch-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;
+        font-size: 3rem;
+        color: var(--glitch-white);
+        text-shadow: 2px 0 var(--glitch-red), -2px 0 var(--glitch-blue);
+        animation: glitch 2.5s infinite;
+        transition: filter 0.2s ease-in-out;
+        cursor: pointer;
+      }
+
+      .glitch-text:hover {
+        filter: brightness(1.15);
+      }
+
+      .glitch-text:focus-visible {
+        outline: 3px solid var(--glitch-white);
+        outline-offset: 4px;
+      }
+
+      @keyframes glitch {
+        0%,
+        90%,
+        100% {
+          text-shadow: 2px 0 var(--glitch-red), -2px 0 var(--glitch-blue);
+          transform: translate(-50%, -50%) translate(0, 0);
+        }
+        92% {
+          text-shadow: 3px 1px var(--glitch-red), -3px -1px var(--glitch-blue);
+          transform: translate(-50%, -50%) translate(-2px, 1px);
+        }
+        94% {
+          text-shadow: -2px -1px var(--glitch-red), 2px 1px var(--glitch-blue);
+          transform: translate(-50%, -50%) translate(2px, -1px);
+        }
+        96% {
+          text-shadow: 2px -1px var(--glitch-red), -2px 1px var(--glitch-blue);
+          transform: translate(-50%, -50%) translate(-1px, 2px);
+        }
+        98% {
+          text-shadow: -1px 2px var(--glitch-red), 1px -2px var(--glitch-blue);
+          transform: translate(-50%, -50%) translate(1px, -2px);
+        }
+      }
+
+      /* === Flicker Effect === */
+      .flicker-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        animation: flicker 2s infinite;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      @keyframes flicker {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        5%,
+        45%,
+        55%,
+        95% {
+          opacity: 0.98;
+        }
+        10%,
+        90% {
+          opacity: 0.92;
+        }
+      }
+
+      /* === Responsive Text Scaling === */
+      @media (max-width: 768px) {
+        .glitch-text {
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="vhs-background">
+      <div class="flicker-overlay" aria-hidden="true"></div>
+      <div class="scanlines" aria-hidden="true"></div>
+      <div class="tv-static" aria-hidden="true"></div>
+      <a class="glitch-text" href="home.html" aria-label="Enter site">Press to Enter</a>
+    </div>
+  </body>
+</html>
