@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TAE Radio Carrier</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        font-family: "IBM Plex Mono", monospace;
+        background: #080f10;
+        color: #e2e8f0;
+      }
+      .carrier {
+        width: min(90vw, 360px);
+        border: 1px solid rgba(45, 212, 191, 0.35);
+        border-radius: 10px;
+        padding: 0.9rem 1rem;
+        background: rgba(8, 15, 16, 0.92);
+      }
+      .carrier h1 {
+        margin: 0 0 0.45rem;
+        font-size: 0.92rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: #2dd4bf;
+      }
+      .carrier p {
+        margin: 0.2rem 0;
+        font-size: 0.74rem;
+        color: #b0c4c8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="carrier">
+      <h1>Persistent Radio</h1>
+      <p id="station">Station: standby</p>
+      <p id="state">State: idle</p>
+    </div>
+    <script>
+      (function () {
+        var RADIO_STATE_KEY = "taeiRadioStateV1";
+        var RADIO_COMMAND_KEY = "taeiRadioCommandV1";
+        var RADIO_STATIONS = [
+          {
+            id: "lofigirl",
+            label: "SomaFM: Groove Salad",
+            sources: [
+              "https://ice1.somafm.com/groovesalad-128-mp3",
+              "https://ice2.somafm.com/groovesalad-128-mp3",
+            ],
+          },
+          {
+            id: "bootlegboy",
+            label: "SomaFM: Illinois Street Lounge",
+            sources: [
+              "https://ice1.somafm.com/illstreet-128-mp3",
+              "https://ice2.somafm.com/illstreet-128-mp3",
+            ],
+          },
+          {
+            id: "chillhop",
+            label: "SomaFM: Lush",
+            sources: [
+              "https://ice1.somafm.com/lush-128-mp3",
+              "https://ice2.somafm.com/lush-128-mp3",
+            ],
+          },
+        ];
+
+        var stationText = document.getElementById("station");
+        var stateText = document.getElementById("state");
+        var audio = new Audio();
+        audio.preload = "none";
+        var currentStationId = RADIO_STATIONS[0].id;
+
+        function resolveStation(id) {
+          for (var i = 0; i < RADIO_STATIONS.length; i++) {
+            if (RADIO_STATIONS[i].id === id) return RADIO_STATIONS[i];
+          }
+          return RADIO_STATIONS[0];
+        }
+
+        function readState() {
+          try {
+            var raw = window.localStorage.getItem(RADIO_STATE_KEY);
+            if (!raw) return null;
+            var parsed = JSON.parse(raw);
+            if (!parsed || typeof parsed !== "object") return null;
+            return parsed;
+          } catch (err) {
+            return null;
+          }
+        }
+
+        function writeState(next) {
+          try {
+            window.localStorage.setItem(RADIO_STATE_KEY, JSON.stringify(next));
+          } catch (err) {
+            /* no-op */
+          }
+        }
+
+        function buildState(playing, stationId, volume) {
+          return {
+            stationId: stationId,
+            volume: volume,
+            isPlaying: !!playing,
+          };
+        }
+
+        function setStation(stationId) {
+          var station = resolveStation(stationId);
+          if (station.id === currentStationId && audio.src) return;
+          currentStationId = station.id;
+          audio.src = station.sources[0];
+          stationText.textContent = "Station: " + station.label;
+        }
+
+        function setVolume(value) {
+          var v = Number(value);
+          if (Number.isNaN(v)) return;
+          if (v < 0) v = 0;
+          if (v > 1) v = 1;
+          audio.volume = v;
+        }
+
+        function play() {
+          return audio
+            .play()
+            .then(function () {
+              stateText.textContent = "State: playing";
+              writeState(buildState(true, currentStationId, audio.volume));
+            })
+            .catch(function () {
+              stateText.textContent = "State: blocked (click Play again)";
+              writeState(buildState(false, currentStationId, audio.volume));
+            });
+        }
+
+        function pause() {
+          audio.pause();
+          stateText.textContent = "State: paused";
+          writeState(buildState(false, currentStationId, audio.volume));
+        }
+
+        function applyState(state) {
+          var nextStationId = state && state.stationId ? state.stationId : RADIO_STATIONS[0].id;
+          var nextVolume = state && state.volume != null ? Number(state.volume) : 0.45;
+          var playing = !!(state && state.isPlaying);
+          setStation(nextStationId);
+          setVolume(nextVolume);
+          if (playing) play();
+          else pause();
+        }
+
+        window.addEventListener("storage", function (event) {
+          if (event.key !== RADIO_COMMAND_KEY || !event.newValue) return;
+          var cmd;
+          try {
+            cmd = JSON.parse(event.newValue);
+          } catch (err) {
+            return;
+          }
+          if (!cmd || typeof cmd !== "object" || !cmd.type) return;
+
+          if (cmd.type === "play") {
+            setStation(cmd.payload && cmd.payload.stationId ? cmd.payload.stationId : currentStationId);
+            setVolume(cmd.payload && cmd.payload.volume != null ? cmd.payload.volume : audio.volume);
+            play();
+            return;
+          }
+          if (cmd.type === "pause") {
+            pause();
+            return;
+          }
+          if (cmd.type === "set-station") {
+            setStation(cmd.payload && cmd.payload.stationId ? cmd.payload.stationId : currentStationId);
+            if (cmd.payload && cmd.payload.autoplay) play();
+            else writeState(buildState(!audio.paused, currentStationId, audio.volume));
+            return;
+          }
+          if (cmd.type === "set-volume") {
+            setVolume(cmd.payload && cmd.payload.volume != null ? cmd.payload.volume : audio.volume);
+            writeState(buildState(!audio.paused, currentStationId, audio.volume));
+            return;
+          }
+          if (cmd.type === "sync") {
+            setStation(cmd.payload && cmd.payload.stationId ? cmd.payload.stationId : currentStationId);
+            setVolume(cmd.payload && cmd.payload.volume != null ? cmd.payload.volume : audio.volume);
+            if (!audio.paused) stateText.textContent = "State: playing";
+            return;
+          }
+        });
+
+        audio.addEventListener("ended", function () {
+          pause();
+        });
+        audio.addEventListener("error", function () {
+          stateText.textContent = "State: stream offline";
+          writeState(buildState(false, currentStationId, audio.volume));
+        });
+
+        applyState(readState() || {});
+      })();
+    </script>
+  </body>
+</html>

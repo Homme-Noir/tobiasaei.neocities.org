@@ -59,53 +59,6 @@
         if (!container) return;
         var LASTFM_API_KEY = "d74f9fdb9c79a50ffac2ca0700892ca1";
         var LASTFM_USER = "Tobias_AEI";
-        var SPOTIFY_PLAYLIST_POOL = [
-          {
-            name: "lofi beats",
-            url: "https://open.spotify.com/search/lofi%20beats%20playlist",
-            note: "Low-tempo loops for deep focus sessions."
-          },
-          {
-            name: "japanese city pop",
-            url: "https://open.spotify.com/search/japanese%20city%20pop%20playlist",
-            note: "Warm retro grooves and neon nostalgia."
-          },
-          {
-            name: "ambient coding",
-            url: "https://open.spotify.com/search/ambient%20coding%20playlist",
-            note: "Soft textures for long coding nights."
-          },
-          {
-            name: "late night jazzhop",
-            url: "https://open.spotify.com/search/jazzhop%20playlist",
-            note: "Jazz-infused beats for slow evenings."
-          },
-          {
-            name: "dreamy indie",
-            url: "https://open.spotify.com/search/dreamy%20indie%20playlist",
-            note: "Floating guitars and hazy vocals."
-          },
-          {
-            name: "melancholic alt",
-            url: "https://open.spotify.com/search/melancholic%20alternative%20playlist",
-            note: "A softer mood for reflective hours."
-          },
-          {
-            name: "synthwave night drive",
-            url: "https://open.spotify.com/search/synthwave%20night%20drive%20playlist",
-            note: "Neon tempos and cinematic momentum."
-          },
-          {
-            name: "post-rock focus",
-            url: "https://open.spotify.com/search/post-rock%20playlist",
-            note: "Instrumental crescendos and clarity."
-          },
-          {
-            name: "chill electronic",
-            url: "https://open.spotify.com/search/chill%20electronic%20playlist",
-            note: "Digital calm for background listening."
-          }
-        ];
 
         fetchRecentTrack()
           .then(function (t) {
@@ -137,7 +90,13 @@
             if (!weeklyContainer) return;
             weeklyContainer.innerHTML = "<li class=\"music-track-tile\"><span class=\"music-track-name\">Couldn’t load weekly tracks.</span><span class=\"music-track-artist\">Try again later</span></li>";
           });
-        renderCuratedPlaylists();
+        fetchCuratedPlaylists()
+          .then(renderCuratedPlaylists)
+          .catch(function () {
+            if (!curatedContainer) return;
+            curatedContainer.innerHTML =
+              "<article class=\"curated-item\"><h3>No eligible playlists found</h3><p>Only playlists from your library and not made by Spotify are shown.</p></article>";
+          });
 
         function fetchRecentTrack() {
           var endpoint =
@@ -189,33 +148,57 @@
           weeklyContainer.innerHTML = html || "<li class=\"music-track-tile\"><span class=\"music-track-name\">No weekly tracks yet.</span><span class=\"music-track-artist\">Last.fm</span></li>";
         }
 
-        function renderCuratedPlaylists() {
+        function fetchCuratedPlaylists() {
+          return fetch("data/spotify-playlists.json", { cache: "no-store" })
+            .then(function (res) {
+              if (!res.ok) throw new Error("Playlist index unavailable");
+              return res.json();
+            })
+            .then(function (all) {
+              if (!Array.isArray(all)) return [];
+              var filtered = [];
+              for (var i = 0; i < all.length; i++) {
+                var p = all[i] || {};
+                var ownerName = String(p.ownerName || "").trim();
+                var inLibrary = !!p.inLibrary;
+                if (!inLibrary) continue;
+                if (ownerName.toLowerCase().indexOf("spotify") !== -1) continue;
+                if (!p.name || !p.url) continue;
+                filtered.push(p);
+              }
+              return filtered;
+            });
+        }
+
+        function renderCuratedPlaylists(playlists) {
           if (!curatedContainer) return;
-          var picks = getRotatingPlaylists();
+          if (!playlists || !playlists.length) {
+            curatedContainer.innerHTML =
+              "<article class=\"curated-item\"><h3>No eligible playlists found</h3><p>Only playlists from your library and not made by Spotify are shown.</p></article>";
+            return;
+          }
+          var picks = getRotatingPlaylists(playlists);
           var html = "";
           for (var i = 0; i < picks.length; i++) {
             html += "<article class=\"curated-item\">";
-            html += "<h3><a href=\"" + escapeHtml(picks[i].url) + "\" target=\"_blank\" rel=\"noopener\">" + escapeHtml(capitalizeWords(picks[i].name)) + "</a></h3>";
-            html += "<p>" + escapeHtml(picks[i].note) + "</p>";
+            html += "<h3><a href=\"" + escapeHtml(picks[i].url) + "\" target=\"_blank\" rel=\"noopener\">" + escapeHtml(picks[i].name) + "</a></h3>";
+            if (picks[i].description) {
+              html += "<p>" + escapeHtml(picks[i].description) + "</p>";
+            }
             html += "</article>";
           }
           curatedContainer.innerHTML = html;
         }
 
-        function getRotatingPlaylists() {
+        function getRotatingPlaylists(pool) {
           var cycle = Math.floor(Date.now() / (3 * 24 * 60 * 60 * 1000));
-          var start = cycle % SPOTIFY_PLAYLIST_POOL.length;
+          var start = cycle % pool.length;
           var picks = [];
-          for (var i = 0; i < 3; i++) {
-            picks.push(SPOTIFY_PLAYLIST_POOL[(start + i) % SPOTIFY_PLAYLIST_POOL.length]);
+          var total = Math.min(3, pool.length);
+          for (var i = 0; i < total; i++) {
+            picks.push(pool[(start + i) % pool.length]);
           }
           return picks;
-        }
-
-        function capitalizeWords(s) {
-          return String(s || "").replace(/\b([a-z])/g, function (m) {
-            return m.toUpperCase();
-          });
         }
 
         function jsonp(url) {

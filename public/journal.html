@@ -22,31 +22,77 @@
             <h1>Inner Monologue</h1>
             <p>Timestamped fragments of thoughts.</p>
           </header>
-          <article class="journal-item">
-            <time class="journal-date" datetime="2024-11-18">2024.11.18 · 11:40 PM</time>
-            <div class="journal-body">
-              <h2 class="journal-item-title">Conversations with myself</h2>
-              <p>I started writing down the late-night conversations I have with myself. Somewhere between doubt and stubborn hope, I keep finding reasons to continue.</p>
-            </div>
-          </article>
-          <article class="journal-item">
-            <time class="journal-date" datetime="2024-10-02">2024.10.02 · 09:08 PM</time>
-            <div class="journal-body">
-              <h2 class="journal-item-title">On discipline and direction</h2>
-              <p>If I do not define a goal, I drift. Discipline, perseverance, and deliberate practice are still the best map I have for building a life with direction.</p>
-            </div>
-          </article>
-          <article class="journal-item">
-            <time class="journal-date" datetime="2024-08-20">2024.08.20 · 04:20 PM</time>
-            <div class="journal-body">
-              <h2 class="journal-item-title">Small reset</h2>
-              <p>I have regrets, but I do not want to stay static. I am trying to replace apathy with action, even if the progress is uneven and quiet.</p>
-            </div>
-          </article>
+          <div id="journal-entries"></div>
         </main>
       </div>
       <div id="footerPlaceholder"></div>
     </div>
+    <script>
+      (function () {
+        var root = document.getElementById("journal-entries");
+        if (!root) return;
+
+        var entries = [
+          {
+            fileName: "Conversations with myself",
+            datetime: "Forgotten",
+            body: "I started writing down the late-night conversations I have with myself. Somewhere between doubt and stubborn hope, I keep finding reasons to continue."
+          },
+          {
+            fileName: "life",
+            datetime: "Forgotten",
+            body: "If I do not define a goal, I drift. Discipline, perseverance, and deliberate practice remain the strongest framework I trust."
+          },
+          {
+            fileName: "myself",
+            datetime: "Forgotten",
+            body: "I felt incomplete and I was floating. I do not want to stay static, and I keep trying to replace apathy with deliberate action."
+          },
+          {
+            fileName: "beauty",
+            datetime: "Forgotten",
+            body: "Beauty is in the eye of the beholder, but I still question what beauty means and why we surrender to it."
+          },
+          {
+            fileName: "love",
+            datetime: "Forgotten",
+            body: "Relationships should not be built on assumptions. If people care, they should talk honestly and solve things without noise."
+          },
+          {
+            fileName: "money",
+            datetime: "Forgotten",
+            body: "I want wealth, not fleeting riches. Sustainable cashflow and long-term stability matter more than showy success."
+          },
+          {
+            fileName: "random stuff",
+            datetime: "Forgotten",
+            body: "A fragmented notebook of thoughts, ideas, anxieties, and reminders that still map who I am becoming."
+          },
+          {
+            fileName: "Vanessa's gift",
+            datetime: "Forgotten",
+            body: "A stitched index of linked personal notes: beauty, life, myself, love, money, and scattered thoughts."
+          }
+        ];
+
+        function esc(s) {
+          var el = document.createElement("div");
+          el.textContent = String(s || "");
+          return el.innerHTML;
+        }
+
+        var html = "";
+        for (var i = 0; i < entries.length; i++) {
+          html += "<article class=\"journal-item\">";
+          html += "<time class=\"journal-date\" datetime=\"\">" + esc(entries[i].datetime || "Forgotten") + "</time>";
+          html += "<div class=\"journal-body\">";
+          html += "<h2 class=\"journal-item-title\">" + esc(entries[i].fileName) + "</h2>";
+          html += "<p>" + esc(entries[i].body) + "</p>";
+          html += "</div></article>";
+        }
+        root.innerHTML = html;
+      })();
+    </script>
     <script src="main.js"></script>
   </body>
 </html>

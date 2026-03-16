@@ -1182,14 +1182,61 @@ body::before {
 }
 
 .journal-head h1 {
-  font-size: clamp(2.4rem, 5.5vw, 3.9rem);
-  letter-spacing: 0.04em;
-  text-shadow: 0 0 20px rgba(45, 212, 191, 0.2);
+  font-size: clamp(2.7rem, 6vw, 4.1rem);
+  letter-spacing: 0.06em;
+  color: #f3fbfc;
+  text-shadow: 0 0 24px rgba(45, 212, 191, 0.3);
 }
 
 .journal-head p {
-  font-size: 0.95rem;
-  color: var(--mp-text-muted);
+  font-size: 1rem;
+  color: #c6dde0;
+}
+
+.page-journal .journal-date {
+  color: #a4d8d3;
+  font-size: 0.78rem;
+}
+
+.page-journal .journal-item-title {
+  color: #eef7f8;
+  font-size: 1.72rem;
+}
+
+.page-journal .journal-body p {
+  color: #d6e8ea;
+  font-size: 1.28rem;
+  line-height: 1.72;
+}
+
+.page-writings .writings-content {
+  background: rgba(8, 15, 16, 0.94);
+  border-color: rgba(45, 212, 191, 0.28);
+}
+
+.page-writings .writings-entry {
+  border-color: rgba(45, 212, 191, 0.2);
+}
+
+.page-writings .writings-entry h2 {
+  color: #eef8f9;
+  font-size: 2rem;
+}
+
+.page-writings .writings-entry time {
+  color: #a8ccd0;
+}
+
+.page-writings .writings-excerpt {
+  color: #d7e9eb;
+  font-size: 1.14rem;
+}
+
+.page-writings .writings-full {
+  color: #edf7f8;
+  font-size: 1.12rem;
+  line-height: 1.85;
+  border-left-color: rgba(45, 212, 191, 0.42);
 }
 
 .home-main {

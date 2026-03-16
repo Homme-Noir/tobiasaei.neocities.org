@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Midnight Terminal Sessions",
+    "url": "https://open.spotify.com/playlist/37i9dQZF1DX3qCx5yEZkcJ",
+    "ownerName": "Aesthetic Labs",
+    "inLibrary": true,
+    "description": "Late-night instrumentals and gentle synth textures."
+  },
+  {
+    "name": "Rainy Code Window",
+    "url": "https://open.spotify.com/playlist/37i9dQZF1DX8Uebhn9wzrS",
+    "ownerName": "Night Routine",
+    "inLibrary": true,
+    "description": ""
+  },
+  {
+    "name": "Warm Static",
+    "url": "https://open.spotify.com/playlist/37i9dQZF1DX0SM0LYsmbMT",
+    "ownerName": "Neon Archive",
+    "inLibrary": true
+  },
+  {
+    "name": "Lo-Fi Beats",
+    "url": "https://open.spotify.com/playlist/37i9dQZF1DWWQRwui0ExPn",
+    "ownerName": "Spotify",
+    "inLibrary": true,
+    "description": "This should be filtered out because owner is Spotify."
+  }
+]

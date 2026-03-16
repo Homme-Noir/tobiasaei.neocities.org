@@ -26,71 +26,139 @@
             <span>[All]</span><span>[Poetry]</span>
           </div>
 
-          <ul class="writings-entries">
-            <li>
-              <details class="writings-entry" open>
-                <summary>
-                  <span class="entry-type">Poetry</span>
-                  <time datetime="2024-09-01">Sep 01, 2024</time>
-                  <h2>Afloat</h2>
-                </summary>
-                <p class="writings-excerpt">It feels like I have forgotten something, and I keep drifting between peace and emptiness.</p>
-                <div class="writings-full">
-                  It feels like I've forgotten something,<br />
-                  Something very important,<br />
-                  At times I find myself in the darkness in solitude,<br />
-                  As it engulfs my being like a comforting velvet shroud,<br />
-                  Or walking beneath the canvas of the starry night,<br />
-                  Admiring its beauty as the stars twinkle,<br />
-                  Without a thought in mind,<br />
-                  Afloat amongst the clouds in the sky.
-                </div>
-              </details>
-            </li>
-            <li>
-              <details class="writings-entry">
-                <summary>
-                  <span class="entry-type">Poetry</span>
-                  <time datetime="2024-08-03">Aug 03, 2024</time>
-                  <h2>Walk in the Rain</h2>
-                </summary>
-                <p class="writings-excerpt">Grey clouds overhead, wet boots below, and the soft rhythm of rain in between.</p>
-                <div class="writings-full">
-                  From glittering droplets of pouring rain,<br />
-                  To puddles on the pavement, shimmering silver.<br />
-                  Grey clouds hang overhead in the dim sky,<br />
-                  The humid wind blows<br />
-                  Dripping lightly through my soaked hair,<br />
-                  Drip drip<br />
-                  Down to the flat soles of my boots.
-                </div>
-              </details>
-            </li>
-            <li>
-              <details class="writings-entry">
-                <summary>
-                  <span class="entry-type">Poetry</span>
-                  <time datetime="2024-07-18">Jul 18, 2024</time>
-                  <h2>My Silent Fortress</h2>
-                </summary>
-                <p class="writings-excerpt">A self-built bastion that protects me, but also keeps me from the stars.</p>
-                <div class="writings-full">
-                  It's empty. Just a vast expanse,<br />
-                  Stretching on endlessly.<br />
-                  Darkness everywhere,<br />
-                  Save for the galaxy painted on the ceiling.<br />
-                  A self-inflicted prison,<br />
-                  Protecting me from the dangers of the outside world.<br />
-                  I want to explore the outside world.<br />
-                  But I remain still.
-                </div>
-              </details>
-            </li>
-          </ul>
+          <ul class="writings-entries" id="writings-list"></ul>
         </main>
       </div>
       <div id="footerPlaceholder"></div>
     </div>
+    <script>
+      (function () {
+        var container = document.getElementById("writings-list");
+        if (!container) return;
+
+        var completedPoems = [
+          "A blooming ghost flower",
+          "A story of longing",
+          "Afloat",
+          "Anxiety",
+          "Atilade's contract",
+          "Broke",
+          "Broken Shards",
+          "Burning house",
+          "Carissimae meae valentinae",
+          "Consume me",
+          "Daydream",
+          "Dear traveller",
+          "Defyer's tale",
+          "Ego death",
+          "Elusive Emotions",
+          "Euphoria",
+          "Fake bard",
+          "Fantasy's solace",
+          "Home",
+          "I'm fine with this",
+          "Inquisitive mage",
+          "Introspection",
+          "Les Feuilles Rouges",
+          "Lost love",
+          "Mechanical heart",
+          "Memento Mori",
+          "Mesmerised by the Enemy",
+          "Misophonia",
+          "Musical reverie",
+          "Musings of a boy",
+          "Mystery of Time",
+          "My motherland",
+          "My silent fortress",
+          "One kiss No regrets",
+          "Ramblings of a boy",
+          "Room",
+          "Stranger",
+          "The boy who flew",
+          "The girl from my dreams",
+          "The poppy that never bloomed",
+          "To my sister",
+          "Today was ok",
+          "Tribute for the King of Death [Extended]",
+          "Tribute for the King of Death [KD]",
+          "Untitled 1",
+          "Unrequited",
+          "Walk in the rain",
+          "White lily",
+          "Wild Addiction",
+          "Yearnings of Eternal Peace",
+          "ṣubu lori ọjọ buburu"
+        ];
+
+        var featured = {
+          "Afloat": {
+            excerpt: "It feels like I have forgotten something, and I keep drifting between peace and emptiness.",
+            body:
+              "It feels like I've forgotten something,<br />" +
+              "Something very important,<br />" +
+              "At times I find myself in the darkness in solitude,<br />" +
+              "As it engulfs my being like a comforting velvet shroud,<br />" +
+              "Or walking beneath the canvas of the starry night,<br />" +
+              "Admiring its beauty as the stars twinkle,<br />" +
+              "Without a thought in mind,<br />" +
+              "Afloat amongst the clouds in the sky."
+          },
+          "Walk in the rain": {
+            excerpt: "Grey clouds overhead, wet boots below, and the soft rhythm of rain in between.",
+            body:
+              "From glittering droplets of pouring rain,<br />" +
+              "To puddles on the pavement, shimmering silver.<br />" +
+              "Grey clouds hang overhead in the dim sky,<br />" +
+              "The humid wind blows<br />" +
+              "Dripping lightly through my soaked hair,<br />" +
+              "Drip drip<br />" +
+              "Down to the flat soles of my boots."
+          },
+          "My silent fortress": {
+            excerpt: "A self-built bastion that protects me, but also keeps me from the stars.",
+            body:
+              "It's empty. Just a vast expanse,<br />" +
+              "Stretching on endlessly.<br />" +
+              "Darkness everywhere,<br />" +
+              "Save for the galaxy painted on the ceiling.<br />" +
+              "A self-inflicted prison,<br />" +
+              "Protecting me from the dangers of the outside world.<br />" +
+              "I want to explore the outside world.<br />" +
+              "But I remain still."
+          }
+        };
+
+        function escapeHtml(s) {
+          var div = document.createElement("div");
+          div.textContent = String(s || "");
+          return div.innerHTML;
+        }
+
+        var html = "";
+        for (var i = 0; i < completedPoems.length; i++) {
+          var title = completedPoems[i];
+          var info = featured[title] || {
+            excerpt: "Archived from the poetry vault.",
+            body: ""
+          };
+          var isOpen = i < 2 ? " open" : "";
+          html += "<li>";
+          html += "<details class=\"writings-entry\"" + isOpen + ">";
+          html += "<summary>";
+          html += "<span class=\"entry-type\">Poetry</span>";
+          html += "<time datetime=\"\">Forgotten</time>";
+          html += "<h2>" + escapeHtml(title) + "</h2>";
+          html += "</summary>";
+          html += "<p class=\"writings-excerpt\">" + escapeHtml(info.excerpt) + "</p>";
+          if (info.body) {
+            html += "<div class=\"writings-full\">" + info.body + "</div>";
+          }
+          html += "</details>";
+          html += "</li>";
+        }
+        container.innerHTML = html;
+      })();
+    </script>
     <script src="main.js"></script>
   </body>
 </html>
