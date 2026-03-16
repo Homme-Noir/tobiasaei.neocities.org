@@ -42,13 +42,13 @@
         position: fixed;
         inset: 0;
         pointer-events: none;
-        z-index: 20;
+        z-index: 50;
       }
 
       .vhs-scanlines {
         position: absolute;
         inset: 0;
-        opacity: 0.55;
+        opacity: 0.72;
         background: linear-gradient(
           to bottom,
           rgba(255, 255, 255, 0),
@@ -165,7 +165,12 @@
         box-shadow: 0 0 0 rgba(45, 212, 191, 0);
         opacity: 1;
         pointer-events: auto;
+        cursor: pointer;
         transition: opacity 0.45s ease, background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+      }
+
+      .enter-link > span {
+        pointer-events: none;
       }
 
       .enter-link.is-ready {
@@ -224,9 +229,9 @@
       <section>
         <h1 class="glitch-text" data-text="TOBIAS AEI">TOBIAS AEI</h1>
         <p class="type-line"><span id="typed-line"></span><span class="cursor" aria-hidden="true"></span></p>
-        <a class="enter-link" id="enter-link" href="home.html" aria-label="Enter site">
-          [ Initialize Sequence ]
-        </a>
+        <button class="enter-link" id="enter-link" type="button" aria-label="Enter site">
+          <span>[ Initialize Sequence ]</span>
+        </button>
       </section>
     </main>
     <script>
@@ -235,8 +240,12 @@
         var typed = document.getElementById("typed-line");
         var enter = document.getElementById("enter-link");
         if (!typed || !enter) return;
-        enter.addEventListener("click", function () {
-          window.location.href = "home.html";
+        function goHome() {
+          window.location.assign("home.html");
+        }
+        enter.addEventListener("click", goHome);
+        enter.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") goHome();
         });
         var i = 0;
         var timer = setInterval(function () {
