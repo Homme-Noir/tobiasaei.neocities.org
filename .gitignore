@@ -1,2 +1,28 @@
 # Cursor IDE
 .cursor/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Env and secrets (if you ever add them)
+.env
+.env.*
+!.env.example
+
+# Logs and cache
+*.log
+.cache/
+
+# Optional: uncomment if you add a build step
+# node_modules/
+# dist/
+# build/
