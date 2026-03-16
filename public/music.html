@@ -48,6 +48,7 @@
       <div id="footerPlaceholder"></div>
     </div>
     <script src="main.js"></script>
+    <script src="page-utils.js"></script>
     <script>
       (function () {
         var container = document.getElementById("last-played-content");
@@ -57,6 +58,14 @@
         if (!container) return;
         var LASTFM_API_KEY = "d74f9fdb9c79a50ffac2ca0700892ca1";
         var LASTFM_USER = "Tobias_AEI";
+        var utils = window.TAEUtils || {};
+        var escapeHtml = typeof utils.escapeHtml === "function"
+          ? utils.escapeHtml
+          : function (s) {
+              var div = document.createElement("div");
+              div.textContent = String(s || "");
+              return div.innerHTML;
+            };
 
         fetchRecentTrack()
           .then(function (t) {
@@ -87,6 +96,7 @@
           .catch(function () {
             if (!weeklyContainer) return;
             weeklyContainer.innerHTML = "<li class=\"music-track-tile\"><span class=\"music-track-name\">Couldn’t load weekly tracks.</span><span class=\"music-track-artist\">Try again later</span></li>";
+            if (typeof utils.refreshStagger === "function") utils.refreshStagger();
           });
         initCuratedPlaylists();
 
@@ -138,6 +148,7 @@
             html += "</li>";
           }
           weeklyContainer.innerHTML = html || "<li class=\"music-track-tile\"><span class=\"music-track-name\">No weekly tracks yet.</span><span class=\"music-track-artist\">Last.fm</span></li>";
+          if (typeof utils.refreshStagger === "function") utils.refreshStagger();
         }
 
         function renderCuratedPlaylists(playlists) {
@@ -145,6 +156,7 @@
           if (!playlists || !playlists.length) {
             curatedContainer.innerHTML =
               "<article class=\"curated-item\"><h3>No eligible playlists found</h3><p>Only playlists from your library and not made by Spotify are shown.</p></article>";
+            if (typeof utils.refreshStagger === "function") utils.refreshStagger();
             return;
           }
           var picks = getRotatingPlaylists(playlists);
@@ -158,6 +170,7 @@
             html += "</article>";
           }
           curatedContainer.innerHTML = html;
+          if (typeof utils.refreshStagger === "function") utils.refreshStagger();
         }
 
         function getRotatingPlaylists(pool) {
@@ -239,15 +252,14 @@
             .catch(function () {
               renderCuratedPlaylists([]);
               setCuratedStatus("Couldn’t load synced playlists.");
+              if (typeof utils.refreshStagger === "function") utils.refreshStagger();
             });
         }
 
         function sanitizeSpotifyDescription(value) {
-          var text = String(value || "").trim();
-          if (!text) return "";
-          var tmp = document.createElement("div");
-          tmp.innerHTML = text;
-          return (tmp.textContent || tmp.innerText || "").trim();
+          if (!value) return "";
+          if (typeof utils.stripHtml === "function") return utils.stripHtml(value);
+          return String(value || "").trim();
         }
 
         function jsonp(url) {
@@ -297,11 +309,6 @@
           return "https://www.last.fm/user/" + encodeURIComponent(LASTFM_USER);
         }
 
-        function escapeHtml(s) {
-          var div = document.createElement("div");
-          div.textContent = s;
-          return div.innerHTML;
-        }
       })();
     </script>
   </body>

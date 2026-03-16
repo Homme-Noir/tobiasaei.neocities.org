@@ -6,6 +6,8 @@ Static personal site (HTML, CSS, JS). Deploys to Neocities via GitHub Actions.
 
 - **`public/`** — All files that get deployed to Neocities (pages, styles, scripts, includes).
 - **`.github/workflows/neocities.yml`** — Deploys `public/` to Neocities on every push to `main`.
+- **`.github/workflows/sync-spotify-playlists.yml`** — Syncs Spotify playlists into `public/data/spotify-playlists.json`.
+- **`scripts/`** — Automation scripts (playlist sync and other data generation helpers).
 
 ## Deploy setup (one-time)
 
@@ -58,3 +60,34 @@ In your repository: **Settings → Secrets and variables → Actions**, add:
 ### 4) Run workflow
 
 Run **Sync Spotify Playlists** manually once from GitHub Actions, then it will run every 3 days.
+
+### Optional local test run
+
+Use environment variables (or `.env`) and run:
+
+```bash
+SPOTIFY_CLIENT_ID="..." \
+SPOTIFY_CLIENT_SECRET="..." \
+SPOTIFY_REFRESH_TOKEN="..." \
+python scripts/sync_spotify_playlists.py
+```
+
+## Vault data files (journal + writings)
+
+`journal.html` and `writings.html` load these files from `public/data/`:
+
+- `vault-journal.json`
+- `vault-poems.json`
+
+These are generated from your Obsidian vault export process. Keep the JSON shape stable:
+
+- `title` (string)
+- `content` (string)
+- `datetime` (string; optional/fallback allowed)
+- `isIndex` (boolean for journal entries)
+
+If either file is replaced, validate JSON before pushing:
+
+```bash
+python -c "import json,pathlib; json.loads(pathlib.Path('public/data/vault-journal.json').read_text(encoding='utf-8')); json.loads(pathlib.Path('public/data/vault-poems.json').read_text(encoding='utf-8'))"
+```

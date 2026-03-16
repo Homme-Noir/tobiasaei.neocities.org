@@ -17,28 +17,31 @@
             <p>Timestamped fragments of thoughts.</p>
           </header>
           <div class="writings-filter journal-filter" role="tablist" aria-label="Journal filters">
-            <button type="button" class="journal-filter-btn active" data-journal-filter="journal">[Journal]</button>
-            <button type="button" class="journal-filter-btn" data-journal-filter="indexes">[Indexes]</button>
-            <button type="button" class="journal-filter-btn" data-journal-filter="all">[All]</button>
+            <button type="button" role="tab" aria-selected="true" aria-controls="journal-entries" class="journal-filter-btn active" data-journal-filter="journal">[Journal]</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="journal-entries" class="journal-filter-btn" data-journal-filter="indexes">[Indexes]</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="journal-entries" class="journal-filter-btn" data-journal-filter="all">[All]</button>
           </div>
-          <div id="journal-entries"></div>
+          <div id="journal-entries" role="tabpanel"></div>
         </main>
       </div>
       <div id="footerPlaceholder"></div>
     </div>
+    <script src="page-utils.js"></script>
     <script>
       (function () {
         var root = document.getElementById("journal-entries");
         if (!root) return;
+        var utils = window.TAEUtils || {};
+        var escapeHtml = typeof utils.escapeHtml === "function"
+          ? utils.escapeHtml
+          : function (s) {
+              var el = document.createElement("div");
+              el.textContent = String(s || "");
+              return el.innerHTML;
+            };
         var filterButtons = document.querySelectorAll(".journal-filter-btn");
         var entries = [];
         var activeFilter = "journal";
-
-        function esc(s) {
-          var el = document.createElement("div");
-          el.textContent = String(s || "");
-          return el.innerHTML;
-        }
 
         function visibleEntries() {
           if (activeFilter === "all") return entries.slice();
@@ -65,14 +68,20 @@
             var datetime = entry.datetime || "Forgotten";
             var title = entry.title || "Untitled";
             var body = String(entry.content || "");
+            var machineDatetime = typeof utils.parseISODate === "function" ? utils.parseISODate(datetime) : "";
             html += "<article class=\"journal-item\">";
-            html += "<time class=\"journal-date\" datetime=\"\">" + esc(datetime) + "</time>";
+            if (machineDatetime) {
+              html += "<time class=\"journal-date\" datetime=\"" + machineDatetime + "\">" + escapeHtml(datetime) + "</time>";
+            } else {
+              html += "<span class=\"journal-date\">" + escapeHtml(datetime) + "</span>";
+            }
             html += "<div class=\"journal-body\">";
-            html += "<h2 class=\"journal-item-title\">" + esc(title) + "</h2>";
-            html += "<pre class=\"vault-text\">" + esc(body) + "</pre>";
+            html += "<h2 class=\"journal-item-title\">" + escapeHtml(title) + "</h2>";
+            html += "<div class=\"vault-text\">" + escapeHtml(body) + "</div>";
             html += "</div></article>";
           }
           root.innerHTML = html;
+          if (typeof utils.refreshStagger === "function") utils.refreshStagger();
         }
 
         for (var i = 0; i < filterButtons.length; i++) {
@@ -80,7 +89,9 @@
             var next = this.getAttribute("data-journal-filter") || "journal";
             activeFilter = next;
             for (var j = 0; j < filterButtons.length; j++) {
-              filterButtons[j].classList.toggle("active", filterButtons[j] === this);
+              var isActive = filterButtons[j] === this;
+              filterButtons[j].classList.toggle("active", isActive);
+              filterButtons[j].setAttribute("aria-selected", isActive ? "true" : "false");
             }
             render();
           });
@@ -99,6 +110,7 @@
           .catch(function () {
             root.innerHTML =
               "<article class=\"journal-item\"><time class=\"journal-date\" datetime=\"\">Forgotten</time><div class=\"journal-body\"><h2 class=\"journal-item-title\">Journal unavailable</h2><p>Vault export could not be loaded.</p></div></article>";
+            if (typeof utils.refreshStagger === "function") utils.refreshStagger();
           });
       })();
     </script>
