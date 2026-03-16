@@ -61,6 +61,23 @@
         z-index: -1;
       }
 
+      .entry::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 2px,
+          oklch(0% 0 0 / 0.22) 2px,
+          oklch(0% 0 0 / 0.22) 3px
+        );
+        mix-blend-mode: soft-light;
+        pointer-events: none;
+        z-index: -1;
+        animation: scan 8s linear infinite;
+      }
+
       .entry-card {
         max-width: 48rem;
         width: min(100%, 48rem);
@@ -140,7 +157,7 @@
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .entry::before { animation: none; }
+        .entry::after { animation: none; }
         .enter-link { transition: none; }
       }
     </style>

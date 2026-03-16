@@ -1,5 +1,5 @@
 /**
- * Shared layout: inject header/footer, current page, breadcrumbs, tab title suffix, scroll-to-top.
+ * Shared layout: inject header/footer, current page, tab title suffix, scroll-to-top.
  */
 (function () {
   var base = (function () {
@@ -43,39 +43,6 @@
     var baseName = file.replace(/\.html$/, "");
     if (!baseName || baseName === "index") return;
     document.body.classList.add("page-" + baseName);
-  }
-
-  function insertBreadcrumbs() {
-    var main = document.querySelector("main");
-    if (!main) return;
-    var pathname = window.location.pathname;
-    var file = pathname.split("/").pop() || "";
-    var raw = file.replace(/\.html$/, "");
-    if (!raw || raw === "index" || raw === "home") return;
-    var title = raw
-      .split("_")
-      .map(function (w) {
-        return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
-      })
-      .join(" ");
-    var existing = document.querySelector(".breadcrumb");
-    if (existing) existing.remove();
-    var nav = document.createElement("nav");
-    nav.setAttribute("aria-label", "Breadcrumb");
-    nav.className = "breadcrumb";
-    nav.innerHTML =
-      '<a href="' +
-      base +
-      'home.html">Home</a> <span aria-hidden="true">/</span> <span>' +
-      escapeHtml(title) +
-      "</span>";
-    main.insertBefore(nav, main.firstChild);
-  }
-
-  function escapeHtml(s) {
-    var div = document.createElement("div");
-    div.textContent = s;
-    return div.innerHTML;
   }
 
   function initScrollToTop() {
@@ -153,7 +120,6 @@
     setPageBodyClass();
     setTabTitleSuffix();
     setCurrentPage();
-    insertBreadcrumbs();
     initScrollToTop();
     initLofiPlayer();
   }
