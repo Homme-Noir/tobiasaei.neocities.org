@@ -286,10 +286,445 @@ footer a:hover {
 }
 
 /* ============================================================
-   Page-specific layouts
+   Page-specific designs (distinct look per section)
 ============================================================ */
-.page-music main {
-  /* Now listening + Recommendations grid/list */
+
+/* ----- Music: dark, purple/indigo, player vibe ----- */
+.page-music body::before {
+  background-color: oklch(12% 0.04 280 / 0.85);
+}
+.page-music body {
+  background-color: oklch(14% 0.04 280);
+  background-image: none;
+}
+.page-music #header {
+  background-image: none;
+  background-color: oklch(22% 0.08 280);
+  height: 100px;
+}
+.page-music .nav-wrap {
+  background-color: oklch(18% 0.06 280);
+}
+.page-music #navbar li a:hover,
+.page-music #navbar a.active {
+  color: oklch(75% 0.18 300);
+}
+.page-music #flex {
+  background: linear-gradient(180deg, oklch(20% 0.06 280) 0%, oklch(14% 0.05 280) 100%);
+}
+.page-music main.music-main {
+  background-color: transparent;
+  color: oklch(92% 0.02 280);
+  padding: 2rem;
+  width: 100%;
+}
+.page-music .now-playing {
+  margin-bottom: 2rem;
+}
+.page-music .recommendations h2 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+.page-music .track-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.page-music .track-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid oklch(30% 0.08 280);
+  display: block;
+}
+.page-music .track-title {
+  font-weight: 700;
+  display: block;
+}
+.page-music .track-artist {
+  font-size: 0.9rem;
+  color: oklch(72% 0.03 280);
+}
+.page-music h1, .page-music h2, .page-music h3 {
+  color: oklch(78% 0.2 300);
+}
+.page-music .box, .page-music .last-played-card {
+  background-color: oklch(22% 0.08 280);
+  border-color: oklch(35% 0.1 280);
+}
+.page-music .last-played-track, .page-music footer a {
+  color: oklch(80% 0.2 300);
+}
+.page-music .breadcrumb a {
+  color: oklch(80% 0.2 300);
+}
+.page-music .text-muted {
+  color: oklch(70% 0.03 280);
+}
+
+/* ----- Writings: light paper, serif, single column ----- */
+.page-writings body::before {
+  background-color: oklch(97% 0.01 85 / 0.4);
+}
+.page-writings body {
+  background-color: oklch(94% 0.02 85);
+  background-image: none;
+  font-family: Georgia, "Times New Roman", serif;
+}
+.page-writings #header {
+  background-image: none;
+  background-color: oklch(88% 0.03 75);
+  height: 80px;
+  border-bottom: 2px solid oklch(75% 0.06 75);
+}
+.page-writings .nav-wrap {
+  background-color: oklch(90% 0.03 75);
+}
+.page-writings #navbar li a:hover,
+.page-writings #navbar a.active {
+  color: oklch(45% 0.12 45);
+}
+.page-writings #flex {
+  background-color: oklch(98% 0.01 85);
+  max-width: 720px;
+  margin: 0 auto;
+  box-shadow: 0 0 40px oklch(0% 0 0 / 0.08);
+}
+.page-writings aside {
+  display: none;
+}
+.page-writings main.writings-main {
+  background-color: transparent;
+  color: oklch(25% 0.03 75);
+  padding: 2rem 3rem;
+  max-width: 65ch;
+  margin: 0 auto;
+}
+.page-writings .page-header {
+  margin-bottom: 2rem;
+}
+.page-writings .page-header .lead {
+  margin: 0.25rem 0 0 0;
+  font-size: 1.1rem;
+  color: oklch(45% 0.04 75);
+}
+.page-writings .writings-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.page-writings .writing-entry {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid oklch(85% 0.04 75);
+}
+.page-writings .writing-entry h2 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.25rem;
+}
+.page-writings .writing-entry h2 a {
+  color: oklch(40% 0.1 45);
+  text-decoration: none;
+}
+.page-writings .writing-entry h2 a:hover {
+  text-decoration: underline;
+}
+.page-writings .writing-entry time {
+  font-size: 0.85rem;
+  color: oklch(55% 0.03 75);
+}
+.page-writings .writing-entry .excerpt {
+  margin: 0.5rem 0 0 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.page-writings h1, .page-writings h2, .page-writings h3 {
+  color: oklch(40% 0.1 45);
+  font-weight: 700;
+}
+.page-writings .box {
+  background-color: oklch(92% 0.02 85);
+  border-color: oklch(80% 0.04 75);
+}
+.page-writings .text-muted {
+  color: oklch(50% 0.03 75);
+}
+.page-writings footer {
+  background-color: oklch(88% 0.03 75);
+  color: oklch(45% 0.04 75);
+}
+.page-writings footer a {
+  color: oklch(45% 0.12 45);
+}
+.page-writings .breadcrumb a {
+  color: oklch(45% 0.12 45);
+}
+
+/* ----- Projects: cool gray/blue, grid, tech feel ----- */
+.page-projects body::before {
+  background-color: oklch(18% 0.02 250 / 0.75);
+}
+.page-projects body {
+  background-color: oklch(16% 0.03 250);
+  background-image: none;
+}
+.page-projects #header {
+  background-image: none;
+  background-color: oklch(22% 0.05 250);
+  height: 70px;
+}
+.page-projects .nav-wrap {
+  background-color: oklch(20% 0.04 250);
+}
+.page-projects #navbar li a:hover,
+.page-projects #navbar a.active {
+  color: oklch(72% 0.15 250);
+}
+.page-projects aside {
+  display: none;
+}
+.page-projects #flex {
+  background-color: transparent;
+}
+.page-projects main.projects-main {
+  background-color: transparent;
+  color: oklch(88% 0.02 250);
+  padding: 2rem;
+  display: block;
+}
+.page-projects .page-header {
+  margin-bottom: 1.5rem;
+}
+.page-projects .page-header .lead {
+  margin: 0.25rem 0 0 0;
+  color: oklch(72% 0.04 250);
+}
+.page-projects .project-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+.page-projects .project-card.card {
+  background-color: oklch(22% 0.06 250);
+  border: 1px solid oklch(35% 0.08 250);
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+.page-projects .project-card h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+}
+.page-projects .project-card h2 a {
+  color: oklch(78% 0.15 250);
+  text-decoration: none;
+}
+.page-projects .project-card h2 a:hover {
+  text-decoration: underline;
+}
+.page-projects .project-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: oklch(78% 0.03 250);
+}
+.page-projects .project-card .tags {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: oklch(65% 0.05 250);
+}
+.page-projects h1, .page-projects h2, .page-projects h3 {
+  color: oklch(75% 0.12 250);
+}
+.page-projects .text-muted {
+  color: oklch(68% 0.03 250);
+}
+.page-projects footer {
+  background-color: oklch(20% 0.04 250);
+}
+.page-projects footer a, .page-projects .breadcrumb a {
+  color: oklch(75% 0.15 250);
+}
+
+/* ----- Journal: warm notebook, soft serif ----- */
+.page-journal body::before {
+  background-color: oklch(92% 0.03 75 / 0.5);
+}
+.page-journal body {
+  background-color: oklch(88% 0.04 65);
+  background-image: none;
+  font-family: Georgia, "Times New Roman", serif;
+}
+.page-journal #header {
+  background-image: none;
+  background-color: oklch(82% 0.06 55);
+  height: 80px;
+  border-bottom: 1px solid oklch(70% 0.08 55);
+}
+.page-journal .nav-wrap {
+  background-color: oklch(85% 0.05 55);
+}
+.page-journal #navbar li a:hover,
+.page-journal #navbar a.active {
+  color: oklch(42% 0.15 35);
+}
+.page-journal #flex {
+  background-color: oklch(96% 0.02 75);
+  max-width: 680px;
+  margin: 0 auto;
+  box-shadow: 0 2px 24px oklch(0% 0 0 / 0.06);
+}
+.page-journal aside.journal-sidebar {
+  background-color: oklch(92% 0.03 65);
+  border-right: 1px solid oklch(80% 0.05 55);
+  width: 160px;
+  padding: 1.25rem;
+}
+.page-journal .topic-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.page-journal .topic-list a {
+  color: oklch(42% 0.12 40);
+  text-decoration: none;
+}
+.page-journal .topic-list a:hover {
+  text-decoration: underline;
+}
+.page-journal main.journal-main {
+  background-color: transparent;
+  color: oklch(28% 0.04 55);
+  padding: 2rem;
+}
+.page-journal .journal-entries {
+  margin-top: 1rem;
+}
+.page-journal .journal-entry {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid oklch(88% 0.04 55);
+}
+.page-journal .journal-entry time {
+  display: block;
+  font-size: 0.85rem;
+  color: oklch(50% 0.05 55);
+  margin-bottom: 0.25rem;
+}
+.page-journal .journal-entry h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+}
+.page-journal .journal-entry p {
+  margin: 0;
+  line-height: 1.5;
+}
+.page-journal h1, .page-journal h2, .page-journal h3 {
+  color: oklch(42% 0.12 40);
+}
+.page-journal .box {
+  background-color: oklch(92% 0.03 65);
+  border-color: oklch(78% 0.06 55);
+}
+.page-journal .text-muted {
+  color: oklch(50% 0.04 55);
+}
+.page-journal footer {
+  background-color: oklch(82% 0.05 55);
+  color: oklch(45% 0.04 55);
+}
+.page-journal footer a, .page-journal .breadcrumb a {
+  color: oklch(48% 0.12 35);
+}
+
+/* ----- Random: teal/green accent, misc vibe ----- */
+.page-random body::before {
+  background-color: oklch(15% 0.03 180 / 0.8);
+}
+.page-random body {
+  background-color: oklch(14% 0.04 180);
+  background-image: none;
+}
+.page-random #header {
+  background-image: none;
+  background-color: oklch(25% 0.08 170);
+  height: 90px;
+}
+.page-random .nav-wrap {
+  background-color: oklch(20% 0.05 170);
+}
+.page-random #navbar li a:hover,
+.page-random #navbar a.active {
+  color: oklch(78% 0.18 160);
+}
+.page-random #flex {
+  background: radial-gradient(ellipse at 50% 0%, oklch(22% 0.06 170) 0%, oklch(14% 0.04 180) 70%);
+}
+.page-random aside {
+  background-color: oklch(20% 0.06 170);
+  border-right: 1px solid oklch(32% 0.08 170);
+}
+.page-random main.random-main {
+  background-color: transparent;
+  color: oklch(90% 0.02 170);
+  padding: 2rem;
+  width: 100%;
+}
+.page-random .random-block {
+  margin-bottom: 2rem;
+  padding: 1.25rem;
+  background-color: oklch(20% 0.05 170);
+  border: 1px solid oklch(32% 0.08 170);
+  border-radius: 12px;
+}
+.page-random .random-block h2 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+}
+.page-random .random-block p,
+.page-random .random-block blockquote {
+  margin: 0;
+  font-size: 0.95rem;
+}
+.page-random .link-dump {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.page-random .link-dump a {
+  color: oklch(78% 0.18 160);
+  text-decoration: none;
+}
+.page-random .link-dump a:hover {
+  text-decoration: underline;
+}
+.page-random blockquote {
+  border-left: 3px solid oklch(50% 0.15 160);
+  padding-left: 1rem;
+  font-style: italic;
+  color: oklch(82% 0.02 170);
+}
+.page-random h1, .page-random h2, .page-random h3 {
+  color: oklch(75% 0.2 160);
+}
+.page-random .box {
+  background-color: oklch(22% 0.06 170);
+  border-color: oklch(35% 0.08 170);
+  border-radius: 12px;
+}
+.page-random .text-muted {
+  color: oklch(72% 0.03 170);
+}
+.page-random footer {
+  background-color: oklch(18% 0.05 170);
+}
+.page-random footer a, .page-random .breadcrumb a {
+  color: oklch(78% 0.18 160);
+}
+
+/* Shared: ensure #container doesn't constrain Writings/Projects/Journal width */
+.page-writings #container,
+.page-projects #container,
+.page-journal #container {
+  max-width: 100%;
+  padding: 0;
 }
 
 .last-played {
@@ -350,37 +785,6 @@ footer a:hover {
   margin-bottom: 1rem;
 }
 
-.page-writings main {
-  /* List of pieces; readable line length */
-  max-width: 65ch;
-}
-
-.page-writings .entry-list,
-.page-journal .entry-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.page-writings .entry-list li,
-.page-journal .entry-list li {
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border-muted);
-}
-
-.page-projects main {
-  /* Grid of project cards */
-}
-
-.page-journal main {
-  /* Reverse-chronological entries */
-}
-
-.page-random main {
-  /* Flexible misc blocks */
-}
-
 /* ============================================================
    Responsive Layout
 ============================================================ */
@@ -408,5 +812,22 @@ footer a:hover {
 
   #navbar ul {
     justify-content: center;
+  }
+
+  .page-writings #flex,
+  .page-journal #flex {
+    max-width: 100%;
+  }
+
+  .page-writings main {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .page-projects main {
+    padding: 1.5rem;
+  }
+
+  .page-projects .project-cards {
+    grid-template-columns: 1fr;
   }
 }

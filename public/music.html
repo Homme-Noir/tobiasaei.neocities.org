@@ -17,22 +17,23 @@
     <div id="container">
       <div id="headerPlaceholder"></div>
       <div id="flex">
-        <aside id="leftSidebar">
-          <h2>Updates</h2>
-          <div class="box">
-            <p>Placeholder</p>
-          </div>
-          <p class="text-muted">More updates coming soon...</p>
-        </aside>
-        <main>
+        <main class="music-main">
           <h1>Music</h1>
-          <section class="last-played" aria-label="Last played on Last.fm">
-            <h2>Last played</h2>
+          <section class="now-playing" aria-label="Last played on Last.fm">
+            <h2>Now playing</h2>
             <div id="last-played-content">
               <p class="text-muted">Loading…</p>
             </div>
           </section>
-          <p class="text-muted" style="margin-top: 1.5em;">More recommendations coming soon.</p>
+          <section class="recommendations" aria-label="Recommendations">
+            <h2>Recommendations</h2>
+            <ul class="track-list">
+              <li class="track-item">
+                <span class="track-title">—</span>
+                <span class="track-artist">More soon</span>
+              </li>
+            </ul>
+          </section>
         </main>
       </div>
       <div id="footerPlaceholder"></div>
