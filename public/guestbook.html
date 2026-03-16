@@ -19,33 +19,31 @@
       <div class="guestbook-layout">
         <main>
           <section class="guestbook-hero">
-            <p class="guestbook-kicker">Guestbook</p>
-            <h1>Leave a note</h1>
-            <p>Drop a message, recommendation, or random thought.</p>
+            <h1>Visitor Logs</h1>
+            <p>Leave a trace before you close the tab.</p>
           </section>
 
           <section class="guestbook-form-wrap" aria-label="Guestbook form">
             <form class="guestbook-form" data-guestbook-form>
               <label>
-                Name
+                Identifier (Optional)
                 <input
                   type="text"
                   name="name"
                   maxlength="40"
-                  required
-                  placeholder="Your name"
+                  placeholder="Anonymous"
                 />
               </label>
               <label>
-                Message
+                Message *
                 <textarea
                   name="message"
                   maxlength="400"
                   required
-                  placeholder="Write your message..."
+                  placeholder="What is on your mind?"
                 ></textarea>
               </label>
-              <button type="submit">Post message</button>
+              <button type="submit">Sign log</button>
             </form>
           </section>
 

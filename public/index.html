@@ -104,6 +104,30 @@
         line-height: 1;
       }
 
+      .glitch-text {
+        position: relative;
+        letter-spacing: 0.08em;
+      }
+
+      .glitch-text::before,
+      .glitch-text::after {
+        content: attr(data-text);
+        position: absolute;
+        inset: 0;
+        opacity: 0.7;
+        pointer-events: none;
+      }
+
+      .glitch-text::before {
+        transform: translateX(1px);
+        color: oklch(78% 0.12 195 / 0.5);
+      }
+
+      .glitch-text::after {
+        transform: translateX(-1px);
+        color: oklch(74% 0.11 38 / 0.5);
+      }
+
       .entry p {
         margin: 1rem 0 1.8rem;
         max-width: 44ch;
@@ -167,10 +191,10 @@
       <div class="entry-burst" aria-hidden="true"></div>
       <section class="entry-card">
         <p class="entry-label">Personal website</p>
-        <h1>Tobias AEI</h1>
+        <h1 class="glitch-text" data-text="TOBIAS AEI">TOBIAS AEI</h1>
         <p>Home of a failing bard.</p>
         <a class="enter-link" href="home.html" aria-label="Enter site">
-          Enter lab
+          [ Initialize Sequence ]
           <span aria-hidden="true">→</span>
         </a>
       </section>

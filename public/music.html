@@ -17,21 +17,47 @@
     <div id="container">
       <div id="headerPlaceholder"></div>
       <div class="music-layout">
-        <main>
+        <main class="music-main">
+          <header class="page-head">
+            <h1>Sonic Landscapes</h1>
+            <p>The frequencies that keep the engine running.</p>
+          </header>
+
           <section class="music-hero" aria-label="Last played on Last.fm">
-            <div class="music-hero-label">Now playing</div>
+            <div class="music-hero-label">Now Playing</div>
             <div id="last-played-content">
               <p class="music-loading">Loading…</p>
             </div>
           </section>
-          <section class="music-recs" aria-label="Recommendations">
-            <h2 class="music-recs-title">Recommendations</h2>
-            <ul class="music-track-list">
-              <li class="music-track">
-                <span class="music-track-name">—</span>
-                <span class="music-track-artist">More soon</span>
-              </li>
+
+          <section class="music-recs" aria-label="Top tracks">
+            <h2 class="music-recs-title">Heavy Rotation</h2>
+            <ul class="music-track-list music-track-grid">
+              <li class="music-track-tile"><span class="music-track-name">Midnight City</span><span class="music-track-artist">M83</span></li>
+              <li class="music-track-tile"><span class="music-track-name">Space Song</span><span class="music-track-artist">Beach House</span></li>
+              <li class="music-track-tile"><span class="music-track-name">Cherry-coloured Funk</span><span class="music-track-artist">Cocteau Twins</span></li>
+              <li class="music-track-tile"><span class="music-track-name">Nights</span><span class="music-track-artist">Frank Ocean</span></li>
+              <li class="music-track-tile"><span class="music-track-name">Lover, You Should've Come Over</span><span class="music-track-artist">Jeff Buckley</span></li>
+              <li class="music-track-tile"><span class="music-track-name">Apocalypse</span><span class="music-track-artist">Cigarettes After Sex</span></li>
+              <li class="music-track-tile"><span class="music-track-name">Chamber Of Reflection</span><span class="music-track-artist">Mac DeMarco</span></li>
+              <li class="music-track-tile"><span class="music-track-name">Myth</span><span class="music-track-artist">Beach House</span></li>
             </ul>
+          </section>
+
+          <section class="music-curated" aria-label="Curated frequencies">
+            <h2 class="music-recs-title">Curated Frequencies</h2>
+            <article class="curated-item">
+              <h3>For late night coding</h3>
+              <p>Ambient electronic, minimal techno, and drone.</p>
+            </article>
+            <article class="curated-item">
+              <h3>Melancholic Sundays</h3>
+              <p>Acoustic guitars, soft vocals, and rain sounds.</p>
+            </article>
+            <article class="curated-item">
+              <h3>VHS Memories</h3>
+              <p>Synthwave and 80s nostalgia.</p>
+            </article>
           </section>
         </main>
       </div>

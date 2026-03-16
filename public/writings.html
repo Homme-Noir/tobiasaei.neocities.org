@@ -18,17 +18,58 @@
       <div id="headerPlaceholder"></div>
       <div class="writings-layout">
         <main class="writings-content">
-          <header class="writings-mast">
-            <h1 class="writings-title">Writings</h1>
-            <p class="writings-subtitle">Poetry and short fiction.</p>
+          <header class="page-head">
+            <h1>Scattered Words</h1>
+            <p>Attempts at capturing the ephemeral.</p>
           </header>
+
+          <div class="writings-filter">
+            <span>[All]</span><span>[Poetry]</span><span>[Short Story]</span>
+          </div>
+
           <ul class="writings-entries">
             <li>
-              <article class="writings-entry">
-                <h2><a href="#">Placeholder piece</a></h2>
-                <time datetime="2026-01-01">Jan 2026</time>
-                <p class="writings-excerpt">Nothing here yet. Coming soon.</p>
-              </article>
+              <details class="writings-entry" open>
+                <summary>
+                  <span class="entry-type">Poetry</span>
+                  <time datetime="2025-10-14">Oct 14, 2025</time>
+                  <h2>Syntax Error in the Heart</h2>
+                </summary>
+                <p class="writings-excerpt">I tried to compile my feelings for you, but the compiler threw a fatal exception...</p>
+                <div class="writings-full">
+                  I tried to compile my feelings for you,<br />
+                  But the compiler threw a fatal exception.<br />
+                  Line 42: Undefined reference to 'us'.
+                </div>
+              </details>
+            </li>
+            <li>
+              <details class="writings-entry">
+                <summary>
+                  <span class="entry-type">Short Story</span>
+                  <time datetime="2025-09-02">Sep 02, 2025</time>
+                  <h2>The Ghost in the Machine</h2>
+                </summary>
+                <p class="writings-excerpt">The terminal blinked. It was not supposed to blink. I had unplugged the server three hours ago...</p>
+                <div class="writings-full">
+                  The cursor pulsed with a rhythmic cadence in the dark.
+                  I typed: "Who is this?" and it answered right away.
+                </div>
+              </details>
+            </li>
+            <li>
+              <details class="writings-entry">
+                <summary>
+                  <span class="entry-type">Poetry</span>
+                  <time datetime="2025-08-18">Aug 18, 2025</time>
+                  <h2>Digital Decay</h2>
+                </summary>
+                <p class="writings-excerpt">Bit by bit, the image degrades. A JPEG artifact of a memory...</p>
+                <div class="writings-full">
+                  We are losing fidelity, compressing our lives into smaller formats
+                  until all that remains is noise.
+                </div>
+              </details>
             </li>
           </ul>
         </main>
