@@ -39,6 +39,9 @@
 
           <section class="music-curated" aria-label="Curated Playlists">
             <h2 class="music-recs-title">Curated Playlists</h2>
+            <div class="music-curated-controls">
+              <span id="spotify-curated-status" class="music-curated-status">Loading playlists…</span>
+            </div>
             <div id="curated-playlists">
               <article class="curated-item">
                 <h3>Loading curated playlists…</h3>
@@ -51,14 +54,23 @@
       <div id="footerPlaceholder"></div>
     </div>
     <script src="main.js"></script>
+    <script src="spotify-config.js"></script>
     <script>
       (function () {
         var container = document.getElementById("last-played-content");
         var weeklyContainer = document.getElementById("weekly-top-tracks");
         var curatedContainer = document.getElementById("curated-playlists");
+        var curatedStatus = document.getElementById("spotify-curated-status");
         if (!container) return;
         var LASTFM_API_KEY = "d74f9fdb9c79a50ffac2ca0700892ca1";
         var LASTFM_USER = "Tobias_AEI";
+        var SPOTIFY_CLIENT_ID = (window.TAE_SPOTIFY_CLIENT_ID || "").trim();
+        var SPOTIFY_REDIRECT_URI = (window.TAE_SPOTIFY_REDIRECT_URI || (window.location.origin + window.location.pathname)).trim();
+        var SPOTIFY_SCOPES = "playlist-read-private playlist-read-collaborative";
+        var SPOTIFY_TOKEN_KEY = "taeSpotifyTokenV1";
+        var SPOTIFY_VERIFIER_KEY = "taeSpotifyCodeVerifierV1";
+        var SPOTIFY_STATE_KEY = "taeSpotifyStateV1";
+        var SPOTIFY_AUTO_AUTH_KEY = "taeSpotifyAutoAuthAttemptedV1";
 
         fetchRecentTrack()
           .then(function (t) {
@@ -90,13 +102,7 @@
             if (!weeklyContainer) return;
             weeklyContainer.innerHTML = "<li class=\"music-track-tile\"><span class=\"music-track-name\">Couldn’t load weekly tracks.</span><span class=\"music-track-artist\">Try again later</span></li>";
           });
-        fetchCuratedPlaylists()
-          .then(renderCuratedPlaylists)
-          .catch(function () {
-            if (!curatedContainer) return;
-            curatedContainer.innerHTML =
-              "<article class=\"curated-item\"><h3>No eligible playlists found</h3><p>Only playlists from your library and not made by Spotify are shown.</p></article>";
-          });
+        initCuratedPlaylists();
 
         function fetchRecentTrack() {
           var endpoint =
@@ -148,28 +154,6 @@
           weeklyContainer.innerHTML = html || "<li class=\"music-track-tile\"><span class=\"music-track-name\">No weekly tracks yet.</span><span class=\"music-track-artist\">Last.fm</span></li>";
         }
 
-        function fetchCuratedPlaylists() {
-          return fetch("data/spotify-playlists.json", { cache: "no-store" })
-            .then(function (res) {
-              if (!res.ok) throw new Error("Playlist index unavailable");
-              return res.json();
-            })
-            .then(function (all) {
-              if (!Array.isArray(all)) return [];
-              var filtered = [];
-              for (var i = 0; i < all.length; i++) {
-                var p = all[i] || {};
-                var ownerName = String(p.ownerName || "").trim();
-                var inLibrary = !!p.inLibrary;
-                if (!inLibrary) continue;
-                if (ownerName.toLowerCase().indexOf("spotify") !== -1) continue;
-                if (!p.name || !p.url) continue;
-                filtered.push(p);
-              }
-              return filtered;
-            });
-        }
-
         function renderCuratedPlaylists(playlists) {
           if (!curatedContainer) return;
           if (!playlists || !playlists.length) {
@@ -192,13 +176,276 @@
 
         function getRotatingPlaylists(pool) {
           var cycle = Math.floor(Date.now() / (3 * 24 * 60 * 60 * 1000));
-          var start = cycle % pool.length;
-          var picks = [];
-          var total = Math.min(3, pool.length);
-          for (var i = 0; i < total; i++) {
-            picks.push(pool[(start + i) % pool.length]);
+          var seeded = pool.slice();
+          var seedInput = "cycle:" + cycle + "|count:" + pool.length;
+          for (var i = 0; i < pool.length; i++) {
+            seedInput += "|" + String(pool[i].url || pool[i].name || i);
           }
-          return picks;
+          var rng = createSeededRng(hashString(seedInput));
+          for (var j = seeded.length - 1; j > 0; j--) {
+            var k = Math.floor(rng() * (j + 1));
+            var tmp = seeded[j];
+            seeded[j] = seeded[k];
+            seeded[k] = tmp;
+          }
+          return seeded.slice(0, Math.min(3, seeded.length));
+        }
+
+        function hashString(input) {
+          var h = 2166136261;
+          for (var i = 0; i < input.length; i++) {
+            h ^= input.charCodeAt(i);
+            h += (h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24);
+          }
+          return h >>> 0;
+        }
+
+        function createSeededRng(seed) {
+          var x = seed >>> 0;
+          return function () {
+            x += 0x6d2b79f5;
+            var t = x;
+            t = Math.imul(t ^ (t >>> 15), t | 1);
+            t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+          };
+        }
+
+        function setCuratedStatus(text) {
+          if (!curatedStatus) return;
+          curatedStatus.textContent = text;
+        }
+
+        function initCuratedPlaylists() {
+          if (!SPOTIFY_CLIENT_ID) {
+            setCuratedStatus("Spotify not connected. Using local playlist file.");
+            loadLocalCuratedFallback();
+            return;
+          }
+
+          getValidSpotifyToken()
+            .then(function (token) {
+              if (!token) {
+                autoStartSpotifyAuth();
+                return;
+              }
+              setCuratedStatus("Loading playlists from your Spotify library…");
+              return fetchSpotifyLibraryPlaylists(token).then(function (playlists) {
+                renderCuratedPlaylists(playlists);
+                setCuratedStatus("Showing non-Spotify playlists from your library.");
+              });
+            })
+            .catch(function () {
+              setCuratedStatus("Spotify fetch failed. Using local fallback.");
+              loadLocalCuratedFallback();
+            });
+        }
+
+        function autoStartSpotifyAuth() {
+          var alreadyAttempted = sessionStorage.getItem(SPOTIFY_AUTO_AUTH_KEY) === "1";
+          if (alreadyAttempted) {
+            setCuratedStatus("Spotify authorization was skipped or blocked. Using local fallback.");
+            loadLocalCuratedFallback();
+            return;
+          }
+          sessionStorage.setItem(SPOTIFY_AUTO_AUTH_KEY, "1");
+          setCuratedStatus("Redirecting to Spotify authorization…");
+          startSpotifyAuth().catch(function () {
+            setCuratedStatus("Could not start Spotify auth. Using local fallback.");
+            loadLocalCuratedFallback();
+          });
+        }
+
+        function loadLocalCuratedFallback() {
+          fetch("data/spotify-playlists.json", { cache: "no-store" })
+            .then(function (res) {
+              if (!res.ok) throw new Error("Playlist index unavailable");
+              return res.json();
+            })
+            .then(function (all) {
+              if (!Array.isArray(all)) all = [];
+              var filtered = [];
+              for (var i = 0; i < all.length; i++) {
+                var p = all[i] || {};
+                var ownerName = String(p.ownerName || "").trim();
+                var inLibrary = !!p.inLibrary;
+                if (!inLibrary) continue;
+                if (ownerName.toLowerCase().indexOf("spotify") !== -1) continue;
+                if (!p.name || !p.url) continue;
+                filtered.push({
+                  name: p.name,
+                  url: p.url,
+                  description: sanitizeSpotifyDescription(p.description || "")
+                });
+              }
+              renderCuratedPlaylists(filtered);
+            })
+            .catch(function () {
+              renderCuratedPlaylists([]);
+            });
+        }
+
+        function readStoredSpotifyToken() {
+          try {
+            var raw = localStorage.getItem(SPOTIFY_TOKEN_KEY);
+            if (!raw) return null;
+            var parsed = JSON.parse(raw);
+            if (!parsed || !parsed.access_token || !parsed.expires_at) return null;
+            return parsed;
+          } catch (e) {
+            return null;
+          }
+        }
+
+        function storeSpotifyToken(payload) {
+          var now = Date.now();
+          var expiresInSec = Number(payload.expires_in || 0);
+          var token = {
+            access_token: payload.access_token,
+            expires_at: now + Math.max(0, expiresInSec - 60) * 1000
+          };
+          localStorage.setItem(SPOTIFY_TOKEN_KEY, JSON.stringify(token));
+          return token;
+        }
+
+        function clearSpotifyToken() {
+          localStorage.removeItem(SPOTIFY_TOKEN_KEY);
+        }
+
+        function getValidSpotifyToken() {
+          var stored = readStoredSpotifyToken();
+          if (stored && Date.now() < stored.expires_at) {
+            return Promise.resolve(stored.access_token);
+          }
+          return maybeHandleSpotifyCallback().then(function (callbackToken) {
+            if (callbackToken) return callbackToken;
+            var latest = readStoredSpotifyToken();
+            if (latest && Date.now() < latest.expires_at) return latest.access_token;
+            return null;
+          });
+        }
+
+        function randomString(len) {
+          var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+          var out = "";
+          for (var i = 0; i < len; i++) out += chars.charAt(Math.floor(Math.random() * chars.length));
+          return out;
+        }
+
+        function base64UrlEncode(bytes) {
+          var str = "";
+          for (var i = 0; i < bytes.length; i++) str += String.fromCharCode(bytes[i]);
+          return btoa(str).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+        }
+
+        function createCodeChallenge(verifier) {
+          if (!window.crypto || !window.crypto.subtle) return Promise.reject(new Error("Crypto unavailable"));
+          var data = new TextEncoder().encode(verifier);
+          return window.crypto.subtle.digest("SHA-256", data).then(function (hash) {
+            return base64UrlEncode(new Uint8Array(hash));
+          });
+        }
+
+        function startSpotifyAuth() {
+          if (!SPOTIFY_CLIENT_ID) return Promise.reject(new Error("Missing client id"));
+          var verifier = randomString(96);
+          var state = randomString(32);
+          sessionStorage.setItem(SPOTIFY_VERIFIER_KEY, verifier);
+          sessionStorage.setItem(SPOTIFY_STATE_KEY, state);
+          return createCodeChallenge(verifier).then(function (challenge) {
+            var params = new URLSearchParams({
+              response_type: "code",
+              client_id: SPOTIFY_CLIENT_ID,
+              scope: SPOTIFY_SCOPES,
+              redirect_uri: SPOTIFY_REDIRECT_URI,
+              state: state,
+              code_challenge_method: "S256",
+              code_challenge: challenge
+            });
+            window.location.href = "https://accounts.spotify.com/authorize?" + params.toString();
+          });
+        }
+
+        function maybeHandleSpotifyCallback() {
+          var params = new URLSearchParams(window.location.search);
+          var code = params.get("code");
+          var state = params.get("state");
+          if (!code) return Promise.resolve(null);
+          var expectedState = sessionStorage.getItem(SPOTIFY_STATE_KEY);
+          var verifier = sessionStorage.getItem(SPOTIFY_VERIFIER_KEY);
+          if (!state || !expectedState || state !== expectedState || !verifier) {
+            return Promise.reject(new Error("Invalid Spotify callback state"));
+          }
+          var body = new URLSearchParams({
+            grant_type: "authorization_code",
+            code: code,
+            redirect_uri: SPOTIFY_REDIRECT_URI,
+            client_id: SPOTIFY_CLIENT_ID,
+            code_verifier: verifier
+          });
+          return fetch("https://accounts.spotify.com/api/token", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: body.toString()
+          })
+            .then(function (res) {
+              if (!res.ok) throw new Error("Token exchange failed");
+              return res.json();
+            })
+            .then(function (payload) {
+              var token = storeSpotifyToken(payload);
+              sessionStorage.removeItem(SPOTIFY_VERIFIER_KEY);
+              sessionStorage.removeItem(SPOTIFY_STATE_KEY);
+              sessionStorage.removeItem(SPOTIFY_AUTO_AUTH_KEY);
+              var clean = window.location.origin + window.location.pathname;
+              window.history.replaceState({}, document.title, clean);
+              return token.access_token;
+            });
+        }
+
+        function fetchSpotifyLibraryPlaylists(token) {
+          var all = [];
+          function loop(url) {
+            return fetch(url, {
+              headers: { Authorization: "Bearer " + token }
+            })
+              .then(function (res) {
+                if (!res.ok) throw new Error("Spotify playlists request failed");
+                return res.json();
+              })
+              .then(function (data) {
+                var items = Array.isArray(data.items) ? data.items : [];
+                for (var i = 0; i < items.length; i++) all.push(items[i]);
+                if (data.next) return loop(data.next);
+                return all;
+              });
+          }
+
+          return loop("https://api.spotify.com/v1/me/playlists?limit=50")
+            .then(function (items) {
+              var filtered = [];
+              for (var i = 0; i < items.length; i++) {
+                var p = items[i] || {};
+                var owner = p.owner || {};
+                var ownerName = String(owner.display_name || owner.id || "").trim();
+                if (ownerName.toLowerCase().indexOf("spotify") !== -1) continue;
+                if (!p.name || !p.external_urls || !p.external_urls.spotify) continue;
+                filtered.push({
+                  name: p.name,
+                  url: p.external_urls.spotify,
+                  description: sanitizeSpotifyDescription(p.description || "")
+                });
+              }
+              return filtered;
+            });
+        }
+
+        function sanitizeSpotifyDescription(value) {
+          var text = String(value || "").trim();
+          if (!text) return "";
+          var tmp = document.createElement("div");
+          tmp.innerHTML = text;
+          return (tmp.textContent || tmp.innerText || "").trim();
         }
 
         function jsonp(url) {

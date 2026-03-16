@@ -22,8 +22,9 @@
             <h1>Scattered Writings</h1>
             <p>Poems from my obsidian vault.</p>
           </header>
-          <div class="writings-filter">
-            <span>[All]</span><span>[Poetry]</span>
+          <div class="writings-filter" role="tablist" aria-label="Writings filters">
+            <button type="button" class="writings-filter-btn active" data-writing-filter="all">[All]</button>
+            <button type="button" class="writings-filter-btn" data-writing-filter="poetry">[Poetry]</button>
           </div>
 
           <ul class="writings-entries" id="writings-list"></ul>
@@ -34,12 +35,47 @@
     <script>
       (function () {
         var container = document.getElementById("writings-list");
+        var filterButtons = document.querySelectorAll(".writings-filter-btn");
         if (!container) return;
+        var entries = [];
+        var activeFilter = "all";
 
         function escapeHtml(s) {
           var div = document.createElement("div");
           div.textContent = String(s || "");
           return div.innerHTML;
+        }
+
+        function visibleEntries() {
+          if (activeFilter === "all") return entries.slice();
+          return entries.filter(function (entry) {
+            return String(entry.type || "poetry").toLowerCase() === activeFilter;
+          });
+        }
+
+        function render() {
+          var poems = visibleEntries();
+          if (!poems.length) {
+            container.innerHTML = "<li><details class=\"writings-entry\" open><summary><span class=\"entry-type\">Poetry</span><h2>No poems found</h2></summary><p class=\"writings-excerpt\">No entries match this filter.</p></details></li>";
+            return;
+          }
+          var html = "";
+          for (var i = 0; i < poems.length; i++) {
+            var poem = poems[i] || {};
+            var title = poem.title || "Untitled";
+            var content = String(poem.content || "");
+            var isOpen = i < 2 ? " open" : "";
+            html += "<li>";
+            html += "<details class=\"writings-entry\"" + isOpen + ">";
+            html += "<summary>";
+            html += "<span class=\"entry-type\">Poetry</span>";
+            html += "<h2>" + escapeHtml(title) + "</h2>";
+            html += "</summary>";
+            html += "<div class=\"writings-full vault-text\">" + escapeHtml(content) + "</div>";
+            html += "</details>";
+            html += "</li>";
+          }
+          container.innerHTML = html;
         }
 
         fetch("data/vault-poems.json", { cache: "no-store" })
@@ -49,30 +85,25 @@
           })
           .then(function (poems) {
             if (!Array.isArray(poems) || !poems.length) {
-              container.innerHTML = "<li><details class=\"writings-entry\" open><summary><span class=\"entry-type\">Poetry</span><time datetime=\"\">Forgotten</time><h2>No poems found</h2></summary><p class=\"writings-excerpt\">Could not load poems from vault export.</p></details></li>";
+              container.innerHTML = "<li><details class=\"writings-entry\" open><summary><span class=\"entry-type\">Poetry</span><h2>No poems found</h2></summary><p class=\"writings-excerpt\">Could not load poems from vault export.</p></details></li>";
               return;
             }
-            var html = "";
-            for (var i = 0; i < poems.length; i++) {
-              var poem = poems[i] || {};
-              var title = poem.title || "Untitled";
-              var content = String(poem.content || "");
-              var isOpen = i < 2 ? " open" : "";
-              html += "<li>";
-              html += "<details class=\"writings-entry\"" + isOpen + ">";
-              html += "<summary>";
-              html += "<span class=\"entry-type\">Poetry</span>";
-              html += "<h2>" + escapeHtml(title) + "</h2>";
-              html += "</summary>";
-              html += "<div class=\"writings-full vault-text\">" + escapeHtml(content) + "</div>";
-              html += "</details>";
-              html += "</li>";
-            }
-            container.innerHTML = html;
+            entries = poems;
+            render();
           })
           .catch(function () {
-            container.innerHTML = "<li><details class=\"writings-entry\" open><summary><span class=\"entry-type\">Poetry</span><time datetime=\"\">Forgotten</time><h2>Poems unavailable</h2></summary><p class=\"writings-excerpt\">Vault export could not be loaded.</p></details></li>";
+            container.innerHTML = "<li><details class=\"writings-entry\" open><summary><span class=\"entry-type\">Poetry</span><h2>Poems unavailable</h2></summary><p class=\"writings-excerpt\">Vault export could not be loaded.</p></details></li>";
           });
+
+        for (var i = 0; i < filterButtons.length; i++) {
+          filterButtons[i].addEventListener("click", function () {
+            activeFilter = this.getAttribute("data-writing-filter") || "all";
+            for (var j = 0; j < filterButtons.length; j++) {
+              filterButtons[j].classList.toggle("active", filterButtons[j] === this);
+            }
+            render();
+          });
+        }
       })();
     </script>
     <script src="main.js"></script>
