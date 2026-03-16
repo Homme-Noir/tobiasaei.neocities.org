@@ -42,12 +42,13 @@
         position: fixed;
         inset: 0;
         pointer-events: none;
+        z-index: 20;
       }
 
       .vhs-scanlines {
         position: absolute;
         inset: 0;
-        opacity: 0.4;
+        opacity: 0.55;
         background: linear-gradient(
           to bottom,
           rgba(255, 255, 255, 0),
@@ -56,6 +57,7 @@
           rgba(0, 0, 0, 0.1)
         );
         background-size: 100% 4px;
+        animation: scanMove 8s linear infinite;
       }
 
       .vhs-vignette {
@@ -79,6 +81,7 @@
         place-items: center;
         padding: 1.5rem;
         isolation: isolate;
+        z-index: 30;
       }
 
       .entry::before {
@@ -160,8 +163,8 @@
         padding: 0.75rem 1rem;
         background: rgba(45, 212, 191, 0.05);
         box-shadow: 0 0 0 rgba(45, 212, 191, 0);
-        opacity: 0;
-        pointer-events: none;
+        opacity: 1;
+        pointer-events: auto;
         transition: opacity 0.45s ease, background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
       }
 
@@ -187,6 +190,11 @@
         60% { opacity: 0.12; }
       }
 
+      @keyframes scanMove {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(8px); }
+      }
+
       @keyframes blink {
         50% { opacity: 0; }
       }
@@ -198,7 +206,8 @@
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .vhs-flicker { animation: none; }
+        .vhs-flicker,
+        .vhs-scanlines { animation: none; }
         .cursor { animation: none; }
         .enter-link { transition: none; }
       }
@@ -226,6 +235,9 @@
         var typed = document.getElementById("typed-line");
         var enter = document.getElementById("enter-link");
         if (!typed || !enter) return;
+        enter.addEventListener("click", function () {
+          window.location.href = "home.html";
+        });
         var i = 0;
         var timer = setInterval(function () {
           i += 1;
