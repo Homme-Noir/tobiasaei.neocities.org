@@ -19,9 +19,9 @@ Static personal site (HTML, CSS, JS). Deploys to Neocities via GitHub Actions.
 
 After that, every `git push` to `main` will deploy the contents of `public/` to your Neocities site.
 
-### Home page hit counter
+### Home page visitor counter
 
-`home.html` shows **Neocities official site hits** via an image widget (Neocities’ Content Security Policy blocks `fetch()` to external counter APIs, which is why the old counter showed “offline”). Edit the `sitename` query value in the image `src` to match your Neocities username (e.g. `?sitename=tobiasaei`).
+`home.html` shows **Neocities “views”** (session-based visitors—the same number as on your public profile), not raw page hits. The browser cannot call `https://neocities.org/api/info` directly (CORS), so the page uses the community proxy from [Dannarchy’s Neocities hit-counter tutorial](https://dannarchy.com/tut/tut_002): `weirdscifi.ratiosemper.com/neocities.php?sitename=…`. Set `NEOCITIES_SITE` in the inline script to your Neocities username.
 
 ## Spotify curated playlists sync (no visitor login)
 

@@ -1470,21 +1470,11 @@ body::before {
   color: var(--mp-text-dim);
 }
 
-.home-visitor-badge {
-  display: block;
-  max-height: 52px;
-  width: auto;
-  border-radius: 8px;
-  flex-shrink: 0;
-  vertical-align: middle;
-}
-
-.home-visitor-fallback {
-  font-size: 0.65rem;
-  color: var(--mp-text-dim);
-  text-transform: none;
-  letter-spacing: 0.03em;
-  max-width: 14rem;
+.home-visitor-count-num {
+  color: var(--mp-text-primary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
 }
 
 .home-directory {

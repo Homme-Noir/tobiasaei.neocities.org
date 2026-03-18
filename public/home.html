@@ -24,21 +24,11 @@
               intent is sincere.
             </p>
           </div>
-          <!-- Hit badge: uses Neocities official stats (img avoids CSP blocking fetch to third-party APIs). Change ?sitename= to your Neocities username. -->
+          <!-- Neocities API: views = session visitors (profile stat); hits = raw page loads. Direct api/info is CORS-blocked from the browser; proxy pattern from https://dannarchy.com/tut/tut_002 -->
           <p class="home-visitor-counter" aria-live="polite">
             <span class="nf nf-md-account_group home-counter-icon" aria-hidden="true"></span>
-            <span class="home-counter-label">Site hits</span>
-            <img
-              class="home-visitor-badge"
-              src="https://mbo-neocities_hit_counter.web.val.run?sitename=tobiasaei"
-              width="280"
-              height="80"
-              alt="Neocities site hit count"
-              loading="lazy"
-              decoding="async"
-              onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.removeAttribute('hidden');"
-            />
-            <span class="home-visitor-fallback" hidden>Couldn’t load the hit badge (network or blocker).</span>
+            <span class="home-counter-label">Visitors</span>
+            <strong id="neocities-visitor-count" class="home-visitor-count-num">…</strong>
           </p>
         </section>
 
@@ -74,6 +64,39 @@
       </main>
       <div id="footerPlaceholder"></div>
     </div>
+    <script>
+      (function () {
+        var NEOCITIES_SITE = "tobiasaei";
+        var el = document.getElementById("neocities-visitor-count");
+        if (!el) return;
+        var proxy =
+          "https://weirdscifi.ratiosemper.com/neocities.php?sitename=" +
+          encodeURIComponent(NEOCITIES_SITE);
+
+        function formatCommas(n) {
+          var s = String(Math.max(0, Math.floor(Number(n)) || 0));
+          return s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        fetch(proxy, { cache: "no-store" })
+          .then(function (res) {
+            if (!res.ok) throw new Error("bad status");
+            return res.json();
+          })
+          .then(function (data) {
+            if (!data || data.result !== "success" || !data.info) throw new Error("bad payload");
+            var views = data.info.views;
+            if (views === undefined || views === null) throw new Error("no views");
+            el.textContent = formatCommas(views);
+            el.removeAttribute("title");
+          })
+          .catch(function () {
+            el.textContent = "—";
+            el.title =
+              "Visitor count uses Neocities stats via a CORS proxy; try again later or check dannarchy.com/tut/tut_002";
+          });
+      })();
+    </script>
     <script src="main.js"></script>
   </body>
 </html>
