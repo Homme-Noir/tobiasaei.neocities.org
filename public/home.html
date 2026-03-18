@@ -24,10 +24,21 @@
               intent is sincere.
             </p>
           </div>
+          <!-- Hit badge: uses Neocities official stats (img avoids CSP blocking fetch to third-party APIs). Change ?sitename= to your Neocities username. -->
           <p class="home-visitor-counter" aria-live="polite">
             <span class="nf nf-md-account_group home-counter-icon" aria-hidden="true"></span>
-            <span class="home-counter-label">Visitors</span>
-            <strong id="unique-visitors-count">--</strong>
+            <span class="home-counter-label">Site hits</span>
+            <img
+              class="home-visitor-badge"
+              src="https://mbo-neocities_hit_counter.web.val.run?sitename=tobiasaei"
+              width="280"
+              height="80"
+              alt="Neocities site hit count"
+              loading="lazy"
+              decoding="async"
+              onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.removeAttribute('hidden');"
+            />
+            <span class="home-visitor-fallback" hidden>Couldn’t load the hit badge (network or blocker).</span>
           </p>
         </section>
 
@@ -63,53 +74,6 @@
       </main>
       <div id="footerPlaceholder"></div>
     </div>
-    <script>
-      (function () {
-        var countEl = document.getElementById("unique-visitors-count");
-        if (!countEl) return;
-
-        var namespace = "tobiasaei-neocities";
-        var key = "unique-visitors";
-        var countedFlagKey = "taeUniqueVisitorCountedV1";
-        var base = "https://api.counterapi.dev/v1/" + encodeURIComponent(namespace) + "/" + encodeURIComponent(key);
-
-        function setCount(value) {
-          var n = Number(value);
-          countEl.textContent = Number.isFinite(n) && n >= 0 ? String(Math.floor(n)) : "--";
-        }
-
-        function fetchJson(url) {
-          return fetch(url, { cache: "no-store" }).then(function (res) {
-            if (!res.ok) throw new Error("Counter unavailable");
-            return res.json();
-          });
-        }
-
-        var hasCounted = false;
-        try {
-          hasCounted = localStorage.getItem(countedFlagKey) === "1";
-        } catch (e) {
-          hasCounted = true;
-        }
-
-        var url = hasCounted ? base + "/" : base + "/up";
-
-        fetchJson(url)
-          .then(function (payload) {
-            setCount(payload && payload.count);
-            if (!hasCounted) {
-              try {
-                localStorage.setItem(countedFlagKey, "1");
-              } catch (e) {
-                /* ignore storage failures */
-              }
-            }
-          })
-          .catch(function () {
-            countEl.textContent = "offline";
-          });
-      })();
-    </script>
     <script src="main.js"></script>
   </body>
 </html>

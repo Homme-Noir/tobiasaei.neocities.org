@@ -19,6 +19,10 @@ Static personal site (HTML, CSS, JS). Deploys to Neocities via GitHub Actions.
 
 After that, every `git push` to `main` will deploy the contents of `public/` to your Neocities site.
 
+### Home page hit counter
+
+`home.html` shows **Neocities official site hits** via an image widget (Neocities’ Content Security Policy blocks `fetch()` to external counter APIs, which is why the old counter showed “offline”). Edit the `sitename` query value in the image `src` to match your Neocities username (e.g. `?sitename=tobiasaei`).
+
 ## Spotify curated playlists sync (no visitor login)
 
 `music.html` reads curated playlists from `public/data/spotify-playlists.json`.
