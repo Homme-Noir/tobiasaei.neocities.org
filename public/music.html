@@ -166,7 +166,7 @@
           if (!curatedContainer) return;
           if (!playlists || !playlists.length) {
             curatedContainer.innerHTML =
-              "<article class=\"curated-item\"><h3>No eligible playlists found</h3><p>Only playlists from your library and not made by Spotify are shown.</p></article>";
+              "<article class=\"curated-item\"><h3>No eligible playlists found</h3><p>Only playlists from my library and not made by Spotify are shown.</p></article>";
             if (typeof utils.refreshStagger === "function") utils.refreshStagger();
             return;
           }
@@ -264,9 +264,9 @@
               }
               renderCuratedPlaylists(filtered);
               if (filtered.length) {
-                setCuratedStatus("Showing synced non-Spotify playlists.");
+                setCuratedStatus("Showing synced playlists from my library.");
               } else {
-                setCuratedStatus("No synced non-Spotify playlists found yet.");
+                setCuratedStatus("No synced playlists from my library found yet.");
               }
             })
             .catch(function () {

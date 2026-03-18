@@ -24,7 +24,7 @@
               intent is sincere.
             </p>
           </div>
-          <!-- Neocities API: views = session visitors (profile stat); hits = raw page loads. Direct api/info is CORS-blocked from the browser; proxy pattern from https://dannarchy.com/tut/tut_002 -->
+          <!-- views = Neocities session visitors. Loaded from data/neocities-site-stats.json (refreshed on each deploy; browser CSP blocks live API fetch). -->
           <p class="home-visitor-counter" aria-live="polite">
             <span class="nf nf-md-account_group home-counter-icon" aria-hidden="true"></span>
             <span class="home-counter-label">Visitors</span>
@@ -66,19 +66,15 @@
     </div>
     <script>
       (function () {
-        var NEOCITIES_SITE = "tobiasaei";
         var el = document.getElementById("neocities-visitor-count");
         if (!el) return;
-        var proxy =
-          "https://weirdscifi.ratiosemper.com/neocities.php?sitename=" +
-          encodeURIComponent(NEOCITIES_SITE);
 
         function formatCommas(n) {
           var s = String(Math.max(0, Math.floor(Number(n)) || 0));
           return s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
-        fetch(proxy, { cache: "no-store" })
+        fetch("data/neocities-site-stats.json", { cache: "no-store" })
           .then(function (res) {
             if (!res.ok) throw new Error("bad status");
             return res.json();
@@ -88,12 +84,15 @@
             var views = data.info.views;
             if (views === undefined || views === null) throw new Error("no views");
             el.textContent = formatCommas(views);
-            el.removeAttribute("title");
+            var gen = data.generated_at;
+            el.title = gen
+              ? "Neocities session visitors · figure updates when the site is deployed (" + gen + ")"
+              : "Neocities session visitors · updates on deploy";
           })
           .catch(function () {
             el.textContent = "—";
             el.title =
-              "Visitor count uses Neocities stats via a CORS proxy; try again later or check dannarchy.com/tut/tut_002";
+              "Could not load data/neocities-site-stats.json (run deploy or python scripts/fetch_neocities_site_stats.py).";
           });
       })();
     </script>

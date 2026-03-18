@@ -21,7 +21,9 @@ After that, every `git push` to `main` will deploy the contents of `public/` to 
 
 ### Home page visitor counter
 
-`home.html` shows **Neocities “views”** (session-based visitors—the same number as on your public profile), not raw page hits. The browser cannot call `https://neocities.org/api/info` directly (CORS), so the page uses the community proxy from [Dannarchy’s Neocities hit-counter tutorial](https://dannarchy.com/tut/tut_002): `weirdscifi.ratiosemper.com/neocities.php?sitename=…`. Set `NEOCITIES_SITE` in the inline script to your Neocities username.
+`home.html` shows **Neocities “views”** (session visitors—same as your public profile). Neocities’ **Content Security Policy blocks live `fetch()`** to the API and most third-party proxies, so the number is **snapshotted into** `public/data/neocities-site-stats.json` on each deploy by `scripts/fetch_neocities_site_stats.py` (see `neocities.yml`). Change **`NEOCITIES_SITENAME`** in that workflow (and in the Spotify deploy step if used) if your site name differs. To refresh locally: `NEOCITIES_SITENAME=yourname python scripts/fetch_neocities_site_stats.py`.
+
+**Live count in the browser** isn’t possible with JS-only on Neocities (CSP blocks cross-origin `fetch`). Optional approach: a tiny **Cloudflare Worker** (or similar) that returns an **SVG image** with the current views; see [`docs/live-neocities-visitor-count.md`](docs/live-neocities-visitor-count.md).
 
 ## Spotify curated playlists sync (no visitor login)
 

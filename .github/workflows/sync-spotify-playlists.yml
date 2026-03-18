@@ -45,6 +45,12 @@ jobs:
 
       # Pushes using GITHUB_TOKEN do not trigger other workflows, so "Deploy to Neocities"
       # on push would never run after this commit. Deploy here when JSON updates.
+      - name: Refresh Neocities visitor stats JSON
+        if: steps.playlist_diff.outputs.changed == 'true'
+        env:
+          NEOCITIES_SITENAME: tobiasaei
+        run: python scripts/fetch_neocities_site_stats.py
+
       - name: Deploy to Neocities
         if: steps.playlist_diff.outputs.changed == 'true'
         uses: bcomnes/deploy-to-neocities@v3

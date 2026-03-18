@@ -23,6 +23,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Browser CSP blocks external fetch; embed Neocities views here so home.html can load same-origin JSON.
+      - name: Refresh Neocities visitor stats JSON
+        env:
+          NEOCITIES_SITENAME: tobiasaei
+        run: python scripts/fetch_neocities_site_stats.py
+
       - name: Deploy to Neocities
         uses: bcomnes/deploy-to-neocities@v3
         with:
