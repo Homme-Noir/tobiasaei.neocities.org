@@ -151,6 +151,17 @@
           if (typeof utils.refreshStagger === "function") utils.refreshStagger();
         }
 
+        function safeSpotifyPlaylistUrl(raw) {
+          var s = String(raw || "").trim();
+          var base = s.split("?")[0].split("#")[0];
+          if (!/^https:\/\/open\.spotify\.com\/playlist\/[a-zA-Z0-9]{8,}$/i.test(base)) return "";
+          return s;
+        }
+
+        function attrEscape(s) {
+          return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+        }
+
         function renderCuratedPlaylists(playlists) {
           if (!curatedContainer) return;
           if (!playlists || !playlists.length) {
@@ -162,12 +173,20 @@
           var picks = getRotatingPlaylists(playlists);
           var html = "";
           for (var i = 0; i < picks.length; i++) {
+            var href = safeSpotifyPlaylistUrl(picks[i].url);
+            if (!href) continue;
             html += "<article class=\"curated-item\">";
-            html += "<h3><a href=\"" + escapeHtml(picks[i].url) + "\" target=\"_blank\" rel=\"noopener\">" + escapeHtml(picks[i].name) + "</a></h3>";
+            html += "<h3><a href=\"" + attrEscape(href) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + escapeHtml(picks[i].name) + "</a></h3>";
             if (picks[i].description) {
               html += "<p>" + escapeHtml(picks[i].description) + "</p>";
             }
             html += "</article>";
+          }
+          if (!html) {
+            curatedContainer.innerHTML =
+              "<article class=\"curated-item\"><h3>No valid playlist links</h3><p>Expected open.spotify.com/playlist/… URLs in the synced JSON.</p></article>";
+            if (typeof utils.refreshStagger === "function") utils.refreshStagger();
+            return;
           }
           curatedContainer.innerHTML = html;
           if (typeof utils.refreshStagger === "function") utils.refreshStagger();
@@ -231,10 +250,11 @@
               var filtered = [];
               for (var i = 0; i < all.length; i++) {
                 var p = all[i] || {};
-                var ownerName = String(p.ownerName || "").trim();
-                var inLibrary = !!p.inLibrary;
-                if (!inLibrary) continue;
-                if (ownerName.toLowerCase().indexOf("spotify") !== -1) continue;
+                var ownerId = String(p.ownerId || p.owner_id || "").trim().toLowerCase();
+                if (ownerId === "spotify") continue;
+                var ownerName = String(p.ownerName || p.owner_name || "").trim();
+                if (!ownerId && ownerName.toLowerCase().indexOf("spotify") !== -1) continue;
+                if (p.inLibrary === false) continue;
                 if (!p.name || !p.url) continue;
                 filtered.push({
                   name: p.name,

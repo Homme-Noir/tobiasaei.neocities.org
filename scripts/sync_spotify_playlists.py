@@ -120,6 +120,7 @@ def normalize(playlists: list[dict]) -> list[dict]:
                 "url": url,
                 "description": description,
                 "ownerName": owner_name,
+                "ownerId": owner_id,
                 "inLibrary": True,
                 "syncedAt": now_iso,
             }

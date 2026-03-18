@@ -6,7 +6,7 @@ Static personal site (HTML, CSS, JS). Deploys to Neocities via GitHub Actions.
 
 - **`public/`** — All files that get deployed to Neocities (pages, styles, scripts, includes).
 - **`.github/workflows/neocities.yml`** — Deploys `public/` to Neocities on every push to `main`.
-- **`.github/workflows/sync-spotify-playlists.yml`** — Syncs Spotify playlists into `public/data/spotify-playlists.json`.
+- **`.github/workflows/sync-spotify-playlists.yml`** — Syncs Spotify playlists into `public/data/spotify-playlists.json` and **deploys `public/` to Neocities when that file changes** (needed because pushes from `github-actions[bot]` do not trigger the normal deploy-on-push workflow).
 - **`scripts/`** — Automation scripts (playlist sync and other data generation helpers).
 
 ## Deploy setup (one-time)
@@ -60,6 +60,8 @@ In your repository: **Settings → Secrets and variables → Actions**, add:
 ### 4) Run workflow
 
 Run **Sync Spotify Playlists** manually once from GitHub Actions, then it will run every 3 days.
+
+The same **`NEOCITIES_API_TOKEN`** secret used for normal deploys must be set so the sync workflow can upload the updated JSON to Neocities when playlists change.
 
 ### Optional local test run
 
