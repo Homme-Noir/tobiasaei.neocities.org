@@ -31,6 +31,7 @@
     journal: "journal-nav-bar",
     random: "random-nav-bar",
     guestbook: "home-nav-bar",
+    photography: "home-nav-bar",
     not_found: "home-nav-bar",
   };
   var RADIO_STATIONS = [

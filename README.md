@@ -19,11 +19,31 @@ Static personal site (HTML, CSS, JS). Deploys to Neocities via GitHub Actions.
 
 After that, every `git push` to `main` will deploy the contents of `public/` to your Neocities site.
 
+### Guestbook
+
+The guestbook on `home.html` uses [Giscus](https://giscus.app/) to store entries as GitHub Discussions, so they persist and are shared across visitors. Discussions are enabled for this repository and the guestbook uses the **General** category. Install the [Giscus GitHub App](https://github.com/apps/giscus) with access to this repository to allow posting. Visitors need a GitHub account to sign or reply; entries are public.
+
+Previous guestbook entries were stored only in each visitor's browser and cannot be migrated centrally.
+
+### Photography
+
+`photography.html` builds its gallery from `public/data/photography.json`. Add image files under `public/photos/` and list each one in the JSON array with a site-relative `src`, descriptive `alt` text, and optional `caption`, for example:
+
+```json
+[
+  {
+    "src": "photos/sunset.jpg",
+    "alt": "Sunset over the hills",
+    "caption": "Bedfordshire, 2026"
+  }
+]
+```
+
 ### Home page visitor counter
 
-`home.html` shows **Neocities “views”** (session visitors—same as your public profile). Neocities’ **Content Security Policy blocks live `fetch()`** to the API and most third-party proxies, so the number is **snapshotted into** `public/data/neocities-site-stats.json` on each deploy by `scripts/fetch_neocities_site_stats.py` (see `neocities.yml`). Change **`NEOCITIES_SITENAME`** in that workflow (and in the Spotify deploy step if used) if your site name differs. To refresh locally: `NEOCITIES_SITENAME=yourname python scripts/fetch_neocities_site_stats.py`.
+`home.html` shows **Neocities “views”** (session visitors—same as your public profile). Neocities’ **Content Security Policy blocks live `fetch()`** to the API and most third-party proxies, so the number is a snapshot in `public/data/neocities-site-stats.json`, not a live per-visit count. GitHub Actions fetches an updated count when deploying and on a daily schedule at **03:17 UTC**; each scheduled run also deploys the full `public/` site. Change **`NEOCITIES_SITENAME`** in that workflow (and in the Spotify deploy step if used) if your site name differs. To refresh the snapshot locally: `NEOCITIES_SITENAME=yourname python scripts/fetch_neocities_site_stats.py`.
 
-**Live count in the browser** isn’t possible with JS-only on Neocities (CSP blocks cross-origin `fetch`). Optional approach: a tiny **Cloudflare Worker** (or similar) that returns an **SVG image** with the current views; see [`docs/live-neocities-visitor-count.md`](docs/live-neocities-visitor-count.md).
+**Live count in the browser** isn’t possible with JS-only on Neocities (CSP blocks cross-origin `fetch`). An optional approach is a tiny **Cloudflare Worker** (or similar) that returns an **SVG image** with the current views.
 
 ## Spotify curated playlists sync (no visitor login)
 

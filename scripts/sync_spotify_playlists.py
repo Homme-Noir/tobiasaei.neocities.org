@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Sync Spotify playlists into public/data/spotify-playlists.json."""
 
 from __future__ import annotations
@@ -13,6 +12,7 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+from typing import Any, NoReturn
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -21,19 +21,28 @@ TOKEN_URL = "https://accounts.spotify.com/api/token"
 PLAYLISTS_URL = "https://api.spotify.com/v1/me/playlists?limit=50"
 
 
-def fail(message: str) -> None:
+def fail(message: str) -> NoReturn:
+    """Print an actionable error and exit unsuccessfully."""
     print(f"[spotify-sync] ERROR: {message}", file=sys.stderr)
     raise SystemExit(1)
 
 
 def required_env(name: str) -> str:
+    """Return a non-empty environment variable or stop with an error."""
     value = os.getenv(name, "").strip()
     if not value:
         fail(f"Missing required environment variable: {name}")
     return value
 
 
-def request_json(url: str, *, method: str = "GET", headers: dict[str, str] | None = None, body: bytes | None = None) -> dict:
+def request_json(
+    url: str,
+    *,
+    method: str = "GET",
+    headers: dict[str, str] | None = None,
+    body: bytes | None = None,
+) -> dict[str, Any]:
+    """Send an HTTP request and decode its JSON object response."""
     req = urllib.request.Request(url=url, method=method, data=body)
     for key, value in (headers or {}).items():
         req.add_header(key, value)
@@ -43,17 +52,20 @@ def request_json(url: str, *, method: str = "GET", headers: dict[str, str] | Non
     except urllib.error.HTTPError as exc:
         detail = exc.read().decode("utf-8", errors="ignore")
         fail(f"HTTP {exc.code} for {url}. {detail}")
-    except urllib.error.URLError as exc:
+    except (urllib.error.URLError, TimeoutError, OSError) as exc:
         fail(f"Network error for {url}: {exc}")
 
     try:
-        return json.loads(raw.decode("utf-8"))
-    except json.JSONDecodeError:
+        payload = json.loads(raw.decode("utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError):
         fail(f"Invalid JSON response from {url}")
-    return {}
+    if not isinstance(payload, dict):
+        fail(f"Expected a JSON object response from {url}")
+    return payload
 
 
 def get_access_token(client_id: str, client_secret: str, refresh_token: str) -> str:
+    """Exchange a Spotify refresh token for an access token."""
     basic = base64.b64encode(f"{client_id}:{client_secret}".encode("utf-8")).decode("ascii")
     form = urllib.parse.urlencode(
         {"grant_type": "refresh_token", "refresh_token": refresh_token}
@@ -74,9 +86,10 @@ def get_access_token(client_id: str, client_secret: str, refresh_token: str) -> 
 
 
 def fetch_all_playlists(access_token: str) -> list[dict]:
+    """Fetch every page of playlists available to the authenticated user."""
     out: list[dict] = []
     next_url = PLAYLISTS_URL
-    headers = {"Authorization": f"Bearer {access_token}"}
+    headers = {"Authorization": "Bearer " + access_token}
 
     while next_url:
         page = request_json(next_url, headers=headers)
@@ -89,6 +102,7 @@ def fetch_all_playlists(access_token: str) -> list[dict]:
 
 
 def normalize(playlists: list[dict]) -> list[dict]:
+    """Filter and normalize user-owned playlists for the public site."""
     clean: list[dict] = []
     now_iso = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat()
 
@@ -131,6 +145,7 @@ def normalize(playlists: list[dict]) -> list[dict]:
 
 
 def write_output(playlists: list[dict]) -> None:
+    """Write the normalized playlist list as formatted JSON."""
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(
         json.dumps(playlists, ensure_ascii=True, indent=2) + "\n",
@@ -139,6 +154,7 @@ def write_output(playlists: list[dict]) -> None:
 
 
 def main() -> None:
+    """Run the Spotify playlist sync using credentials from the environment."""
     client_id = required_env("SPOTIFY_CLIENT_ID")
     client_secret = required_env("SPOTIFY_CLIENT_SECRET")
     refresh_token = required_env("SPOTIFY_REFRESH_TOKEN")

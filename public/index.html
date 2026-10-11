@@ -4,13 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Tobias AEI — personal site. Enter the lab." />
-    <title>Tobias_AEI | Start</title>
+    <title>Dreamless Boy | Start</title>
     <style>
       :root {
-        --bg-deep: #080f10;
-        --teal-primary: #2dd4bf;
-        --teal-muted: #14b8a6;
-        --text-primary: #e2e8f0;
+        --color-1: oklch(22.8% 0.046 231);
+        --color-2: oklch(34.8% 0.076 237);
+        --color-3: oklch(40.2% 0.084 260);
+        --color-4: oklch(52.2% 0.116 324);
+        --color-5: oklch(59% 0.157 346);
+        --color-6: oklch(70% 0.191 24);
+        --color-7: oklch(74.1% 0.174 51);
+        --color-8: oklch(79.4% 0.171 71);
+        --color-9: oklch(88.7% 0.113 82);
+        --bg-deep: var(--color-1);
+        --teal-primary: var(--color-5);
+        --teal-muted: var(--color-4);
+        --text-primary: oklch(96% 0.015 82);
+        --glowInner: transparent;
+        --glowColor: oklch(100% 0 0);
       }
 
       * {
@@ -27,9 +38,35 @@
         font-family: "Cormorant Garamond", serif;
         color: var(--text-primary);
         background:
-          linear-gradient(rgba(8, 15, 16, 0.72), rgba(8, 15, 16, 0.72)),
+          linear-gradient(oklch(22.8% 0.046 231 / 0.76), oklch(22.8% 0.046 231 / 0.76)),
           url("backiee-169091.jpg") center / cover no-repeat fixed;
         overflow: hidden;
+      }
+
+      html::before {
+        animation: grain 8s steps(10) infinite;
+        background-image: url("https://i.ibb.co/d2Np1d2/static.gif");
+        background-size: 200px;
+        content: "";
+        height: 300%;
+        left: -50%;
+        opacity: 0.3;
+        position: fixed;
+        top: -110%;
+        width: 300%;
+        pointer-events: none;
+        z-index: 100;
+      }
+
+      body::before {
+        content: "";
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(oklch(100% 0 0 / 0) 50%, oklch(0% 0 0 / 0.25) 50%);
+        z-index: 101;
+        background-size: 100% 2px, 3px 100%;
+        pointer-events: none;
       }
 
       .vhs-overlay {
@@ -39,31 +76,16 @@
         z-index: 50;
       }
 
-      .vhs-scanlines {
-        position: absolute;
-        inset: 0;
-        opacity: 0.82;
-        background: linear-gradient(
-          to bottom,
-          rgba(255, 255, 255, 0),
-          rgba(255, 255, 255, 0) 50%,
-          rgba(0, 0, 0, 0.18) 50%,
-          rgba(0, 0, 0, 0.18)
-        );
-        background-size: 100% 3px;
-        animation: scanMove 8s linear infinite;
-      }
-
       .vhs-vignette {
         position: absolute;
         inset: 0;
-        background: radial-gradient(circle at center, transparent 50%, rgba(8, 15, 16, 0.82) 100%);
+        background: radial-gradient(circle at center, transparent 50%, oklch(22.8% 0.046 231 / 0.82) 100%);
       }
 
       .vhs-flicker {
         position: absolute;
         inset: 0;
-        background: rgba(0, 0, 0, 0.14);
+        background: oklch(0% 0 0 / 0.14);
         mix-blend-mode: overlay;
         animation: flicker 1.8s infinite;
       }
@@ -76,9 +98,9 @@
         height: 36%;
         background: linear-gradient(
           to bottom,
-          rgba(255, 255, 255, 0),
-          rgba(45, 212, 191, 0.1),
-          rgba(255, 255, 255, 0)
+          oklch(100% 0 0 / 0),
+          oklch(59% 0.157 346 / 0.12),
+          oklch(100% 0 0 / 0)
         );
         mix-blend-mode: screen;
         opacity: 0.7;
@@ -104,7 +126,7 @@
         width: min(60vw, 600px);
         height: min(60vw, 600px);
         border-radius: 50%;
-        background: rgba(45, 212, 191, 0.08);
+        background: oklch(59% 0.157 346 / 0.12);
         filter: blur(80px);
         z-index: 0;
         pointer-events: none;
@@ -117,34 +139,30 @@
 
       .entry h1 {
         margin: 0;
-        font-size: clamp(3rem, 11vw, 6.4rem);
+        font-size: clamp(2.2rem, 9vw, 5.4rem);
         line-height: 1;
-        letter-spacing: 0.2em;
+        letter-spacing: 0.04em;
       }
 
-      .glitch-text {
-        position: relative;
-        letter-spacing: 0.08em;
+      .neon {
+        text-shadow: 0 0 15px var(--glowInner), 0 0 20px var(--glowInner),
+          0 0 30px var(--glowColor), 0 0 40px var(--glowColor),
+          0 0 50px var(--glowColor), 0 0 60px var(--glowColor),
+          0 0 70px var(--glowColor);
+        letter-spacing: 0.04em;
+        text-align: center;
       }
 
-      .glitch-text::before,
-      .glitch-text::after {
-        content: attr(data-text);
-        position: absolute;
-        inset: 0;
-        opacity: 0.7;
-        pointer-events: none;
+      .flicker1,
+      .flicker2,
+      .flicker3 {
+        color: inherit;
+        display: inline;
       }
 
-      .glitch-text::before {
-        transform: translateX(1px);
-        color: oklch(78% 0.12 195 / 0.5);
-      }
-
-      .glitch-text::after {
-        transform: translateX(-1px);
-        color: oklch(74% 0.11 38 / 0.5);
-      }
+      .flicker1 { animation: flicker1 5s infinite; }
+      .flicker2 { animation: flicker2 3s infinite; }
+      .flicker3 { animation: flicker1 2s infinite; }
 
       .type-line {
         margin: 1.2rem 0 2.5rem;
@@ -176,15 +194,15 @@
         text-transform: uppercase;
         color: var(--teal-primary);
         text-decoration: none;
-        border: 1px solid rgba(45, 212, 191, 0.35);
+        border: 1px solid oklch(59% 0.157 346 / 0.45);
         border-radius: 2px;
         padding: 0.75rem 1rem;
-        min-width: 18rem;
+        min-width: min(18rem, calc(100vw - 3rem));
         justify-content: center;
-        background: rgba(45, 212, 191, 0.05);
-        box-shadow: 0 0 0 rgba(45, 212, 191, 0);
-        opacity: 1;
-        pointer-events: auto;
+        background: oklch(59% 0.157 346 / 0.08);
+        box-shadow: 0 0 0 oklch(59% 0.157 346 / 0);
+        opacity: 0;
+        pointer-events: none;
         cursor: pointer;
         transition: opacity 0.45s ease, background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
       }
@@ -198,15 +216,29 @@
         pointer-events: auto;
       }
 
+      .enter-link:disabled {
+        cursor: default;
+      }
+
       .enter-link:hover {
-        background: rgba(45, 212, 191, 0.11);
-        border-color: rgba(45, 212, 191, 0.9);
-        box-shadow: 0 0 16px rgba(45, 212, 191, 0.36);
+        background: oklch(59% 0.157 346 / 0.18);
+        border-color: oklch(59% 0.157 346 / 0.9);
+        box-shadow: 0 0 16px oklch(59% 0.157 346 / 0.36);
       }
 
       .enter-link:focus-visible {
         outline: 2px solid var(--teal-primary);
         outline-offset: 3px;
+      }
+
+      @keyframes flicker1 {
+        0%, 9%, 13%, 18%, 22%, 23%, 26%, 100% { opacity: 1; }
+        10%, 12%, 19%, 20%, 24%, 25% { opacity: 0; }
+      }
+
+      @keyframes flicker2 {
+        0%, 15%, 20%, 23%, 51%, 75%, 79%, 100% { opacity: 1; }
+        16%, 18%, 24%, 50%, 76%, 78% { opacity: 0; }
       }
 
       @keyframes flicker {
@@ -215,9 +247,17 @@
         60% { opacity: 0.12; }
       }
 
-      @keyframes scanMove {
-        0% { transform: translateY(0); }
-        100% { transform: translateY(8px); }
+      @keyframes grain {
+        0%, 100% { transform: translate(0, 0); }
+        10% { transform: translate(-5%, -10%); }
+        20% { transform: translate(-15%, 5%); }
+        30% { transform: translate(7%, -25%); }
+        40% { transform: translate(-5%, 25%); }
+        50% { transform: translate(-15%, 10%); }
+        60% { transform: translate(15%, 0%); }
+        70% { transform: translate(0%, 15%); }
+        80% { transform: translate(3%, 35%); }
+        90% { transform: translate(-10%, 10%); }
       }
 
       @keyframes vhsRoll {
@@ -231,14 +271,17 @@
 
       @media (max-width: 680px) {
         .entry h1 {
-          font-size: clamp(2.3rem, 12vw, 4.1rem);
+          font-size: clamp(2rem, 10vw, 4.1rem);
         }
       }
 
       @media (prefers-reduced-motion: reduce) {
         .vhs-flicker,
-        .vhs-scanlines,
         .vhs-roll { animation: none; }
+        html::before,
+        .flicker1,
+        .flicker2,
+        .flicker3 { animation: none; }
         .cursor { animation: none; }
         .enter-link { transition: none; }
       }
@@ -246,7 +289,6 @@
   </head>
   <body>
     <div class="vhs-overlay" aria-hidden="true">
-      <div class="vhs-scanlines"></div>
       <div class="vhs-vignette"></div>
       <div class="vhs-flicker"></div>
       <div class="vhs-roll"></div>
@@ -254,9 +296,9 @@
 
     <main class="entry">
       <section>
-        <h1 class="glitch-text" data-text="TOBIAS AEI">TOBIAS AEI</h1>
+        <h1 class="neon"><span class="flicker1">Dream</span><span class="flicker2">less</span> <span class="flicker3">Boy</span></h1>
         <p class="type-line"><span id="typed-line"></span><span class="cursor" aria-hidden="true"></span></p>
-        <button class="enter-link" id="enter-link" type="button" aria-label="Enter site">
+        <button class="enter-link" id="enter-link" type="button" aria-label="Enter site" disabled>
           <span>[ Initialize Sequence ]</span>
         </button>
       </section>
@@ -271,9 +313,6 @@
           window.location.assign("home.html");
         }
         enter.addEventListener("click", goHome);
-        enter.addEventListener("keydown", function (e) {
-          if (e.key === "Enter" || e.key === " ") goHome();
-        });
         var i = 0;
         var timer = setInterval(function () {
           i += 1;
@@ -281,6 +320,7 @@
           if (i >= fullText.length) {
             clearInterval(timer);
             setTimeout(function () {
+              enter.disabled = false;
               enter.classList.add("is-ready");
             }, 800);
           }

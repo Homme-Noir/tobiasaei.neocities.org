@@ -1,101 +1,124 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Tobias AEI — digital lab, notes, projects, and sound." />
-    <title>Tobias_AEI | Home</title>
-    <link rel="stylesheet" href="https://www.nerdfonts.com/assets/css/webfont.css" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div id="container">
-      <div id="headerPlaceholder"></div>
-      <main class="home-main">
-        <section class="home-hero reveal">
-          <h1>Welcome to my corner <span>of the digital world.</span></h1>
-          <div class="home-copy">
-            <p>
-              Tobi here <span class="home-inline-icon nf nf-md-hand_wave" aria-hidden="true"></span>. This is a repository for fragments - incomplete projects,
-              poetry without rhyme, and thoughts that don't settle.
-            </p>
-            <p>
-              Wander through the directories. The architecture is basic, but the
-              intent is sincere.
-            </p>
-          </div>
-          <!-- views = Neocities session visitors. Loaded from data/neocities-site-stats.json (refreshed on each deploy; browser CSP blocks live API fetch). -->
-          <p class="home-visitor-counter" aria-live="polite">
-            <span class="nf nf-md-account_group home-counter-icon" aria-hidden="true"></span>
-            <span class="home-counter-label">Visitors</span>
-            <strong id="neocities-visitor-count" class="home-visitor-count-num">…</strong>
-          </p>
-        </section>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content="Digital home." />
+		<title>Tobias_AEI | Home</title>
+		<link
+			rel="stylesheet"
+			href="https://www.nerdfonts.com/assets/css/webfont.css"
+		/>
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<div id="container">
+			<div id="headerPlaceholder"></div>
+			<main class="home-main">
+				<section class="home-hero reveal">
+					<h1>
+						Welcome to my corner <span>of the digital world.</span>
+					</h1>
+					<div class="home-copy">
+						<p>
+							Tobi here
+							<span
+								class="home-inline-icon nf nf-md-hand_wave"
+								aria-hidden="true"
+							></span
+							>. This is a repository for fragments - incomplete
+							projects, poetry without rhyme, and thoughts that
+							don't settle.
+						</p>
+						<p>
+							Wander through the directories. The architecture is
+							basic, but the intent is sincere.
+						</p>
+					</div>
+					<!-- views = Neocities session visitors. Loaded from data/neocities-site-stats.json (refreshed on each deploy; browser CSP blocks live API fetch). -->
+					<p class="home-visitor-counter" aria-live="polite">
+						<span
+							class="nf nf-md-account_group home-counter-icon"
+							aria-hidden="true"
+						></span>
+						<span class="home-counter-label">Visitors</span>
+						<strong
+							id="neocities-visitor-count"
+							class="home-visitor-count-num"
+							>…</strong
+						>
+					</p>
+				</section>
+				<section
+					class="guestbook-list home-guestbook"
+					id="guestbook"
+					aria-labelledby="guestbook-title"
+				>
+					<h2 id="guestbook-title">Visitor logs</h2>
+					<p class="guestbook-description">
+						Leave a trace before you close the tab. Sign in with GitHub to
+						write a message or reply. Entries are public and shared with
+						everyone.
+					</p>
+					<div class="guestbook-discussion">
+						<script
+							src="https://giscus.app/client.js"
+							data-repo="Homme-Noir/tobiasaei.neocities.org"
+							data-repo-id="R_kgDORoAc6A"
+							data-category="General"
+							data-category-id="DIC_kwDORoAc6M4DHl3J"
+							data-mapping="specific"
+							data-term="tobiasaei-guestbook"
+							data-strict="0"
+							data-reactions-enabled="1"
+							data-emit-metadata="0"
+							data-input-position="top"
+							data-theme="noborder_dark"
+							data-lang="en"
+							crossorigin="anonymous"
+							async
+						></script>
+					</div>
+				</section>
+			</main>
+			<div id="footerPlaceholder"></div>
+		</div>
+		<script>
+			(function () {
+				var el = document.getElementById("neocities-visitor-count");
+				if (!el) return;
 
-        <section class="home-directory reveal" aria-label="Directory index">
-          <div class="section-divider"><span>Directory Index</span></div>
-          <div class="directory-grid">
-            <a class="directory-card" href="music.html">
-              <h2>Music Landscape</h2>
-              <p>What I am listening to and curating.</p>
-            </a>
-            <a class="directory-card" href="writings.html">
-              <h2>Scattered Writings</h2>
-              <p>Poetry and short stories maybe?.</p>
-            </a>
-            <a class="directory-card" href="projects.html">
-              <h2>Projects</h2>
-              <p>What I am working on or did.</p>
-            </a>
-            <a class="directory-card" href="journal.html">
-              <h2>Inner Monologue</h2>
-              <p>Thoughts and opinions.</p>
-            </a>
-            <a class="directory-card" href="random.html">
-              <h2>Archive</h2>
-              <p>A scrapbook of everything else.</p>
-            </a>
-            <a class="directory-card" href="guestbook.html">
-              <h2>Visitor Logs</h2>
-              <p>Leave a trace before you go.</p>
-            </a>
-          </div>
-        </section>
-      </main>
-      <div id="footerPlaceholder"></div>
-    </div>
-    <script>
-      (function () {
-        var el = document.getElementById("neocities-visitor-count");
-        if (!el) return;
+				function formatCommas(n) {
+					var s = String(Math.max(0, Math.floor(Number(n)) || 0));
+					return s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				}
 
-        function formatCommas(n) {
-          var s = String(Math.max(0, Math.floor(Number(n)) || 0));
-          return s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-
-        fetch("data/neocities-site-stats.json", { cache: "no-store" })
-          .then(function (res) {
-            if (!res.ok) throw new Error("bad status");
-            return res.json();
-          })
-          .then(function (data) {
-            if (!data || data.result !== "success" || !data.info) throw new Error("bad payload");
-            var views = data.info.views;
-            if (views === undefined || views === null) throw new Error("no views");
-            el.textContent = formatCommas(views);
-            var gen = data.generated_at;
-            el.title = gen
-              ? "Neocities session visitors · figure updates when the site is deployed (" + gen + ")"
-              : "Neocities session visitors · updates on deploy";
-          })
-          .catch(function () {
-            el.textContent = "—";
-            el.title =
-              "Could not load data/neocities-site-stats.json (run deploy or python scripts/fetch_neocities_site_stats.py).";
-          });
-      })();
-    </script>
-    <script src="main.js"></script>
-  </body>
+				fetch("data/neocities-site-stats.json", { cache: "no-store" })
+					.then(function (res) {
+						if (!res.ok) throw new Error("bad status");
+						return res.json();
+					})
+					.then(function (data) {
+						if (!data || data.result !== "success" || !data.info)
+							throw new Error("bad payload");
+						var views = data.info.views;
+						if (views === undefined || views === null)
+							throw new Error("no views");
+						el.textContent = formatCommas(views);
+						var gen = data.generated_at;
+						el.title = gen
+							? "Neocities session visitors · figure updates when the site is deployed (" +
+								gen +
+								")"
+							: "Neocities session visitors · updates on deploy";
+					})
+					.catch(function () {
+						el.textContent = "—";
+						el.title =
+							"Could not load data/neocities-site-stats.json (run deploy or python scripts/fetch_neocities_site_stats.py).";
+					});
+			})();
+		</script>
+		<script src="main.js"></script>
+	</body>
 </html>

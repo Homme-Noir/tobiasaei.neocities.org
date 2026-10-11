@@ -9,6 +9,8 @@ on:
   push:
     branches:
       - main
+  schedule:
+    - cron: "17 3 * * *"
 
 concurrency:
   group: deploy-to-neocities
