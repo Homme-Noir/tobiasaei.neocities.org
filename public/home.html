@@ -56,26 +56,29 @@
 				>
 					<h2 id="guestbook-title">Visitor logs</h2>
 					<p class="guestbook-description">
-						Leave a trace before you close the tab. Sign in with GitHub to
-						write a message or reply. Entries are public and shared with
-						everyone.
+						Leave a trace before you close the tab. Comments are anonymous
+						and shared with everyone.
 					</p>
 					<div class="guestbook-discussion">
+						<div id="HCB_comment_box">
+							<a href="https://www.htmlcommentbox.com">Comment Box</a>
+							is loading comments…
+						</div>
+						<script>
+							window.hcb_user = {
+								PAGE: "tobiasaei-home-guestbook",
+								comments_header: "Visitor Logs",
+								name_label: "Handle (optional)",
+								content_label: "Leave a message…",
+								submit: "Transmit",
+								anonymous: "Anonymous",
+								no_comments_msg: "No transmissions yet. Be the first.",
+							};
+						</script>
 						<script
-							src="https://giscus.app/client.js"
-							data-repo="Homme-Noir/tobiasaei.neocities.org"
-							data-repo-id="R_kgDORoAc6A"
-							data-category="General"
-							data-category-id="DIC_kwDORoAc6M4DHl3J"
-							data-mapping="specific"
-							data-term="tobiasaei-guestbook"
-							data-strict="0"
-							data-reactions-enabled="1"
-							data-emit-metadata="0"
-							data-input-position="top"
-							data-theme="noborder_dark"
-							data-lang="en"
-							crossorigin="anonymous"
+							type="text/javascript"
+							id="hcb"
+							src="https://www.htmlcommentbox.com/jread?page=tobiasaei-home-guestbook&amp;mod=%241%24wq1rdBcg%24oSXYvwmfhd%2Fovd8GG8Z6C%2F&amp;opts=16798&amp;num=10"
 							async
 						></script>
 					</div>

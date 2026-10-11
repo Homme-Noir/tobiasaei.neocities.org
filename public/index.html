@@ -19,7 +19,7 @@
         --bg-deep: var(--color-1);
         --teal-primary: var(--color-5);
         --teal-muted: var(--color-4);
-        --text-primary: oklch(96% 0.015 82);
+        --text-primary: var(--color-9);
         --glowInner: transparent;
         --glowColor: oklch(100% 0 0);
       }
@@ -63,7 +63,7 @@
         display: block;
         position: fixed;
         inset: 0;
-        background: linear-gradient(oklch(100% 0 0 / 0) 50%, oklch(0% 0 0 / 0.25) 50%);
+        background: linear-gradient(oklch(88.7% 0.113 82 / 0) 50%, oklch(22.8% 0.046 231 / 0.25) 50%);
         z-index: 101;
         background-size: 100% 2px, 3px 100%;
         pointer-events: none;
@@ -85,7 +85,7 @@
       .vhs-flicker {
         position: absolute;
         inset: 0;
-        background: oklch(0% 0 0 / 0.14);
+        background: oklch(22.8% 0.046 231 / 0.14);
         mix-blend-mode: overlay;
         animation: flicker 1.8s infinite;
       }
@@ -98,9 +98,9 @@
         height: 36%;
         background: linear-gradient(
           to bottom,
-          oklch(100% 0 0 / 0),
+          oklch(88.7% 0.113 82 / 0),
           oklch(59% 0.157 346 / 0.12),
-          oklch(100% 0 0 / 0)
+          oklch(88.7% 0.113 82 / 0)
         );
         mix-blend-mode: screen;
         opacity: 0.7;
@@ -296,7 +296,7 @@
 
     <main class="entry">
       <section>
-        <h1 class="neon"><span class="flicker1">Dream</span><span class="flicker2">less</span> <span class="flicker3">Boy</span></h1>
+        <h1 class="neon"><span class="flicker1 neon">D</span>ream<span class="flicker2">l</span>ess <span class="flicker3">B</span>oy</h1>
         <p class="type-line"><span id="typed-line"></span><span class="cursor" aria-hidden="true"></span></p>
         <button class="enter-link" id="enter-link" type="button" aria-label="Enter site" disabled>
           <span>[ Initialize Sequence ]</span>

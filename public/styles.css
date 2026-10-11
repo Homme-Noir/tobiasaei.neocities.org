@@ -50,15 +50,15 @@
   --accent-500: var(--color-6);
   --accent-300: var(--color-8);
 
-  --text: oklch(96% 0.015 82);
-  --text-main: oklch(96% 0.015 82);
-  --text-dim: oklch(80% 0.025 290);
+  --text: var(--color-9);
+  --text-main: var(--color-9);
+  --text-dim: var(--color-8);
   --text-dark: var(--color-1);
 
   --surface-900: var(--color-1);
   --surface-800: var(--color-2);
   --surface-700: var(--color-3);
-  --surface-100: oklch(96% 0.015 82);
+  --surface-100: var(--color-9);
   --surface-200: var(--color-9);
 
   --border-dark: oklch(52.2% 0.116 324 / 0.45);
@@ -83,7 +83,7 @@ body {
   background-image:
     radial-gradient(circle at 8% 9%, oklch(52.2% 0.116 324 / 0.3), transparent 42%),
     radial-gradient(circle at 92% 88%, oklch(70% 0.191 24 / 0.16), transparent 35%),
-    linear-gradient(140deg, var(--color-1), oklch(20% 0.05 260));
+    linear-gradient(140deg, var(--color-1), var(--color-2));
   background-attachment: fixed;
   display: flex;
   justify-content: center;
@@ -150,7 +150,7 @@ input:focus-visible {
 #navbar li a:hover,
 #navbar a.active,
 #navbar a[aria-current="page"] {
-  background: oklch(100% 0 0 / 0.12);
+  background: oklch(88.7% 0.113 82 / 0.12);
   color: var(--accent-300);
 }
 
@@ -202,7 +202,7 @@ input:focus-visible {
 }
 
 .writings-nav-bar #navbar li a {
-  color: oklch(96% 0.015 82);
+  color: var(--color-9);
 }
 
 .writings-nav-bar #navbar li a:hover,
@@ -222,7 +222,7 @@ input:focus-visible {
 }
 
 .journal-nav-bar #navbar li a {
-  color: oklch(96% 0.015 82);
+  color: var(--color-9);
 }
 
 .journal-nav-bar #navbar li a:hover,
@@ -274,7 +274,7 @@ input:focus-visible {
 .journal-site-footer {
   background: oklch(34.8% 0.076 237 / 0.96);
   border-color: oklch(52.2% 0.116 324 / 0.4);
-  color: oklch(80% 0.025 290);
+  color: var(--color-8);
 }
 
 .writings-site-footer a,
@@ -357,7 +357,7 @@ main {
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-lg);
   padding: clamp(1.2rem, 3vw, 2rem);
-  box-shadow: 0 18px 44px oklch(0% 0 0 / 0.35);
+  box-shadow: 0 18px 44px oklch(22.8% 0.046 231 / 0.35);
   text-align: center;
 }
 
@@ -439,7 +439,7 @@ main {
   border-radius: var(--radius-pill);
   border: 1px solid var(--border-dark);
   background: oklch(34.8% 0.076 237 / 0.9);
-  box-shadow: 0 8px 24px oklch(0% 0 0 / 0.35);
+  box-shadow: 0 8px 24px oklch(22.8% 0.046 231 / 0.35);
 }
 
 .lofi-toggle {
@@ -543,6 +543,84 @@ main {
   min-width: 0;
 }
 
+#HCB_comment_box {
+  color: var(--color-9);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+#HCB_comment_box a,
+#HCB_comment_box .hcb-link {
+  color: var(--color-8);
+}
+
+#HCB_comment_box #hcb_form_content,
+#HCB_comment_box #hcb_form_email,
+#HCB_comment_box #hcb_form_name,
+#HCB_comment_box #hcb_form_website,
+#HCB_comment_box input.text,
+#HCB_comment_box textarea {
+  max-width: 100%;
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  background: var(--color-1);
+  color: var(--color-9);
+  font: inherit;
+  padding: 0.65rem 0.75rem;
+}
+
+#HCB_comment_box #hcb_form_content {
+  width: 100%;
+  min-height: 8rem;
+}
+
+#HCB_comment_box input.text:focus,
+#HCB_comment_box textarea:focus {
+  border-color: var(--color-6);
+  outline: 2px solid oklch(70% 0.191 24 / 0.25);
+  outline-offset: 1px;
+}
+
+#HCB_comment_box input.submit {
+  border: 1px solid var(--color-5);
+  border-radius: var(--radius-pill);
+  background: oklch(59% 0.157 346 / 0.2);
+  color: var(--color-9);
+  cursor: pointer;
+  font: inherit;
+  padding: 0.55rem 0.9rem;
+}
+
+#HCB_comment_box input.submit:hover {
+  background: oklch(59% 0.157 346 / 0.38);
+}
+
+#HCB_comment_box .comment {
+  border-top: 1px solid var(--border-dark);
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+}
+
+#HCB_comment_box .author-name,
+#HCB_comment_box .hcb-comment-body,
+#HCB_comment_box blockquote {
+  color: var(--color-9);
+}
+
+#HCB_comment_box .hcb-comment-tb,
+#HCB_comment_box .date,
+#HCB_comment_box .home-desc {
+  color: var(--color-8);
+}
+
+#HCB_comment_box p.error {
+  border: 1px solid var(--color-6);
+  background: oklch(70% 0.191 24 / 0.12);
+  color: var(--color-9);
+  padding: 0.65rem;
+}
+
 /* ============================================================
    Music page
    ============================================================ */
@@ -550,7 +628,7 @@ main {
 .page-music {
   background:
     radial-gradient(circle at 8% 10%, oklch(52.2% 0.116 324 / 0.28), transparent 46%),
-    linear-gradient(150deg, var(--color-1), oklch(22% 0.05 260));
+    linear-gradient(150deg, var(--color-1), var(--color-2));
 }
 
 .music-layout {
@@ -589,7 +667,7 @@ main {
 
 .music-loading {
   margin: 0;
-  color: oklch(80% 0.025 290);
+  color: var(--color-8);
 }
 
 .music-now-card {
@@ -611,7 +689,7 @@ main {
 
 .music-now-track {
   display: block;
-  color: oklch(96% 0.015 82);
+  color: var(--color-9);
   font-size: 1.2rem;
   font-weight: 700;
   text-decoration: none;
@@ -620,7 +698,7 @@ main {
 .music-now-artist {
   display: block;
   margin-top: 0.25rem;
-  color: oklch(80% 0.025 290);
+  color: var(--color-8);
 }
 
 .music-track-list {
@@ -631,7 +709,7 @@ main {
 
 .music-track {
   padding: 0.6rem 0;
-  border-bottom: 1px solid oklch(100% 0 0 / 0.08);
+  border-bottom: 1px solid oklch(88.7% 0.113 82 / 0.08);
 }
 
 .music-track-name {
@@ -674,7 +752,7 @@ main {
 
 .writings-subtitle {
   margin: 0.4rem 0 0;
-  color: oklch(80% 0.025 290);
+  color: var(--color-8);
 }
 
 .writings-entries {
@@ -699,7 +777,7 @@ main {
 }
 
 .writings-entry time {
-  color: oklch(80% 0.025 290);
+  color: var(--color-8);
   font-size: 0.88rem;
 }
 
@@ -808,14 +886,14 @@ main {
   border-radius: var(--radius-pill);
   border: 1px solid oklch(59% 0.157 346 / 0.6);
   text-decoration: none;
-  color: oklch(96% 0.015 82);
+  color: var(--color-9);
   background: oklch(34.8% 0.076 237 / 0.92);
 }
 
 .journal-pill--active,
 .journal-pill:hover {
   background: oklch(59% 0.157 346);
-  color: oklch(96% 0.015 82);
+  color: var(--color-9);
 }
 
 .journal-stream {
@@ -839,7 +917,7 @@ main {
 
 .journal-item-title {
   margin: 0;
-  color: oklch(96% 0.015 82);
+  color: var(--color-9);
 }
 
 /* ============================================================
@@ -1041,16 +1119,16 @@ main {
 
 :root {
   --mp-bg-deep: var(--color-1);
-  --mp-bg-base: oklch(22.8% 0.046 231);
-  --mp-bg-surface: oklch(34.8% 0.076 237);
-  --mp-bg-elevated: oklch(40.2% 0.084 260);
+  --mp-bg-base: var(--color-1);
+  --mp-bg-surface: var(--color-2);
+  --mp-bg-elevated: var(--color-3);
   --mp-teal-primary: var(--color-6);
   --mp-teal-muted: var(--color-5);
   --mp-cyan-accent: var(--color-3);
   --mp-violet-accent: var(--color-4);
-  --mp-text-primary: oklch(96% 0.015 82);
-  --mp-text-muted: oklch(88.7% 0.113 82);
-  --mp-text-dim: oklch(80% 0.025 290);
+  --mp-text-primary: var(--color-9);
+  --mp-text-muted: var(--color-9);
+  --mp-text-dim: var(--color-8);
   --mp-border: oklch(59% 0.157 346 / 0.28);
 }
 
@@ -1060,7 +1138,7 @@ body {
   background:
     radial-gradient(circle at 15% 10%, oklch(70% 0.191 24 / 0.12), transparent 38%),
     radial-gradient(circle at 86% 85%, oklch(52.2% 0.116 324 / 0.18), transparent 34%),
-    linear-gradient(170deg, var(--mp-bg-deep), oklch(20% 0.05 260));
+    linear-gradient(170deg, var(--mp-bg-deep), var(--color-2));
 }
 
 body::before {
@@ -1070,7 +1148,7 @@ body::before {
   pointer-events: none;
   z-index: 1;
   opacity: 0.18;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.18) 50%, rgba(0, 0, 0, 0.18));
+  background: linear-gradient(to bottom, oklch(88.7% 0.113 82 / 0), oklch(88.7% 0.113 82 / 0) 50%, oklch(22.8% 0.046 231 / 0.18) 50%, oklch(22.8% 0.046 231 / 0.18));
   background-size: 100% 4px;
 }
 
@@ -1314,7 +1392,7 @@ body::before {
   border: 1px solid var(--mp-border);
   background: oklch(34.8% 0.076 237 / 0.82);
   padding: 2.2rem;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 18px 40px oklch(22.8% 0.046 231 / 0.28);
 }
 
 .home-hero h1 {
