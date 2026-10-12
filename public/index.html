@@ -20,8 +20,6 @@
         --teal-primary: var(--color-5);
         --teal-muted: var(--color-4);
         --text-primary: var(--color-9);
-        --glowInner: transparent;
-        --glowColor: oklch(100% 0 0);
       }
 
       * {
@@ -37,10 +35,30 @@
       body {
         font-family: "Cormorant Garamond", serif;
         color: var(--text-primary);
+        background: var(--color-1);
+        overflow-x: hidden;
+        isolation: isolate;
+      }
+
+      .entry-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+        background: var(--color-1);
+      }
+
+      .entry-image-shade {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
         background:
-          linear-gradient(oklch(22.8% 0.046 231 / 0.76), oklch(22.8% 0.046 231 / 0.76)),
-          url("backiee-169091.jpg") center / cover no-repeat fixed;
-        overflow: hidden;
+          linear-gradient(90deg, oklch(22.8% 0.046 231 / 0.46), oklch(22.8% 0.046 231 / 0.3) 52%, oklch(22.8% 0.046 231 / 0.5)),
+          linear-gradient(0deg, oklch(22.8% 0.046 231 / 0.42), transparent 32%, oklch(22.8% 0.046 231 / 0.34));
       }
 
       html::before {
@@ -73,13 +91,13 @@
         position: fixed;
         inset: 0;
         pointer-events: none;
-        z-index: 50;
+        z-index: 1;
       }
 
       .vhs-vignette {
         position: absolute;
         inset: 0;
-        background: radial-gradient(circle at center, transparent 50%, oklch(22.8% 0.046 231 / 0.82) 100%);
+        background: radial-gradient(circle at center, transparent 48%, oklch(22.8% 0.046 231 / 0.52) 100%);
       }
 
       .vhs-flicker {
@@ -110,11 +128,12 @@
       .entry {
         position: relative;
         min-height: 100vh;
+        min-height: 100svh;
         display: grid;
         place-items: center;
-        padding: 1.5rem;
+        padding: clamp(1rem, 4vw, 3rem);
         isolation: isolate;
-        z-index: 30;
+        z-index: 2;
       }
 
       .entry::before {
@@ -126,8 +145,8 @@
         width: min(60vw, 600px);
         height: min(60vw, 600px);
         border-radius: 50%;
-        background: oklch(59% 0.157 346 / 0.12);
-        filter: blur(80px);
+        background: oklch(70% 0.191 24 / 0.1);
+        filter: blur(90px);
         z-index: 0;
         pointer-events: none;
       }
@@ -135,22 +154,67 @@
       .entry section {
         position: relative;
         z-index: 2;
+        width: min(100%, 40rem);
+        padding: clamp(1.5rem, 5vw, 3.25rem);
+        border: 1px solid oklch(59% 0.157 346 / 0.5);
+        border-radius: 0.9rem;
+        background: linear-gradient(145deg, oklch(22.8% 0.046 231 / 0.86), oklch(34.8% 0.076 237 / 0.7));
+        box-shadow: 0 24px 80px oklch(22.8% 0.046 231 / 0.6), inset 0 1px oklch(88.7% 0.113 82 / 0.07);
+        backdrop-filter: blur(12px);
+        text-align: center;
+      }
+
+      .entry section::before,
+      .entry section::after {
+        content: "";
+        position: absolute;
+        width: 1.1rem;
+        height: 1.1rem;
+        border-color: var(--color-7);
+        border-style: solid;
+        pointer-events: none;
+      }
+
+      .entry section::before {
+        top: 0.55rem;
+        left: 0.55rem;
+        border-width: 1px 0 0 1px;
+      }
+
+      .entry section::after {
+        right: 0.55rem;
+        bottom: 0.55rem;
+        border-width: 0 1px 1px 0;
+      }
+
+      .entry-label {
+        margin: 0 0 1rem;
+        color: var(--color-6);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.68rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .entry-label span {
+        display: inline-block;
+        width: 0.48rem;
+        height: 0.48rem;
+        margin-right: 0.45rem;
+        border-radius: 50%;
+        background: var(--color-7);
+        box-shadow: 0 0 0.65rem oklch(74.1% 0.174 51 / 0.75);
       }
 
       .entry h1 {
         margin: 0;
-        font-size: clamp(2.2rem, 9vw, 5.4rem);
+        color: var(--color-9);
+        font-size: clamp(2.6rem, 9vw, 5.6rem);
+        font-weight: 600;
         line-height: 1;
-        letter-spacing: 0.04em;
-      }
-
-      .neon {
-        text-shadow: 0 0 15px var(--glowInner), 0 0 20px var(--glowInner),
-          0 0 30px var(--glowColor), 0 0 40px var(--glowColor),
-          0 0 50px var(--glowColor), 0 0 60px var(--glowColor),
-          0 0 70px var(--glowColor);
-        letter-spacing: 0.04em;
+        letter-spacing: 0.025em;
         text-align: center;
+        text-shadow: none;
       }
 
       .flicker1,
@@ -165,21 +229,41 @@
       .flicker3 { animation: flicker1 2s infinite; }
 
       .type-line {
-        margin: 1.2rem 0 2.5rem;
+        margin: 1rem 0 2rem;
         font-family: "IBM Plex Mono", monospace;
-        font-size: 0.9rem;
-        letter-spacing: 0.14em;
-        color: var(--teal-muted);
-        min-height: 1.4rem;
+        font-size: clamp(0.76rem, 2vw, 0.9rem);
+        letter-spacing: 0.08em;
+        color: var(--color-8);
+        min-height: 1.5rem;
+      }
+
+      .entry-divider {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        margin: 1.5rem 0 0;
+        color: var(--color-5);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.58rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      .entry-divider::before,
+      .entry-divider::after {
+        content: "";
+        height: 1px;
+        flex: 1;
+        background: oklch(59% 0.157 346 / 0.4);
       }
 
       .cursor {
         display: inline-block;
         width: 9px;
-        height: 1.1rem;
+        height: 1rem;
         margin-left: 0.35rem;
         vertical-align: middle;
-        background: var(--teal-primary);
+        background: var(--color-6);
         animation: blink 1s step-end infinite;
       }
 
@@ -190,17 +274,17 @@
         font-family: "IBM Plex Mono", monospace;
         font-weight: 500;
         font-size: 0.72rem;
-        letter-spacing: 0.24em;
+        letter-spacing: 0.16em;
         text-transform: uppercase;
-        color: var(--teal-primary);
+        color: var(--color-7);
         text-decoration: none;
-        border: 1px solid oklch(59% 0.157 346 / 0.45);
-        border-radius: 2px;
-        padding: 0.75rem 1rem;
+        border: 1px solid oklch(70% 0.191 24 / 0.65);
+        border-radius: 0.35rem;
+        padding: 0.82rem 1rem;
         min-width: min(18rem, calc(100vw - 3rem));
         justify-content: center;
-        background: oklch(59% 0.157 346 / 0.08);
-        box-shadow: 0 0 0 oklch(59% 0.157 346 / 0);
+        background: linear-gradient(110deg, oklch(74.1% 0.174 51 / 0.12), oklch(70% 0.191 24 / 0.08));
+        box-shadow: 0 8px 22px oklch(22.8% 0.046 231 / 0.3);
         opacity: 0;
         pointer-events: none;
         cursor: pointer;
@@ -221,13 +305,13 @@
       }
 
       .enter-link:hover {
-        background: oklch(59% 0.157 346 / 0.18);
-        border-color: oklch(59% 0.157 346 / 0.9);
-        box-shadow: 0 0 16px oklch(59% 0.157 346 / 0.36);
+        background: linear-gradient(110deg, oklch(74.1% 0.174 51 / 0.24), oklch(70% 0.191 24 / 0.18));
+        border-color: var(--color-7);
+        box-shadow: 0 8px 26px oklch(70% 0.191 24 / 0.18);
       }
 
       .enter-link:focus-visible {
-        outline: 2px solid var(--teal-primary);
+        outline: 2px solid var(--color-7);
         outline-offset: 3px;
       }
 
@@ -273,6 +357,14 @@
         .entry h1 {
           font-size: clamp(2rem, 10vw, 4.1rem);
         }
+
+        .entry section {
+          padding: 1.5rem 1rem;
+        }
+
+        .entry-backdrop {
+          object-position: 57% center;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -288,6 +380,14 @@
     </style>
   </head>
   <body>
+    <img
+      class="entry-backdrop"
+      src="backiee-169091.jpg"
+      alt=""
+      fetchpriority="high"
+      decoding="async"
+    />
+    <div class="entry-image-shade" aria-hidden="true"></div>
     <div class="vhs-overlay" aria-hidden="true">
       <div class="vhs-vignette"></div>
       <div class="vhs-flicker"></div>
@@ -296,11 +396,13 @@
 
     <main class="entry">
       <section>
-        <h1 class="neon"><span class="flicker1 neon">D</span>ream<span class="flicker2">l</span>ess <span class="flicker3">B</span>oy</h1>
+        <p class="entry-label"><span aria-hidden="true"></span> Dreamless Boy · home system</p>
+        <h1><span class="flicker1">D</span>ream<span class="flicker2">l</span>ess <span class="flicker3">B</span>oy</h1>
         <p class="type-line"><span id="typed-line"></span><span class="cursor" aria-hidden="true"></span></p>
         <button class="enter-link" id="enter-link" type="button" aria-label="Enter site" disabled>
           <span>[ Initialize Sequence ]</span>
         </button>
+        <p class="entry-divider">Tobias AEI · personal archive</p>
       </section>
     </main>
     <script>

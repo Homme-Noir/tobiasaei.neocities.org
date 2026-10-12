@@ -15,40 +15,143 @@
 		<div id="container">
 			<div id="headerPlaceholder"></div>
 			<main class="home-main">
-				<section class="home-hero reveal">
-					<h1>
-						Welcome to my corner <span>of the digital world.</span>
-					</h1>
-					<div class="home-copy">
-						<p>
-							Tobi here
-							<span
-								class="home-inline-icon nf nf-md-hand_wave"
-								aria-hidden="true"
-							></span
-							>. This is a repository for fragments - incomplete
-							projects, poetry without rhyme, and thoughts that
-							don't settle.
-						</p>
-						<p>
-							Wander through the directories. The architecture is
-							basic, but the intent is sincere.
-						</p>
+				<section class="deck-shell" aria-label="Dreamless Boy home terminal">
+					<header class="deck-topbar">
+						<span class="deck-window-lights" aria-hidden="true">
+							<i></i><i></i><i></i>
+						</span>
+						<p>TAE-01 <span>·</span> HOME TERMINAL</p>
+						<time data-deck-clock>--:--:-- UTC</time>
+					</header>
+
+					<div class="deck-workspace">
+						<aside class="deck-sidebar" aria-label="Operator status">
+							<section class="deck-panel deck-operator">
+								<p class="deck-label">Operator</p>
+								<h1>Dreamless <em>Boy</em></h1>
+								<p class="deck-handle">// Tobias AEI · home terminal</p>
+								<div class="deck-tags" aria-label="Site topics">
+									<span>poetry.exe</span>
+									<span>projects</span>
+									<span>late-night thoughts</span>
+								</div>
+							</section>
+
+							<section class="deck-panel deck-boot" aria-labelledby="deck-boot-title">
+								<h2 class="deck-label" id="deck-boot-title">Directory index</h2>
+								<ul>
+									<li><span>[ok]</span> music uplink ............... ready</li>
+									<li><span>[ok]</span> writings archive ........... open</li>
+									<li><span>[ok]</span> project files .............. indexed</li>
+									<li><span>[ok]</span> journal transmissions ...... loaded</li>
+									<li><span>[ok]</span> random scraps .............. stored</li>
+								</ul>
+							</section>
+
+							<section class="deck-panel deck-status" aria-labelledby="deck-status-title">
+								<h2 class="deck-label" id="deck-status-title">System status</h2>
+								<dl>
+									<div>
+										<dt>Visitors</dt>
+										<dd id="neocities-visitor-count" aria-live="polite">…</dd>
+									</div>
+									<div>
+										<dt>Mode</dt>
+										<dd>restful</dd>
+									</div>
+									<div>
+										<dt>Signal</dt>
+										<dd class="deck-signal" aria-label="Signal strong"><i></i><i></i><i></i><i></i></dd>
+									</div>
+								</dl>
+								<p class="deck-status-note" id="visitor-count-note">Neocities site views · refreshed daily</p>
+							</section>
+						</aside>
+
+						<div class="deck-main-column">
+							<section class="deck-panel deck-terminal" aria-labelledby="deck-welcome-title">
+								<div class="deck-terminal-bar">
+									<p id="deck-welcome-title">~/dreamless-boy <span>— navigate the directories</span></p>
+									<span aria-hidden="true">● ● ●</span>
+								</div>
+								<div class="deck-terminal-content">
+									<p class="deck-intro">
+										Tobi here <span aria-hidden="true">👋</span>. This is a repository for fragments — incomplete projects, poetry without rhyme, and thoughts that don't settle. The architecture is basic, but the intent is sincere.
+									</p>
+									<nav class="deck-directory" aria-label="Site directories">
+										<a class="deck-card" href="music.html">
+											<span class="deck-card-index">01</span>
+											<span class="deck-card-icon nf nf-md-music" aria-hidden="true"></span>
+											<strong>Music</strong>
+											<small>What I am listening to and curating.</small>
+										</a>
+										<a class="deck-card" href="writings.html">
+											<span class="deck-card-index">02</span>
+											<span class="deck-card-icon nf nf-md-book-open-page-variant" aria-hidden="true"></span>
+											<strong>Writings</strong>
+											<small>Poetry and short stories maybe.</small>
+										</a>
+										<a class="deck-card" href="projects.html">
+											<span class="deck-card-index">03</span>
+											<span class="deck-card-icon nf nf-md-code-brackets" aria-hidden="true"></span>
+											<strong>Projects</strong>
+											<small>What I am working on or did.</small>
+										</a>
+										<a class="deck-card" href="journal.html">
+											<span class="deck-card-index">04</span>
+											<span class="deck-card-icon nf nf-md-notebook-edit-outline" aria-hidden="true"></span>
+											<strong>Journal</strong>
+											<small>Thoughts and opinions.</small>
+										</a>
+										<a class="deck-card" href="random.html">
+											<span class="deck-card-index">05</span>
+											<span class="deck-card-icon nf nf-md-shuffle-variant" aria-hidden="true"></span>
+											<strong>Random</strong>
+											<small>A scrapbook of everything else.</small>
+										</a>
+										<a class="deck-card" href="photography.html">
+											<span class="deck-card-index">06</span>
+											<span class="deck-card-icon nf nf-md-camera-outline" aria-hidden="true"></span>
+											<strong>Photography</strong>
+											<small>Pictures I've taken.</small>
+										</a>
+									</nav>
+									<div class="deck-waveform" aria-hidden="true">
+										<div class="deck-equalizer"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+										<svg viewBox="0 0 600 54" preserveAspectRatio="none">
+											<path d="M0 28 C45 4 70 48 118 27 S190 7 235 28 S308 47 355 25 S425 5 470 28 S545 48 600 20" />
+											<path d="M0 30 C60 42 80 14 140 27 S220 42 280 26 S370 10 430 28 S530 38 600 24" />
+										</svg>
+									</div>
+								</div>
+							</section>
+
+							<div class="deck-controlbar">
+								<div class="deck-indicators" aria-label="System channels">
+									<span><i></i> PWR</span>
+									<span><i></i> TX</span>
+									<span><i></i> RX</span>
+									<span><i></i> AUX</span>
+								</div>
+								<div class="deck-readouts" aria-hidden="true">
+									<span>GAIN <i></i></span><span>SIG <i></i></span><span>FREQ <i></i></span>
+								</div>
+								<a class="deck-guestbook-link" href="#guestbook">
+									<span class="nf nf-md-account-edit" aria-hidden="true"></span>
+									Visitor logs <span aria-hidden="true">⌄</span>
+								</a>
+							</div>
+						</div>
 					</div>
-					<!-- views = Neocities session visitors. Loaded from data/neocities-site-stats.json (refreshed on each deploy; browser CSP blocks live API fetch). -->
-					<p class="home-visitor-counter" aria-live="polite">
-						<span
-							class="nf nf-md-account_group home-counter-icon"
-							aria-hidden="true"
-						></span>
-						<span class="home-counter-label">Visitors</span>
-						<strong
-							id="neocities-visitor-count"
-							class="home-visitor-count-num"
-							>…</strong
-						>
-					</p>
+
+					<footer class="deck-bottom-bar">
+						<span>INDEX <i>06</i> SECTIONS</span>
+						<span>ARCHIVE <i>PERSONAL</i> WRITINGS</span>
+						<span>RADIO <i>SOMAFM</i> STREAMS</span>
+						<span>Dreamless_Boy // TAE</span>
+					</footer>
 				</section>
+
 				<section
 					class="guestbook-list home-guestbook"
 					id="guestbook"
@@ -90,6 +193,23 @@
 			(function () {
 				var el = document.getElementById("neocities-visitor-count");
 				if (!el) return;
+				var note = document.getElementById("visitor-count-note");
+				var clock = document.querySelector("[data-deck-clock]");
+
+				if (clock) {
+					function updateClock() {
+						clock.textContent =
+							new Intl.DateTimeFormat("en-GB", {
+								timeZone: "UTC",
+								hour: "2-digit",
+								minute: "2-digit",
+								second: "2-digit",
+								hour12: false,
+							}).format(new Date()) + " UTC";
+					}
+					updateClock();
+					window.setInterval(updateClock, 1000);
+				}
 
 				function formatCommas(n) {
 					var s = String(Math.max(0, Math.floor(Number(n)) || 0));
@@ -110,13 +230,17 @@
 						el.textContent = formatCommas(views);
 						var gen = data.generated_at;
 						el.title = gen
-							? "Neocities session visitors · figure updates when the site is deployed (" +
-								gen +
-								")"
-							: "Neocities session visitors · updates on deploy";
+							? "Neocities site views · snapshot generated " + gen
+							: "Neocities site views";
+						if (note && gen) {
+							note.textContent =
+								"Neocities site views · updated " +
+								new Date(gen).toLocaleDateString();
+						}
 					})
 					.catch(function () {
 						el.textContent = "—";
+						if (note) note.textContent = "Visitor count unavailable";
 						el.title =
 							"Could not load data/neocities-site-stats.json (run deploy or python scripts/fetch_neocities_site_stats.py).";
 					});
