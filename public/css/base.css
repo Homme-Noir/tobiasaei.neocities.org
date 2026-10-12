@@ -1,0 +1,284 @@
+/* ============================================================
+   base.css — fonts, reset, tokens derived from the palette,
+   global body background, and shared primitives.
+
+   Load order (see styles.css):
+     palette.css → base.css → layout.css → components.css → theme.css
+   ============================================================ */
+
+/* ---- Fonts: local Nerd Font families behind legacy aliases ---- */
+@font-face {
+	font-family: "Space Grotesk";
+	src: url("../fonts/JetBrainsMonoNerdFont-Regular.woff2") format("woff2");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "IBM Plex Mono";
+	src: url("../fonts/IosevkaNerdFont-Regular.woff2") format("woff2");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Cormorant Garamond";
+	src: url("../fonts/VictorMonoNerdFont-Regular.woff2") format("woff2");
+	font-display: swap;
+}
+
+/* ---- Semantic tokens (always derived from palette colors) ---- */
+:root {
+	/* Typography roles */
+	--font-mono: "IBM Plex Mono", ui-monospace, monospace;
+	--font-ui: "Space Grotesk", sans-serif;
+	--font-display: "Cormorant Garamond", serif;
+
+	/* Color roles */
+	--ink: var(--color-9); /* primary text */
+	--ink-muted: color-mix(in srgb, var(--color-9) 60%, transparent);
+	--accent-warm: var(--color-8); /* secondary text / labels */
+	--accent-hot: var(--color-6); /* alerts, focus, live status */
+	--accent-violet: var(--color-5);
+	--panel-bg: color-mix(in srgb, var(--color-1) 82%, transparent);
+	--panel-border: color-mix(in srgb, var(--color-5) 32%, transparent);
+	--glow-hot: 0 0 10px color-mix(in srgb, var(--color-6) 70%, transparent);
+}
+
+/* ---- Reset / defaults ---- */
+* {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	min-height: 100vh;
+	font-family: var(--font-ui);
+	color: var(--ink);
+	background-color: var(--color-1);
+	background-image:
+		radial-gradient(
+			circle at 8% 9%,
+			color-mix(in srgb, var(--color-4) 30%, transparent),
+			transparent 42%
+		),
+		radial-gradient(
+			circle at 92% 88%,
+			color-mix(in srgb, var(--color-6) 16%, transparent),
+			transparent 35%
+		),
+		linear-gradient(140deg, var(--color-1), var(--color-2));
+	background-attachment: fixed;
+	display: flex;
+	justify-content: center;
+}
+
+/* Global CRT scanline overlay (palette-derived) */
+body::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+	z-index: 1;
+	opacity: 0.16;
+	background: repeating-linear-gradient(
+		to bottom,
+		transparent 0,
+		transparent 2px,
+		color-mix(in srgb, var(--color-1) 22%, transparent) 3px,
+		transparent 4px
+	);
+}
+
+/* Soft vignette so edges fall back into the dark end of the palette */
+body::after {
+	content: "";
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+	z-index: 1;
+	opacity: 0.24;
+	background: radial-gradient(
+		circle at center,
+		transparent 48%,
+		color-mix(in srgb, var(--color-1) 58%, transparent) 100%
+	);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+	outline: 2px solid var(--color-6);
+	outline-offset: 2px;
+}
+
+/* ---- Shared primitives ---- */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
+}
+
+main {
+	background: transparent;
+	color: inherit;
+}
+
+.page-head {
+	position: relative;
+	margin-bottom: 1.25rem;
+	padding: 0 0 1rem 1rem;
+	border-bottom: 1px solid var(--panel-border);
+}
+
+.page-head::before {
+	content: "";
+	position: absolute;
+	inset: 0 auto 1rem 0;
+	width: 3px;
+	background: linear-gradient(var(--color-6), var(--color-5), var(--color-4));
+	box-shadow: 0 0 14px color-mix(in srgb, var(--color-6) 32%, transparent);
+}
+
+.page-head h1 {
+	margin: 0;
+	font-family: var(--font-display);
+	font-size: clamp(2rem, 5vw, 3.3rem);
+	font-weight: 600;
+	color: var(--ink);
+	text-shadow: 0 0 28px color-mix(in srgb, var(--color-6) 12%, transparent);
+}
+
+.page-head p {
+	max-width: 62ch;
+	margin: 0.4rem 0 0;
+	color: var(--accent-warm);
+	font-size: 0.82rem;
+	line-height: 1.65;
+}
+
+.vault-text {
+	margin-top: 0.8rem;
+	white-space: pre-wrap;
+	word-break: break-word;
+	font-family: var(--font-mono);
+	font-size: 0.95rem;
+	line-height: 1.75;
+	color: var(--ink);
+}
+
+/* Filter buttons (shared by writings + journal tabs) */
+.writings-filter-btn,
+.journal-filter-btn {
+	border: 1px solid var(--panel-border);
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--color-1) 82%, transparent);
+	color: var(--accent-warm);
+	font-family: var(--font-mono);
+	font-size: 0.72rem;
+	letter-spacing: 0.06em;
+	padding: 0.48rem 0.8rem;
+	cursor: pointer;
+	transition:
+		color 0.18s ease,
+		border-color 0.18s ease,
+		background-color 0.18s ease;
+}
+
+.writings-filter-btn:hover,
+.journal-filter-btn:hover,
+.writings-filter-btn.active,
+.journal-filter-btn.active {
+	border-color: var(--color-6);
+	background: color-mix(in srgb, var(--color-5) 17%, transparent);
+	color: var(--ink);
+}
+
+/* Scroll-to-top button (injected by site.js) */
+.scroll-to-top {
+	position: fixed;
+	right: 1.2rem;
+	bottom: 4.8rem;
+	z-index: 35;
+	width: 44px;
+	height: 44px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 999px;
+	border: 1px solid var(--panel-border);
+	text-decoration: none;
+	background: color-mix(in srgb, var(--color-1) 92%, transparent);
+	color: var(--ink);
+	font-family: var(--font-mono);
+	font-size: 1.2rem;
+	line-height: 1;
+	transition:
+		opacity 0.2s ease,
+		transform 0.2s ease;
+}
+
+.scroll-to-top:hover {
+	transform: translateY(-2px);
+}
+
+.scroll-to-top--hidden {
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+}
+
+/* Staggered reveal (applied by site.js) */
+.stagger-in {
+	opacity: 0;
+	transform: translateY(12px);
+	animation: staggerIn 0.48s ease forwards;
+	animation-delay: var(--stagger-delay, 0ms);
+}
+
+@keyframes staggerIn {
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+/* Page entrance animation */
+main.page-enter {
+	opacity: 0;
+	transform: translateY(14px);
+}
+
+main.page-enter.page-enter--active {
+	opacity: 1;
+	transform: none;
+	transition:
+		opacity 0.52s ease,
+		transform 0.52s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.stagger-in {
+		opacity: 1;
+		transform: none;
+		animation: none;
+	}
+
+	main.page-enter,
+	main.page-enter.page-enter--active {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+
+	.scroll-to-top {
+		transition: none;
+	}
+}

@@ -19,6 +19,12 @@
 
   initCuratedPlaylists();
 
+  /* Spectrum "Signal Analyzer" panel (js/spectrum-visualizer.js) */
+  var spectrumCanvas = document.getElementById("spectrum-canvas");
+  if (spectrumCanvas && window.TAE_SPECTRUM) {
+    window.TAE_SPECTRUM.attach(spectrumCanvas);
+  }
+
   loadLastfmConfig()
     .then(function (cfg) {
       lastfmKey = cfg.apiKey;

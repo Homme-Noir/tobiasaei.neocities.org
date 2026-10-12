@@ -99,6 +99,15 @@
     if (desiredVolume < 0) desiredVolume = 0;
     if (desiredVolume > 1) desiredVolume = 1;
 
+    // Listeners that want to tap into the live <audio> element
+    // (e.g. the music page spectrum visualizer). Announced globally
+    // so subscribers registered before/after init both get wired up.
+    function announceAudioElement() {
+      document.dispatchEvent(
+        new CustomEvent("taei:lofi-audio", { detail: { audio: audio } }),
+      );
+    }
+
     function snapshot(playing) {
       return {
         stationId: station.value,
@@ -206,6 +215,7 @@
 
     setSource(currentStation.id);
     setVolume(desiredVolume);
+    announceAudioElement();
     if (isPlaying) {
       tryPlay({ allowMutedBootstrap: true });
     } else {
@@ -213,5 +223,31 @@
     }
   }
 
-  window.TAE_LOFI_PLAYER = { init: initLofiPlayer };
+  var audioSubscribers = [];
+  function onAudioElement(fn) {
+    audioSubscribers.push(fn);
+    return function () {
+      var i = audioSubscribers.indexOf(fn);
+      if (i >= 0) audioSubscribers.splice(i, 1);
+    };
+  }
+
+  window.TAE_LOFI_PLAYER = {
+    init: initLofiPlayer,
+    /* Subscribe to the shared <audio> element once it exists.
+       Returns an unsubscribe function. Used by the spectrum visualizer. */
+    onAudioElement: onAudioElement,
+  };
+
+  document.addEventListener("taei:lofi-audio", function (e) {
+    var el = e && e.detail && e.detail.audio;
+    if (!el) return;
+    for (var i = 0; i < audioSubscribers.length; i++) {
+      try {
+        audioSubscribers[i](el);
+      } catch (err) {
+        /* a broken subscriber must not take down the player */
+      }
+    }
+  });
 })();
