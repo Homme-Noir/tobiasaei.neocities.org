@@ -1,18 +1,8 @@
 /* ============================================================
    components.css — reusable UI components shared across pages:
-   lofi player, music, writings, projects, journal, random,
-   photography. Depends on tokens from base.css.
+   lofi player, guestbook, music, writings, projects, journal,
+   random, photography. Depends on tokens from base.css.
    ============================================================ */
-
-/* Kicker label (uppercase accent line used on content pages) */
-.guestbook-kicker {
-        margin: 0;
-        font-family: var(--font-mono);
-        font-size: 0.67rem;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        color: var(--accent-hot);
-}
 
 /* ============================================================
    Floating lofi radio player (injected by js/lofi-player.js)
@@ -69,6 +59,122 @@
 	color: var(--ink);
 	background: var(--color-1);
 	accent-color: var(--accent-hot);
+}
+
+/* ============================================================
+   Guestbook (HTML Comment Box + wrapper)
+   ============================================================ */
+.guestbook-list {
+	border: 1px solid var(--panel-border);
+	border-radius: 0.9rem;
+	background: var(--color-2);
+	box-shadow: 0 12px 32px rgba(var(--color-1-rgb), 0.22);
+	padding: clamp(1rem, 2.5vw, 1.45rem);
+}
+
+.guestbook-kicker {
+	margin: 0;
+	font-family: var(--font-mono);
+	font-size: 0.67rem;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	color: var(--accent-hot);
+}
+
+.guestbook-list h2 {
+	margin: 0 0 0.9rem;
+	color: var(--ink);
+	font-family: var(--font-display);
+	font-size: 1.7rem;
+}
+
+.guestbook-description {
+	margin: 0 0 1rem;
+	color: var(--accent-warm);
+	font-size: 0.9rem;
+	line-height: 1.65;
+}
+
+.guestbook-discussion {
+	min-width: 0;
+}
+
+#HCB_comment_box {
+	color: var(--ink);
+	font-family: var(--font-mono);
+	font-size: 0.82rem;
+	line-height: 1.6;
+}
+
+#HCB_comment_box a,
+#HCB_comment_box .hcb-link {
+	color: var(--accent-warm);
+}
+
+#HCB_comment_box #hcb_form_content,
+#HCB_comment_box #hcb_form_email,
+#HCB_comment_box #hcb_form_name,
+#HCB_comment_box #hcb_form_website,
+#HCB_comment_box input.text,
+#HCB_comment_box textarea {
+	max-width: 100%;
+	border: 1px solid var(--panel-border);
+	border-radius: 0.5rem;
+	background: var(--color-1);
+	color: var(--ink);
+	font: inherit;
+	padding: 0.65rem 0.75rem;
+}
+
+#HCB_comment_box #hcb_form_content {
+	width: 100%;
+	min-height: 8rem;
+}
+
+#HCB_comment_box input.text:focus,
+#HCB_comment_box textarea:focus {
+	border-color: var(--accent-hot);
+	outline: 2px solid rgba(var(--color-6-rgb), 0.25);
+	outline-offset: 1px;
+}
+
+#HCB_comment_box input.submit {
+	border: 1px solid var(--accent-violet);
+	border-radius: 999px;
+	background: var(--color-2);
+	color: var(--ink);
+	cursor: pointer;
+	font: inherit;
+	padding: 0.55rem 0.9rem;
+}
+
+#HCB_comment_box input.submit:hover {
+	background: var(--color-5);
+}
+
+#HCB_comment_box .comment {
+	border-top: 1px solid var(--panel-border);
+	margin-top: 1rem;
+	padding-top: 0.75rem;
+}
+
+#HCB_comment_box .author-name,
+#HCB_comment_box .hcb-comment-body,
+#HCB_comment_box blockquote {
+	color: var(--ink);
+}
+
+#HCB_comment_box .hcb-comment-tb,
+#HCB_comment_box .date,
+#HCB_comment_box .home-desc {
+	color: var(--accent-warm);
+}
+
+#HCB_comment_box p.error {
+	border: 1px solid var(--accent-hot);
+	background: var(--color-2);
+	color: var(--ink);
+	padding: 0.65rem;
 }
 
 /* ============================================================

@@ -1,261 +1,286 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dreamless_Boy // v4.2</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Mono:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Digital home." />
+    <title>Dreamless_Boy | Home</title>
+    <!-- Local Nerd Font families are aliased in css/base.css; no CDN needed. -->
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/home.css" />
   </head>
   <body class="page-home">
     <div id="container">
-    <!-- Top Bar -->
-    <div class="top-bar">
-      <div class="model-label">MODEL TAE-01 · HOME TERMINAL</div>
-      <div class="time-display" id="clock">--:--:-- UTC</div>
-    </div>
+      <div id="headerPlaceholder"></div>
+      <main class="home-main">
+        <section class="deck-shell" aria-label="Dreamless Boy home terminal">
+          <header class="deck-topbar">
+            <p>MODEL TAE-01 · HOME TERMINAL</p>
+            <time data-deck-clock>--:--:-- UTC</time>
+            <span class="deck-window-lights" aria-hidden="true">
+              <i></i><i></i><i></i>
+            </span>
+          </header>
 
-    <!-- Main Layout -->
-    <div class="main-layout">
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <section class="panel operator-panel">
-          <div class="panel-header">Operator</div>
-          <h1 class="title glitch-text">
-            <span class="dreamless">Dreamless</span>
-            <span class="boy">_Boy</span>
-          </h1>
-          <p class="subtitle">// Tobias AEI · bard-unit v4.2</p>
-          <div class="tags">
-            <span class="tag">poetry.exe</span>
-            <span class="tag">falling.gracefully</span>
-            <span class="tag">nocturnal.node</span>
-          </div>
-        </section>
+          <div class="deck-workspace">
+            <aside class="deck-sidebar" aria-label="Operator status">
+              <section class="deck-panel deck-operator">
+                <p class="deck-label">Operator</p>
+                <h1>Dreamless<em>_Boy</em></h1>
+                <p class="deck-handle">// Dreamless_Boy · bard-unit v4.2</p>
+                <div class="deck-tags" aria-label="Site topics">
+                  <span>poetry.exe</span>
+                  <span>failing.gracefully</span>
+                  <span>nocturnal.mode</span>
+                </div>
+              </section>
 
-        <section class="panel boot-panel">
-          <div class="panel-header">Boot Sequence</div>
-          <div class="boot-text" id="bootText">
-            <div class="header-line">TAE-01 cyberdeck // dreamless-boy os v4.2</div>
-            <div><span class="ok">[ok]</span> mounting /fragments ........... done</div>
-            <div><span class="ok">[ok]</span> loading poetry.dll ............ 64k</div>
-            <div><span class="ok">[ok]</span> radio uplink .................. live</div>
-            <div><span class="fail">[!]</span> ambition.exe not found</div>
-            <div>
-              <span class="ok">[ok]</span> melancholy buffer ..............
-              <span class="cursor-blink"></span>
+              <section
+                class="deck-panel deck-boot"
+                aria-labelledby="deck-boot-title"
+              >
+                <h2 class="deck-label" id="deck-boot-title">Boot sequence</h2>
+                <p class="deck-boot-os">
+                  TAE-01 cyberdeck // dreamless-boy os v4.2
+                </p>
+                <ul>
+                  <li>
+                    <span class="ok">[ok]</span> mounting /fragments ..........
+                    done
+                  </li>
+                  <li>
+                    <span class="ok">[ok]</span> loading poetry.dll ...........
+                    64k
+                  </li>
+                  <li>
+                    <span class="ok">[ok]</span> radio uplink .................
+                    live
+                  </li>
+                  <li>
+                    <span class="warn">[!]</span>
+                    ambition.exe
+                    <em>not found</em>
+                  </li>
+                  <li>
+                    <span class="ok">[ok]</span> melancholy buf ..............
+                    warm
+                  </li>
+                </ul>
+                <a class="deck-skip" href="#deck-directory">[ skip → ]</a>
+              </section>
+
+              <section
+                class="deck-panel deck-status"
+                aria-labelledby="deck-status-title"
+              >
+                <h2 class="deck-label" id="deck-status-title">System status</h2>
+                <dl>
+                  <div>
+                    <dt>Uptime</dt>
+                    <dd data-deck-uptime>00:00:00</dd>
+                  </div>
+                  <div>
+                    <dt>Visitors</dt>
+                    <dd id="neocities-visitor-count" aria-live="polite">…</dd>
+                  </div>
+                  <div>
+                    <dt>Mood</dt>
+                    <dd>wistful</dd>
+                  </div>
+                  <div>
+                    <dt>Signal</dt>
+                    <dd class="deck-signal" aria-label="Signal strong">
+                      <i></i><i></i><i></i><i></i>
+                    </dd>
+                  </div>
+                </dl>
+              </section>
+            </aside>
+
+            <div class="deck-main-column">
+              <section
+                class="deck-panel deck-terminal"
+                aria-labelledby="deck-welcome-title"
+              >
+                <div class="deck-terminal-bar">
+                  <p id="deck-welcome-title">
+                    ~/dreamless-boy
+                    <span>— navigate the directories</span>
+                  </p>
+                  <span class="deck-window-lights" aria-hidden="true"
+                    ><i></i><i></i><i></i
+                  ></span>
+                </div>
+                <div class="deck-terminal-content">
+                  <p class="deck-intro">
+                    Tobi here
+                    <span aria-hidden="true">👋</span>. This is a collection of
+                    fragments. The architecture is basic, but I hope you enjoy
+                    it anyway.
+                  </p>
+                  <nav
+                    class="deck-directory"
+                    id="deck-directory"
+                    aria-label="Site directories"
+                  >
+                    <a class="deck-card" href="music.html">
+                      <span class="deck-card-index">01</span>
+                      <span
+                        class="deck-card-icon nf nf-md-music"
+                        aria-hidden="true"
+                      ></span>
+                      <strong>Music</strong>
+                      <small>Frequencies &amp; curated playlists</small>
+                    </a>
+                    <a class="deck-card" href="writings.html">
+                      <span class="deck-card-index">02</span>
+                      <span
+                        class="deck-card-icon nf nf-md-book-open-page-variant"
+                        aria-hidden="true"
+                      ></span>
+                      <strong>Writings</strong>
+                      <small>Poems &amp; vault entries</small>
+                    </a>
+                    <a class="deck-card" href="projects.html">
+                      <span class="deck-card-index">03</span>
+                      <span
+                        class="deck-card-icon nf nf-md-code-brackets"
+                        aria-hidden="true"
+                      ></span>
+                      <strong>Projects</strong>
+                      <small>Builds in various states of decay</small>
+                    </a>
+                    <a class="deck-card" href="journal.html">
+                      <span class="deck-card-index">04</span>
+                      <span
+                        class="deck-card-icon nf nf-md-notebook-edit-outline"
+                        aria-hidden="true"
+                      ></span>
+                      <strong>Journal</strong>
+                      <small>Dated transmissions</small>
+                    </a>
+                    <a class="deck-card" href="random.html">
+                      <span class="deck-card-index">05</span>
+                      <span
+                        class="deck-card-icon nf nf-md-shuffle-variant"
+                        aria-hidden="true"
+                      ></span>
+                      <strong>Random</strong>
+                      <small>Unclassified scrap memory</small>
+                    </a>
+                    <a class="deck-card" href="photography.html">
+                      <span class="deck-card-index">06</span>
+                      <span
+                        class="deck-card-icon nf nf-md-camera-outline"
+                        aria-hidden="true"
+                      ></span>
+                      <strong>Photography</strong>
+                      <small>Light captured, mostly by accident</small>
+                    </a>
+                  </nav>
+                  <div class="deck-waveform" aria-hidden="true">
+                    <div class="deck-equalizer">
+                      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i
+                      ><i></i><i></i>
+                    </div>
+                    <svg viewBox="0 0 640 64" preserveAspectRatio="none">
+                      <path
+                        class="wave-a"
+                        d="M0 34 C42 8 78 54 118 32 S190 8 236 34 S310 58 356 28 S430 6 478 32 S548 56 640 22"
+                      />
+                      <path
+                        class="wave-b"
+                        d="M0 36 C56 50 92 16 148 32 S228 52 286 30 S368 12 428 34 S520 48 640 28"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </section>
+
+              <div class="deck-controlbar">
+                <div class="deck-indicators" aria-label="System channels">
+                  <span><i></i> PWR</span>
+                  <span><i></i> TX</span>
+                  <span><i></i> RX</span>
+                  <span><i></i> AUX</span>
+                </div>
+                <div class="deck-readouts" aria-hidden="true">
+                  <span>GAIN <i></i></span><span>SIG <i></i></span
+                  ><span>FREQ <i></i></span>
+                </div>
+                <a class="deck-guestbook-link" href="#guestbook">
+                  <span class="nf nf-md-account-edit" aria-hidden="true"></span>
+                  Visitor logs
+                </a>
+              </div>
             </div>
           </div>
-          <button class="skip-btn" id="skipBtn" type="button">[ skip → ]</button>
+
+          <footer class="deck-bottom-bar">
+            <span class="deck-meter"
+              >SIG
+              <b aria-hidden="true"
+                ><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i
+              ></b>
+              98%</span
+            >
+            <span class="deck-meter"
+              >PWR
+              <b aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></b>
+              74%</span
+            >
+            <span class="deck-meter"
+              >MEM
+              <b aria-hidden="true"><i></i><i></i><i></i><i></i></b>
+              52%</span
+            >
+            <span class="deck-build">DREAMLESS_BOY // V4.2</span>
+          </footer>
         </section>
 
-        <section class="panel status-panel">
-          <div class="panel-header">System Status</div>
-          <div class="status-row">
-            <span class="status-label">UPTIME</span>
-            <span class="status-value" id="uptime">00:00:00</span>
-          </div>
-          <div class="status-row">
-            <span class="status-label">VISITORS</span>
-            <span class="status-value">2,064</span>
-          </div>
-          <div class="status-row">
-            <span class="status-label">MOOD</span>
-            <span class="status-value mood">wistful</span>
-          </div>
-          <div class="status-row">
-            <span class="status-label">SIGNAL</span>
-            <div class="signal-bars" aria-label="Signal strength: strong">
-              <div class="signal-bar" style="height: 4px"></div>
-              <div class="signal-bar" style="height: 7px"></div>
-              <div class="signal-bar" style="height: 10px"></div>
-              <div class="signal-bar" style="height: 13px"></div>
-              <div class="signal-bar" style="height: 16px"></div>
-            </div>
-          </div>
-        </section>
-      </aside>
-
-      <!-- Main Content -->
-      <main class="main-content">
-        <div class="terminal-header">
-          <div class="path"><span>~/</span>dreamless-boy <span>—</span> navigate the directories</div>
-          <div class="traffic-lights" aria-hidden="true">
-            <div class="traffic-light red"></div>
-            <div class="traffic-light yellow"></div>
-            <div class="traffic-light green"></div>
-          </div>
-        </div>
-
-        <div class="terminal-body">
-          <p class="intro-text">
-            Tobi here. This is a repository for fragments – incomplete projects,
-            poetry without rhyme, and thoughts that don't settle. The architecture
-            is basic, but the intent is sincere.
+        <section
+          class="guestbook-list home-guestbook"
+          id="guestbook"
+          aria-labelledby="guestbook-title"
+        >
+          <h2 id="guestbook-title">Visitor logs</h2>
+          <p class="guestbook-description">
+            Leave a trace before you close the tab. Comments are anonymous and
+            shared with everyone.
           </p>
-
-          <div class="cards-grid">
-            <a class="card" href="music.html">
-              <span class="card-number">01</span>
-              <span class="card-icon icon-magenta" aria-hidden="true">&#9835;</span>
-              <div>
-                <div class="card-title">Music</div>
-                <div class="card-desc">Frequencies &amp; curated playlists</div>
-              </div>
-            </a>
-            <a class="card" href="writings.html">
-              <span class="card-number">02</span>
-              <span class="card-icon icon-pink" aria-hidden="true">&#9998;</span>
-              <div>
-                <div class="card-title">Writings</div>
-                <div class="card-desc">Poems &amp; vault entries</div>
-              </div>
-            </a>
-            <a class="card" href="projects.html">
-              <span class="card-number">03</span>
-              <span class="card-icon icon-magenta" aria-hidden="true">[ ]</span>
-              <div>
-                <div class="card-title">Projects</div>
-                <div class="card-desc">Builds in various states of decay</div>
-              </div>
-            </a>
-            <a class="card" href="journal.html">
-              <span class="card-number">04</span>
-              <span class="card-icon icon-magenta" aria-hidden="true">&#9997;</span>
-              <div>
-                <div class="card-title">Journal</div>
-                <div class="card-desc">Dated transmissions</div>
-              </div>
-            </a>
-            <a class="card" href="random.html">
-              <span class="card-number">05</span>
-              <span class="card-icon icon-orange" aria-hidden="true">&#9889;</span>
-              <div>
-                <div class="card-title">Random</div>
-                <div class="card-desc">Unclassified scrap memory</div>
-              </div>
-            </a>
-            <a class="card" href="photography.html">
-              <span class="card-number">06</span>
-              <span class="card-icon icon-blue" aria-hidden="true">&#9635;</span>
-              <div>
-                <div class="card-title">Photography</div>
-                <div class="card-desc">Light captured, mostly by accident</div>
-              </div>
-            </a>
+          <div class="guestbook-discussion">
+            <div id="HCB_comment_box">
+              <a href="https://www.htmlcommentbox.com">Comment Box</a>
+              is loading comments…
+            </div>
+            <script>
+              window.hcb_user = {
+                PAGE: "tobiasaei-home-guestbook",
+                comments_header: "Visitor Logs",
+                name_label: "Handle (optional)",
+                content_label: "Leave a message…",
+                submit: "Transmit",
+                anonymous: "Anonymous",
+                no_comments_msg: "No transmissions yet. Be the first.",
+              };
+            </script>
+            <script
+              type="text/javascript"
+              id="hcb"
+              src="https://www.htmlcommentbox.com/jread?page=tobiasaei-home-guestbook&amp;mod=%241%24wq1rdBcg%24oSXYvwmfhd%2Fovd8GG8Z6C%2F&amp;opts=16798&amp;num=10"
+              async
+            ></script>
           </div>
-
-          <div class="waveform-section">
-            <div class="waveform-bars" id="waveformBars" aria-hidden="true"></div>
-            <div class="waveform-line" aria-hidden="true">
-              <svg viewBox="0 0 800 40" preserveAspectRatio="none">
-                <path id="wavePath1" class="wave-path wave-path--primary" fill="none" stroke-width="1.5" />
-                <path id="wavePath2" class="wave-path wave-path--dim" fill="none" stroke-width="1" />
-                <path id="wavePath3" class="wave-path wave-path--warm" fill="none" stroke-width="1" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div class="control-bar">
-          <div class="indicators">
-            <div class="indicator">
-              <div class="indicator-box active"></div>
-              <span class="indicator-label">PWR</span>
-            </div>
-            <div class="indicator">
-              <div class="indicator-box active"></div>
-              <span class="indicator-label">TX</span>
-            </div>
-            <div class="indicator">
-              <div class="indicator-box"></div>
-              <span class="indicator-label">RX</span>
-            </div>
-            <div class="indicator">
-              <div class="indicator-box pink-active"></div>
-              <span class="indicator-label">AUX</span>
-            </div>
-          </div>
-          <div class="sliders">
-            <div class="slider-group">
-              <div class="slider-track">
-                <div class="slider-fill" style="width: 40%"></div>
-                <div class="slider-knob" style="left: 40%"></div>
-              </div>
-              <span class="slider-label">GAIN</span>
-            </div>
-            <div class="slider-group">
-              <div class="slider-track">
-                <div class="slider-fill" style="width: 60%"></div>
-                <div class="slider-knob" style="left: 60%"></div>
-              </div>
-              <span class="slider-label">SIG</span>
-            </div>
-            <div class="slider-group">
-              <div class="slider-track">
-                <div class="slider-fill" style="width: 50%"></div>
-                <div class="slider-knob" style="left: 50%"></div>
-              </div>
-              <span class="slider-label">FREQ</span>
-            </div>
-          </div>
-          <button class="visitor-logs-btn" id="visitorLogsBtn" type="button">
-            VISITOR LOGS &#9662;
-          </button>
-        </div>
+        </section>
       </main>
+      <div id="footerPlaceholder"></div>
     </div>
-
-    <!-- Bottom Bar -->
-    <div class="bottom-bar">
-      <div class="status-indicators">
-        <span class="sig-label">&sqsub;SIG</span>
-        <div class="bar-graph" id="sigBars" aria-hidden="true"></div>
-        <span class="sig-value">98%</span>
-        <span class="sig-label">PWR</span>
-        <div class="bar-graph" id="pwrBars" aria-hidden="true"></div>
-        <span class="sig-value">74%</span>
-        <span class="sig-label">MEM</span>
-        <div class="bar-graph" id="memBars" aria-hidden="true"></div>
-        <span class="sig-value">52%</span>
-        <span class="sep">|</span>
-      </div>
-      <div class="version">DREAMLESS_BOY // V4.2</div>
-    </div>
-
-    <!-- Radio Player -->
-    <div class="radio-player">
-      <button class="play-radio-btn" id="playRadioBtn" type="button">&#9654; Play radio</button>
-      <select class="radio-select" id="radioSelect" aria-label="Radio station">
-        <option value="https://ice1.somafm.com/groovesalad-128-mp3">SomaFM: Groove Salad</option>
-        <option value="https://ice1.somafm.com/dronezone-128-mp3">SomaFM: Drone Zone</option>
-        <option value="https://ice1.somafm.com/spacestation-128-mp3">SomaFM: Space Station</option>
-        <option value="https://ice1.somafm.com/secretagent-128-mp3">SomaFM: Secret Agent</option>
-        <option value="https://ice1.somafm.com/lush-128-mp3">SomaFM: Lush</option>
-      </select>
-      <input
-        type="range"
-        class="volume-slider"
-        id="volumeSlider"
-        min="0"
-        max="100"
-        value="65"
-        aria-label="Radio volume"
-      />
-      <audio id="radioAudio" preload="none"></audio>
-    </div>
-
-    <!-- Visitor Logs Link -->
-    <a class="visitor-logs-link" id="visitorLogsLink" href="index.html">
-      <span aria-hidden="true">&#9997;</span> Visitor logs
+    <a class="home-guestbook-shortcut" href="#guestbook">
+      <span class="nf nf-md-message-text-outline" aria-hidden="true"></span>
+      Visitor logs
     </a>
-
     <script src="js/pages/home.js"></script>
-    </div>
+    <script src="js/lofi-player.js"></script>
+    <script src="js/site.js"></script>
   </body>
 </html>

@@ -83,7 +83,7 @@ body::before {
 		to bottom,
 		transparent 0,
 		transparent 2px,
-		rgba(var(--color-1-rgb), 0.85) 3px,
+		rgba(0, 0, 0, 0.45) 3px,
 		transparent 4px
 	);
 }
@@ -99,7 +99,7 @@ body::after {
 	background: radial-gradient(
 		circle at center,
 		transparent 48%,
-		rgba(var(--color-1-rgb), 0.9) 100%
+		rgba(0, 0, 0, 0.55) 100%
 	);
 }
 

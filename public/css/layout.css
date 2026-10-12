@@ -17,17 +17,10 @@
 .page-music #container,
 .page-writings #container,
 .page-projects #container,
-.page-home #container,
+.page-journal #container,
 .page-random #container {
 	width: 100%;
 	max-width: none;
-}
-
-/* The cyberdeck home uses its own full-bleed grid layout (home.css). */
-body.page-home #container {
-	width: 100%;
-	max-width: none;
-	padding: 0;
 }
 
 .music-layout,
