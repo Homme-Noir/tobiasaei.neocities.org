@@ -5,18 +5,19 @@ Static personal site (HTML, CSS, JS). Deploys to Neocities via GitHub Actions.
 ## Structure
 
 - **`public/`** — All files that get deployed to Neocities.
-  - **`css/palette.css`** — Canonical nine-color palette and RGB channels for translucent palette tints.
-  - **`styles.css`** — Shared stylesheet entry point; imports the ordered CSS layers in `css/`.
-  - **`css/`** — Shared design tokens, layout, page components, redesign layers, home deck, and final polish.
-  - **`js/site.js`** — Shared layout, navigation, and page initialization.
+  - **`css/palette.css`** — The site's nine colors; the styles use these directly, including for transparent tints.
+  - **`styles.css`** — Shared styles: fonts, layout, navigation, page components, theme, and responsive behavior.
+  - **`css/home.css`** — Home dashboard styles.
+  - **`css/intro.css`** and **`css/radio-player.css`** — Styles used only by their standalone pages.
+  - **`js/site.js`** — Shared header/footer, navigation, and page initialization.
   - **`js/lofi-player.js`** — Shared floating radio player.
-  - **`js/utils.js`** — Shared helpers used by data-driven pages.
-  - **`js/pages/`** — Page-specific behavior, kept separate from page markup.
+  - **`js/utils.js`** — HTML/date helpers shared by the journal, writings, and music pages.
+  - **`js/pages/`** — Behavior for pages that load or update data; simple static pages need no page script.
   - **`includes/`** — Shared header and footer fragments.
   - **`data/`** — JSON data consumed by the pages.
 - **`.github/workflows/neocities.yml`** — Deploys `public/` to Neocities on every push to `main`.
 - **`.github/workflows/sync-spotify-playlists.yml`** — Syncs Spotify playlists into `public/data/spotify-playlists.json` and **deploys `public/` to Neocities when that file changes** (needed because pushes from `github-actions[bot]` do not trigger the normal deploy-on-push workflow).
-- **`scripts/`** — Automation scripts (playlist sync and other data generation helpers).
+- **`scripts/`** — Small scripts that update site data for deployment.
 
 ## Deploy setup (one-time)
 
@@ -30,9 +31,9 @@ After that, every `git push` to `main` will deploy the contents of `public/` to 
 
 ### Guestbook
 
-The guestbook on `home.html` uses [Giscus](https://giscus.app/) to store entries as GitHub Discussions, so they persist and are shared across visitors. Discussions are enabled for this repository and the guestbook uses the **General** category. Install the [Giscus GitHub App](https://github.com/apps/giscus) with access to this repository to allow posting. Visitors need a GitHub account to sign or reply; entries are public.
+The guestbook on `home.html` uses [HTML Comment Box](https://www.htmlcommentbox.com/) to host shared comments. Visitors can post anonymously without a site or GitHub account; comments are stored by the third-party service.
 
-Previous guestbook entries were stored only in each visitor's browser and cannot be migrated centrally.
+Entries from the earlier browser-local guestbook cannot be migrated centrally.
 
 ### Photography
 

@@ -11,11 +11,10 @@
   var CURRENT_PAGE =
     (CURRENT_FILE || "index.html").replace(/\.html$/, "") || "index";
 
-  var HOME_TITLE = "Tobias_AEI | Home";
-  var TAB_SUFFIX = " | Tobias AEI";
+  var HOME_TITLE = "Dreamless_Boy | Home";
+  var TAB_SUFFIX = " | Dreamless_Boy";
   var SCROLL_THRESHOLD = 300;
   var STAGGER_GROUPS = [
-    ".directory-grid .directory-card",
     ".music-track-grid .music-track-tile",
     ".projects-grid .projects-card",
     ".writings-entries > li",
@@ -68,7 +67,12 @@
 
   function applyTabTitleSuffix() {
     if (document.title === HOME_TITLE) return;
-    if (document.title.indexOf(TAB_SUFFIX) !== -1) return;
+    if (
+      document.title.indexOf(TAB_SUFFIX) !== -1 ||
+      document.title.indexOf("Dreamless_Boy") !== -1 ||
+      document.title.indexOf("Dreamless Boy") !== -1
+    )
+      return;
     document.title = document.title + TAB_SUFFIX;
   }
 
@@ -175,7 +179,9 @@
       overlay.classList.remove("is-open");
       toggle.setAttribute("aria-expanded", "false");
       window.setTimeout(function () {
-        overlay.setAttribute("hidden", "hidden");
+        if (!overlay.classList.contains("is-open")) {
+          overlay.setAttribute("hidden", "hidden");
+        }
       }, 220);
     }
 
@@ -225,19 +231,26 @@
     }
 
     Promise.all([
-      fetch(PATH_BASE + "includes/header.html").then(function (r) {
-        return r.text();
-      }),
-      fetch(PATH_BASE + "includes/footer.html").then(function (r) {
-        return r.text();
-      }),
+      fetch(PATH_BASE + "includes/header.html", { cache: "no-store" }).then(
+        function (r) {
+          if (!r.ok) throw new Error("Could not load the site header.");
+          return r.text();
+        },
+      ),
+      fetch(PATH_BASE + "includes/footer.html", { cache: "no-store" }).then(
+        function (r) {
+          if (!r.ok) throw new Error("Could not load the site footer.");
+          return r.text();
+        },
+      ),
     ])
       .then(function (parts) {
         headerPlaceholder.outerHTML = parts[0];
         footerPlaceholder.outerHTML = parts[1];
         runAfterInject();
       })
-      .catch(function () {
+      .catch(function (error) {
+        console.error("Could not load the shared site layout.", error);
         runAfterInject();
       });
   }

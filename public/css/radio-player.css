@@ -10,10 +10,10 @@ body {
 }
 .carrier {
   width: min(90vw, 360px);
-  border: 1px solid rgb(var(--color-5-rgb) / 0.45);
+  border: 1px solid color-mix(in srgb, var(--color-5) 45%, transparent);
   border-radius: 10px;
   padding: 0.9rem 1rem;
-  background: rgb(var(--color-2-rgb) / 0.92);
+  background: color-mix(in srgb, var(--color-2) 92%, transparent);
 }
 .carrier h1 {
   margin: 0 0 0.45rem;

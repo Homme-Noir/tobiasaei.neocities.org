@@ -102,7 +102,7 @@
     function snapshot(playing) {
       return {
         stationId: station.value,
-        volume: Number(volume.value || 0.45),
+        volume: Number(volume.value),
         isPlaying: !!playing,
       };
     }
@@ -153,7 +153,7 @@
             setPlayingState(false, true);
             return;
           }
-          var remembered = Number(volume.value || desiredVolume || 0.45);
+          var remembered = Number(volume.value);
           if (Number.isNaN(remembered)) remembered = 0.45;
           audio.muted = true;
           audio.volume = 0;

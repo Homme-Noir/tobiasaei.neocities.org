@@ -4,35 +4,37 @@
   var clock = document.querySelector("[data-deck-clock]");
   var uptime = document.querySelector("[data-deck-uptime]");
   var startedAt = Date.now();
+  var clockFormatter = clock
+    ? new Intl.DateTimeFormat("en-GB", {
+        timeZone: "UTC",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      })
+    : null;
 
-  if (clock) {
-    function updateClock() {
-      clock.textContent =
-        new Intl.DateTimeFormat("en-GB", {
-          timeZone: "UTC",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
-        }).format(new Date()) + " UTC";
+  function updateDeckClock() {
+    if (clock) {
+      clock.textContent = clockFormatter.format(new Date()) + " UTC";
     }
-    updateClock();
-    window.setInterval(updateClock, 1000);
-  }
-
-  if (uptime) {
-    function pad(n) {
-      return String(n).padStart(2, "0");
-    }
-    function updateUptime() {
+    if (uptime) {
       var total = Math.max(0, Math.floor((Date.now() - startedAt) / 1000));
       var hours = Math.floor(total / 3600);
       var minutes = Math.floor((total % 3600) / 60);
       var seconds = total % 60;
-      uptime.textContent = pad(hours) + ":" + pad(minutes) + ":" + pad(seconds);
+      uptime.textContent =
+        String(hours).padStart(2, "0") +
+        ":" +
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(seconds).padStart(2, "0");
     }
-    updateUptime();
-    window.setInterval(updateUptime, 1000);
+  }
+
+  if (clock || uptime) {
+    updateDeckClock();
+    window.setInterval(updateDeckClock, 1000);
   }
 
   if (!el) return;

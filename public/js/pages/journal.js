@@ -1,15 +1,7 @@
 (function () {
   var root = document.getElementById("journal-entries");
   if (!root) return;
-  var utils = window.TAEUtils || {};
-  var escapeHtml =
-    typeof utils.escapeHtml === "function"
-      ? utils.escapeHtml
-      : function (s) {
-          var el = document.createElement("div");
-          el.textContent = String(s || "");
-          return el.innerHTML;
-        };
+  var utils = window.TAEUtils;
   var filterButtons = document.querySelectorAll(".journal-filter-btn");
   var entries = [];
   var activeFilter = "journal";
@@ -17,10 +9,7 @@
   function timestampOf(entry) {
     var value = entry && entry.datetime ? String(entry.datetime) : "";
     if (!value) return Number.NEGATIVE_INFINITY;
-    var iso =
-      typeof utils.parseISODate === "function"
-        ? utils.parseISODate(value)
-        : value;
+    var iso = utils.parseISODate(value);
     if (!iso) return Number.NEGATIVE_INFINITY;
     var ms = Date.parse(iso);
     if (!Number.isFinite(ms)) return Number.NEGATIVE_INFINITY;
@@ -28,27 +17,17 @@
   }
 
   function visibleEntries() {
-    if (activeFilter === "all") {
-      return entries.slice().sort(function (a, b) {
-        return timestampOf(b) - timestampOf(a);
-      });
-    }
-    if (activeFilter === "indexes") {
-      return entries
-        .filter(function (e) {
-          return !!e.isIndex;
-        })
-        .sort(function (a, b) {
-          return timestampOf(b) - timestampOf(a);
-        });
-    }
-    return entries
-      .filter(function (e) {
-        return !e.isIndex;
-      })
-      .sort(function (a, b) {
-        return timestampOf(b) - timestampOf(a);
-      });
+    var filtered =
+      activeFilter === "all"
+        ? entries.slice()
+        : entries.filter(function (entry) {
+            return activeFilter === "indexes"
+              ? !!entry.isIndex
+              : !entry.isIndex;
+          });
+    return filtered.sort(function (a, b) {
+      return timestampOf(b) - timestampOf(a);
+    });
   }
 
   function render() {
@@ -64,29 +43,29 @@
       var datetime = entry.datetime || "Forgotten";
       var title = entry.title || "Untitled";
       var body = String(entry.content || "");
-      var machineDatetime =
-        typeof utils.parseISODate === "function"
-          ? utils.parseISODate(datetime)
-          : "";
+      var machineDatetime = utils.parseISODate(datetime);
       html += '<article class="journal-item">';
       if (machineDatetime) {
         html +=
           '<time class="journal-date" datetime="' +
           machineDatetime +
           '">' +
-          escapeHtml(datetime) +
+          utils.escapeHtml(datetime) +
           "</time>";
       } else {
         html +=
-          '<span class="journal-date">' + escapeHtml(datetime) + "</span>";
+          '<span class="journal-date">' +
+          utils.escapeHtml(datetime) +
+          "</span>";
       }
       html += '<div class="journal-body">';
-      html += '<h2 class="journal-item-title">' + escapeHtml(title) + "</h2>";
-      html += '<div class="vault-text">' + escapeHtml(body) + "</div>";
+      html +=
+        '<h2 class="journal-item-title">' + utils.escapeHtml(title) + "</h2>";
+      html += '<div class="vault-text">' + utils.escapeHtml(body) + "</div>";
       html += "</div></article>";
     }
     root.innerHTML = html;
-    if (typeof utils.refreshStagger === "function") utils.refreshStagger();
+    utils.refreshStagger();
   }
 
   for (var i = 0; i < filterButtons.length; i++) {
@@ -118,6 +97,6 @@
     .catch(function () {
       root.innerHTML =
         '<article class="journal-item"><time class="journal-date" datetime="">Forgotten</time><div class="journal-body"><h2 class="journal-item-title">Journal unavailable</h2><p>Vault export could not be loaded.</p></div></article>';
-      if (typeof utils.refreshStagger === "function") utils.refreshStagger();
+      utils.refreshStagger();
     });
 })();

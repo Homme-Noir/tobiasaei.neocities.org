@@ -2,15 +2,7 @@
   var container = document.getElementById("writings-list");
   var filterButtons = document.querySelectorAll(".writings-filter-btn");
   if (!container) return;
-  var utils = window.TAEUtils || {};
-  var escapeHtml =
-    typeof utils.escapeHtml === "function"
-      ? utils.escapeHtml
-      : function (s) {
-          var div = document.createElement("div");
-          div.textContent = String(s || "");
-          return div.innerHTML;
-        };
+  var utils = window.TAEUtils;
   var entries = [];
   var activeFilter = "all";
 
@@ -38,17 +30,17 @@
       html += '<details class="writings-entry"' + isOpen + ">";
       html += "<summary>";
       html += '<span class="entry-type">Poetry</span>';
-      html += "<h2>" + escapeHtml(title) + "</h2>";
+      html += "<h2>" + utils.escapeHtml(title) + "</h2>";
       html += "</summary>";
       html +=
         '<div class="writings-full vault-text">' +
-        escapeHtml(content) +
+        utils.escapeHtml(content) +
         "</div>";
       html += "</details>";
       html += "</li>";
     }
     container.innerHTML = html;
-    if (typeof utils.refreshStagger === "function") utils.refreshStagger();
+    utils.refreshStagger();
   }
 
   fetch("data/vault-poems.json", { cache: "no-store" })
@@ -60,7 +52,7 @@
       if (!Array.isArray(poems) || !poems.length) {
         container.innerHTML =
           '<li><details class="writings-entry" open><summary><span class="entry-type">Poetry</span><h2>No poems found</h2></summary><p class="writings-excerpt">Could not load poems from vault export.</p></details></li>';
-        if (typeof utils.refreshStagger === "function") utils.refreshStagger();
+        utils.refreshStagger();
         return;
       }
       entries = poems;
@@ -69,7 +61,7 @@
     .catch(function () {
       container.innerHTML =
         '<li><details class="writings-entry" open><summary><span class="entry-type">Poetry</span><h2>Poems unavailable</h2></summary><p class="writings-excerpt">Vault export could not be loaded.</p></details></li>';
-      if (typeof utils.refreshStagger === "function") utils.refreshStagger();
+      utils.refreshStagger();
     });
 
   for (var i = 0; i < filterButtons.length; i++) {

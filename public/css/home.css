@@ -1,4 +1,5 @@
 /* Home cyberdeck */
+.page-home #headerPlaceholder,
 .page-home #headerArea,
 .page-home #footer.site-footer {
   display: none;
@@ -21,12 +22,12 @@
   background-image:
     radial-gradient(
       circle at 12% 8%,
-      rgb(var(--color-5-rgb) / 0.18),
+      color-mix(in srgb, var(--color-5) 18%, transparent),
       transparent 28rem
     ),
     radial-gradient(
       circle at 88% 92%,
-      rgb(var(--color-6-rgb) / 0.12),
+      color-mix(in srgb, var(--color-6) 12%, transparent),
       transparent 26rem
     ),
     linear-gradient(180deg, var(--color-2), var(--color-1));
@@ -38,16 +39,16 @@
   min-height: calc(100svh - 3.6rem);
   display: grid;
   grid-template-rows: auto 1fr auto;
-  border: 1px solid rgb(var(--color-5-rgb) / 0.35);
+  border: 1px solid color-mix(in srgb, var(--color-5) 35%, transparent);
   border-radius: 1.05rem;
   background: linear-gradient(
     180deg,
-    rgb(var(--color-1-rgb) / 0.94),
-    rgb(var(--color-1-rgb) / 0.98)
+    color-mix(in srgb, var(--color-1) 94%, transparent),
+    color-mix(in srgb, var(--color-1) 98%, transparent)
   );
   box-shadow:
-    0 0 0 1px rgb(var(--color-2-rgb) / 0.8) inset,
-    0 24px 60px rgb(var(--color-1-rgb) / 0.72);
+    0 0 0 1px color-mix(in srgb, var(--color-2) 80%, transparent) inset,
+    0 24px 60px color-mix(in srgb, var(--color-1) 72%, transparent);
 }
 
 .deck-shell::before {
@@ -57,7 +58,7 @@
   pointer-events: none;
   background: radial-gradient(
     120% 80% at 70% 0%,
-    rgb(var(--color-5-rgb) / 0.08),
+    color-mix(in srgb, var(--color-5) 8%, transparent),
     transparent 46%
   );
 }
@@ -72,7 +73,7 @@
     to bottom,
     transparent 0,
     transparent 2px,
-    rgb(var(--color-1-rgb) / 0.18) 3px,
+    color-mix(in srgb, var(--color-1) 18%, transparent) 3px,
     transparent 4px
   );
 }
@@ -95,7 +96,7 @@
 
 .deck-topbar {
   justify-content: center;
-  border-bottom: 1px solid rgb(var(--color-5-rgb) / 0.22);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-5) 22%, transparent);
 }
 
 .deck-topbar p {
@@ -106,7 +107,7 @@
 .deck-topbar time {
   position: absolute;
   right: 3.4rem;
-  color: rgb(var(--color-8-rgb) / 0.8);
+  color: color-mix(in srgb, var(--color-8) 80%, transparent);
   font-variant-numeric: tabular-nums;
 }
 
@@ -125,32 +126,32 @@
   height: 0.48rem;
   border-radius: 50%;
   background: var(--color-6);
-  box-shadow: 0 0 8px rgb(var(--color-6-rgb) / 0.55);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--color-6) 55%, transparent);
 }
 
 .deck-window-lights i:nth-child(2) {
   background: var(--color-8);
-  box-shadow: 0 0 8px rgb(var(--color-8-rgb) / 0.45);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--color-8) 45%, transparent);
 }
 
 .deck-window-lights i:nth-child(3) {
   background: var(--color-5);
-  box-shadow: 0 0 8px rgb(var(--color-5-rgb) / 0.45);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--color-5) 45%, transparent);
 }
 
 .deck-topbar .deck-window-lights i:first-child {
   background: var(--color-8);
-  box-shadow: 0 0 8px rgb(var(--color-8-rgb) / 0.45);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--color-8) 45%, transparent);
 }
 
 .deck-topbar .deck-window-lights i:nth-child(2) {
   background: var(--color-4);
-  box-shadow: 0 0 8px rgb(var(--color-4-rgb) / 0.45);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--color-4) 45%, transparent);
 }
 
 .deck-topbar .deck-window-lights i:nth-child(3) {
   background: var(--color-6);
-  box-shadow: 0 0 8px rgb(var(--color-6-rgb) / 0.45);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--color-6) 45%, transparent);
 }
 
 .deck-workspace {
@@ -180,10 +181,10 @@
 
 .deck-panel {
   min-width: 0;
-  border: 1px solid rgb(var(--color-5-rgb) / 0.28);
+  border: 1px solid color-mix(in srgb, var(--color-5) 28%, transparent);
   border-radius: 0.85rem;
-  background: rgb(var(--color-1-rgb) / 0.82);
-  box-shadow: 0 0 0 1px rgb(var(--color-9-rgb) / 0.025) inset;
+  background: color-mix(in srgb, var(--color-1) 82%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-9) 2.5%, transparent) inset;
 }
 
 .deck-operator {
@@ -214,7 +215,7 @@
   font-weight: 600;
   line-height: 1.05;
   letter-spacing: 0.01em;
-  text-shadow: 0 0 22px rgb(var(--color-9-rgb) / 0.28);
+  text-shadow: 0 0 22px color-mix(in srgb, var(--color-9) 28%, transparent);
 }
 
 .deck-operator h1 em {
@@ -223,7 +224,7 @@
   margin: 0 0 0 0.9rem;
   color: var(--color-6);
   font-style: italic;
-  text-shadow: 0 0 18px rgb(var(--color-6-rgb) / 0.45);
+  text-shadow: 0 0 18px color-mix(in srgb, var(--color-6) 45%, transparent);
 }
 
 .deck-handle {
@@ -241,13 +242,13 @@
 }
 
 .deck-tags span {
-  border: 1px solid rgb(var(--color-5-rgb) / 0.38);
+  border: 1px solid color-mix(in srgb, var(--color-5) 38%, transparent);
   border-radius: 0.28rem;
   padding: 0.22rem 0.48rem;
-  color: rgb(var(--color-9-rgb) / 0.82);
+  color: color-mix(in srgb, var(--color-9) 82%, transparent);
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.58rem;
-  background: rgb(var(--color-1-rgb) / 0.35);
+  background: color-mix(in srgb, var(--color-1) 35%, transparent);
 }
 
 .deck-boot,
@@ -262,7 +263,7 @@
 
 .deck-boot-os {
   margin: 0.7rem 0 0.55rem;
-  color: rgb(var(--color-9-rgb) / 0.55);
+  color: color-mix(in srgb, var(--color-9) 55%, transparent);
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.6rem;
 }
@@ -273,7 +274,7 @@
   gap: 0.38rem;
   margin: 0;
   padding: 0;
-  color: rgb(var(--color-9-rgb) / 0.78);
+  color: color-mix(in srgb, var(--color-9) 78%, transparent);
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.62rem;
   line-height: 1.45;
@@ -296,11 +297,11 @@
   position: absolute;
   right: 0.85rem;
   bottom: 0.7rem;
-  color: rgb(var(--color-9-rgb) / 0.55);
+  color: color-mix(in srgb, var(--color-9) 55%, transparent);
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.58rem;
   text-decoration: none;
-  border: 1px solid rgb(var(--color-5-rgb) / 0.28);
+  border: 1px solid color-mix(in srgb, var(--color-5) 28%, transparent);
   border-radius: 0.28rem;
   padding: 0.22rem 0.45rem;
 }
@@ -327,7 +328,7 @@
 }
 
 .deck-status dt {
-  color: rgb(var(--color-5-rgb) / 0.78);
+  color: color-mix(in srgb, var(--color-5) 78%, transparent);
   letter-spacing: 0.16em;
 }
 
@@ -352,7 +353,7 @@
 .deck-signal i {
   width: 0.22rem;
   background: var(--color-6);
-  box-shadow: 0 0 6px rgb(var(--color-6-rgb) / 0.45);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--color-6) 45%, transparent);
 }
 
 .deck-signal i:nth-child(1) {
@@ -381,7 +382,7 @@
   gap: 0.8rem;
   min-height: 2.15rem;
   padding: 0.5rem 0.9rem;
-  border-bottom: 1px solid rgb(var(--color-5-rgb) / 0.22);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-5) 22%, transparent);
   color: var(--color-8);
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.66rem;
@@ -393,7 +394,7 @@
 }
 
 .deck-terminal-bar p span {
-  color: rgb(var(--color-9-rgb) / 0.45);
+  color: color-mix(in srgb, var(--color-9) 45%, transparent);
 }
 
 .deck-terminal-content {
@@ -423,12 +424,12 @@
   justify-content: flex-end;
   gap: 0.28rem;
   padding: 0.85rem 0.9rem 0.8rem;
-  border: 1px solid rgb(var(--color-5-rgb) / 0.3);
+  border: 1px solid color-mix(in srgb, var(--color-5) 30%, transparent);
   border-radius: 0.7rem;
   background: linear-gradient(
     180deg,
-    rgb(var(--color-2-rgb) / 0.38),
-    rgb(var(--color-1-rgb) / 0.92)
+    color-mix(in srgb, var(--color-2) 38%, transparent),
+    color-mix(in srgb, var(--color-1) 92%, transparent)
   );
   color: inherit;
   text-decoration: none;
@@ -441,8 +442,8 @@
 
 .deck-card:hover {
   transform: translateY(-2px);
-  border-color: rgb(var(--color-6-rgb) / 0.7);
-  box-shadow: 0 0 18px rgb(var(--color-6-rgb) / 0.12);
+  border-color: color-mix(in srgb, var(--color-6) 70%, transparent);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--color-6) 12%, transparent);
 }
 
 .deck-card-index {
@@ -478,7 +479,7 @@
 }
 
 .deck-card small {
-  color: rgb(var(--color-9-rgb) / 0.55);
+  color: color-mix(in srgb, var(--color-9) 55%, transparent);
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.62rem;
   line-height: 1.45;
@@ -596,9 +597,9 @@
   gap: 1rem;
   min-height: 3.7rem;
   padding: 0.55rem 0.9rem;
-  border: 1px solid rgb(var(--color-5-rgb) / 0.28);
+  border: 1px solid color-mix(in srgb, var(--color-5) 28%, transparent);
   border-radius: 0.85rem;
-  background: rgb(var(--color-1-rgb) / 0.82);
+  background: color-mix(in srgb, var(--color-1) 82%, transparent);
 }
 
 .deck-indicators,
@@ -617,7 +618,7 @@
 .deck-indicators span,
 .deck-readouts span {
   gap: 0.38rem;
-  color: rgb(var(--color-9-rgb) / 0.55);
+  color: color-mix(in srgb, var(--color-9) 55%, transparent);
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.58rem;
   letter-spacing: 0.1em;
@@ -629,13 +630,13 @@
   border: 1px solid var(--color-8);
   border-radius: 0.12rem;
   background: linear-gradient(180deg, var(--color-8), var(--color-7));
-  box-shadow: 0 0 10px rgb(var(--color-8-rgb) / 0.45);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-8) 45%, transparent);
 }
 
 .deck-indicators span:nth-child(4) i {
   border-color: var(--color-5);
   background: linear-gradient(180deg, var(--color-5), var(--color-4));
-  box-shadow: 0 0 10px rgb(var(--color-5-rgb) / 0.4);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-5) 40%, transparent);
 }
 
 .deck-readouts span {
@@ -650,8 +651,8 @@
   width: 3.6rem;
   height: 0.34rem;
   border-radius: 999px;
-  background: rgb(var(--color-2-rgb) / 0.9);
-  box-shadow: 0 0 0 1px rgb(var(--color-5-rgb) / 0.28);
+  background: color-mix(in srgb, var(--color-2) 90%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-5) 28%, transparent);
 }
 
 .deck-readouts i::after {
@@ -662,7 +663,7 @@
   height: 0.72rem;
   border-radius: 50%;
   background: var(--color-8);
-  box-shadow: 0 0 10px rgb(var(--color-8-rgb) / 0.7);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-8) 70%, transparent);
   transform: translate(-50%, -50%);
 }
 
@@ -683,7 +684,7 @@
   gap: 0.45rem;
   min-height: 2.35rem;
   padding: 0.45rem 1rem;
-  border: 1px solid rgb(var(--color-8-rgb) / 0.7);
+  border: 1px solid color-mix(in srgb, var(--color-8) 70%, transparent);
   border-radius: 999px;
   background: linear-gradient(180deg, var(--color-8), var(--color-7));
   color: var(--color-1);
@@ -693,7 +694,7 @@
   letter-spacing: 0.08em;
   text-decoration: none;
   text-transform: uppercase;
-  box-shadow: 0 0 16px rgb(var(--color-8-rgb) / 0.28);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--color-8) 28%, transparent);
 }
 
 .deck-guestbook-link:hover {
@@ -703,7 +704,7 @@
 .deck-bottom-bar {
   justify-content: flex-start;
   flex-wrap: wrap;
-  border-top: 1px solid rgb(var(--color-5-rgb) / 0.22);
+  border-top: 1px solid color-mix(in srgb, var(--color-5) 22%, transparent);
   gap: 1.4rem;
 }
 
@@ -711,7 +712,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  color: rgb(var(--color-9-rgb) / 0.55);
+  color: color-mix(in srgb, var(--color-9) 55%, transparent);
 }
 
 .deck-meter b {
@@ -724,7 +725,7 @@
   width: 0.32rem;
   height: 0.72rem;
   background: var(--color-8);
-  box-shadow: 0 0 6px rgb(var(--color-8-rgb) / 0.4);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--color-8) 40%, transparent);
 }
 
 .deck-meter:nth-child(2) i {
@@ -737,7 +738,7 @@
 
 .deck-build {
   margin-left: auto;
-  color: rgb(var(--color-9-rgb) / 0.55);
+  color: color-mix(in srgb, var(--color-9) 55%, transparent);
 }
 
 .home-guestbook {
@@ -752,17 +753,17 @@
 }
 
 .page-home .lofi-toggle {
-  border: 1px solid rgb(var(--color-6-rgb) / 0.7);
-  background: rgb(var(--color-1-rgb) / 0.82);
+  border: 1px solid color-mix(in srgb, var(--color-6) 70%, transparent);
+  background: color-mix(in srgb, var(--color-1) 82%, transparent);
   color: var(--color-6);
 }
 
 .page-home .lofi-toggle.is-playing {
-  background: rgb(var(--color-6-rgb) / 0.18);
+  background: color-mix(in srgb, var(--color-6) 18%, transparent);
 }
 
 .page-home .lofi-station {
-  background: rgb(var(--color-1-rgb) / 0.92);
+  background: color-mix(in srgb, var(--color-1) 92%, transparent);
 }
 
 .home-guestbook-shortcut {
@@ -778,7 +779,7 @@
   font-size: 0.68rem;
   letter-spacing: 0.08em;
   text-decoration: none;
-  text-shadow: 0 1px 5px rgb(var(--color-1-rgb) / 0.8);
+  text-shadow: 0 1px 5px color-mix(in srgb, var(--color-1) 80%, transparent);
 }
 
 .home-guestbook-shortcut:hover {
@@ -799,15 +800,6 @@
   }
 }
 
-@media (max-width: 980px) {
-  .directory-grid,
-  .projects-grid,
-  .music-track-grid,
-  .random-bento {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
 @media (max-width: 900px) {
   .deck-workspace {
     grid-template-columns: minmax(210px, 0.78fr) minmax(0, 1.5fr);
@@ -819,46 +811,6 @@
 
   .deck-readouts {
     display: none;
-  }
-}
-
-@media (max-width: 760px) {
-  .nav-shell {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .home-main,
-  .music-main,
-  .writings-content,
-  .projects-grid-wrap,
-  .journal-stream,
-  .random-bento,
-  .guestbook-layout main {
-    padding-top: 1.2rem;
-  }
-
-  .directory-grid,
-  .projects-grid,
-  .music-track-grid,
-  .random-bento,
-  .journal-item {
-    grid-template-columns: 1fr;
-  }
-
-  .random-tile--wide,
-  .random-tile--tall {
-    grid-column: auto;
-    grid-row: auto;
-  }
-
-  .journal-stream::before {
-    display: none;
-  }
-
-  #footer.site-footer {
-    flex-direction: column;
-    align-items: flex-start;
   }
 }
 

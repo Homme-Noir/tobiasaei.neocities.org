@@ -14,7 +14,6 @@ import urllib.parse
 import urllib.request
 from typing import Any, NoReturn
 
-
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 OUTPUT_PATH = ROOT / "public" / "data" / "spotify-playlists.json"
 TOKEN_URL = "https://accounts.spotify.com/api/token"

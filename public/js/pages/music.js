@@ -6,15 +6,7 @@
   if (!container) return;
   var lastfmKey;
   var lastfmUser;
-  var utils = window.TAEUtils || {};
-  var escapeHtml =
-    typeof utils.escapeHtml === "function"
-      ? utils.escapeHtml
-      : function (s) {
-          var div = document.createElement("div");
-          div.textContent = String(s || "");
-          return div.innerHTML;
-        };
+  var utils = window.TAEUtils;
 
   function loadLastfmConfig() {
     return fetch("data/lastfm-config.json", { cache: "no-store" }).then(
@@ -44,7 +36,7 @@
         weeklyContainer.innerHTML =
           '<li class="music-track-tile"><span class="music-track-name">Couldn’t load weekly tracks.</span><span class="music-track-artist">Check lastfm-config.json</span></li>';
       }
-      if (typeof utils.refreshStagger === "function") utils.refreshStagger();
+      utils.refreshStagger();
     });
 
   function runLastfmWidgets() {
@@ -77,15 +69,17 @@
             '<div class="music-now-info"><a href="' +
             url +
             '" target="_blank" rel="noopener" class="music-now-track">' +
-            escapeHtml(t.name) +
+            utils.escapeHtml(t.name) +
             "</a>";
           if (artist)
             html +=
               '<span class="music-now-artist">' +
-              escapeHtml(artist) +
+              utils.escapeHtml(artist) +
               "</span>";
           html +=
-            '<span class="music-now-status">' + escapeHtml(status) + "</span>";
+            '<span class="music-now-status">' +
+            utils.escapeHtml(status) +
+            "</span>";
           html += "</div></div>";
           container.innerHTML = html;
         })
@@ -99,8 +93,7 @@
           if (!weeklyContainer) return;
           weeklyContainer.innerHTML =
             '<li class="music-track-tile"><span class="music-track-name">Couldn’t load weekly tracks.</span><span class="music-track-artist">Try again later</span></li>';
-          if (typeof utils.refreshStagger === "function")
-            utils.refreshStagger();
+          utils.refreshStagger();
         }),
     ]);
   }
@@ -189,7 +182,7 @@
       frag.appendChild(emptyLi);
     }
     weeklyContainer.appendChild(frag);
-    if (typeof utils.refreshStagger === "function") utils.refreshStagger();
+    utils.refreshStagger();
   }
 
   function safeSpotifyPlaylistUrl(raw) {
@@ -216,7 +209,7 @@
       emptyArticle.appendChild(emptyH3);
       emptyArticle.appendChild(emptyP);
       curatedContainer.appendChild(emptyArticle);
-      if (typeof utils.refreshStagger === "function") utils.refreshStagger();
+      utils.refreshStagger();
       return;
     }
     var picks = getRotatingPlaylists(playlists);
@@ -254,11 +247,11 @@
       invalidArticle.appendChild(invalidH3);
       invalidArticle.appendChild(invalidP);
       curatedContainer.appendChild(invalidArticle);
-      if (typeof utils.refreshStagger === "function") utils.refreshStagger();
+      utils.refreshStagger();
       return;
     }
     curatedContainer.appendChild(fragment);
-    if (typeof utils.refreshStagger === "function") utils.refreshStagger();
+    utils.refreshStagger();
   }
 
   function getRotatingPlaylists(pool) {
@@ -344,14 +337,13 @@
       .catch(function () {
         renderCuratedPlaylists([]);
         setCuratedStatus("Couldn’t load synced playlists.");
-        if (typeof utils.refreshStagger === "function") utils.refreshStagger();
+        utils.refreshStagger();
       });
   }
 
   function sanitizeSpotifyDescription(value) {
     if (!value) return "";
-    if (typeof utils.stripHtml === "function") return utils.stripHtml(value);
-    return String(value || "").trim();
+    return utils.stripHtml(value);
   }
 
   function jsonp(url) {
