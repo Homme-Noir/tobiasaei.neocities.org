@@ -1,0 +1,21 @@
+/* Canonical site palette. RGB channels are provided for alpha overlays. */
+:root {
+  --color-1: #00202e;
+  --color-1-rgb: 0 32 46;
+  --color-2: #003f5c;
+  --color-2-rgb: 0 63 92;
+  --color-3: #2c4875;
+  --color-3-rgb: 44 72 117;
+  --color-4: #8a508f;
+  --color-4-rgb: 138 80 143;
+  --color-5: #bc5090;
+  --color-5-rgb: 188 80 144;
+  --color-6: #ff6361;
+  --color-6-rgb: 255 99 97;
+  --color-7: #ff8531;
+  --color-7-rgb: 255 133 49;
+  --color-8: #ffa600;
+  --color-8-rgb: 255 166 0;
+  --color-9: #ffd380;
+  --color-9-rgb: 255 211 128;
+}

@@ -4,7 +4,16 @@ Static personal site (HTML, CSS, JS). Deploys to Neocities via GitHub Actions.
 
 ## Structure
 
-- **`public/`** — All files that get deployed to Neocities (pages, styles, scripts, includes).
+- **`public/`** — All files that get deployed to Neocities.
+  - **`css/palette.css`** — Canonical nine-color palette and RGB channels for translucent palette tints.
+  - **`styles.css`** — Shared stylesheet entry point; imports the ordered CSS layers in `css/`.
+  - **`css/`** — Shared design tokens, layout, page components, redesign layers, home deck, and final polish.
+  - **`js/site.js`** — Shared layout, navigation, and page initialization.
+  - **`js/lofi-player.js`** — Shared floating radio player.
+  - **`js/utils.js`** — Shared helpers used by data-driven pages.
+  - **`js/pages/`** — Page-specific behavior, kept separate from page markup.
+  - **`includes/`** — Shared header and footer fragments.
+  - **`data/`** — JSON data consumed by the pages.
 - **`.github/workflows/neocities.yml`** — Deploys `public/` to Neocities on every push to `main`.
 - **`.github/workflows/sync-spotify-playlists.yml`** — Syncs Spotify playlists into `public/data/spotify-playlists.json` and **deploys `public/` to Neocities when that file changes** (needed because pushes from `github-actions[bot]` do not trigger the normal deploy-on-push workflow).
 - **`scripts/`** — Automation scripts (playlist sync and other data generation helpers).
@@ -13,8 +22,8 @@ Static personal site (HTML, CSS, JS). Deploys to Neocities via GitHub Actions.
 
 1. Create a repo on GitHub and push this project (see [petrapixel’s Git tutorial](https://petrapixel.neocities.org/coding/git-tutorial#neocities)).
 2. Get your **Neocities API key**: [Neocities → Site Settings → API](https://neocities.org/settings#api_key).
-3. In your GitHub repo: **Settings → Secrets and variables → Actions** → **New repository secret**  
-   - Name: `NEOCITIES_API_TOKEN`  
+3. In your GitHub repo: **Settings → Secrets and variables → Actions** → **New repository secret**
+   - Name: `NEOCITIES_API_TOKEN`
    - Value: your API key
 
 After that, every `git push` to `main` will deploy the contents of `public/` to your Neocities site.

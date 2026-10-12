@@ -1,0 +1,89 @@
+(function () {
+  var container = document.getElementById("writings-list");
+  var filterButtons = document.querySelectorAll(".writings-filter-btn");
+  if (!container) return;
+  var utils = window.TAEUtils || {};
+  var escapeHtml =
+    typeof utils.escapeHtml === "function"
+      ? utils.escapeHtml
+      : function (s) {
+          var div = document.createElement("div");
+          div.textContent = String(s || "");
+          return div.innerHTML;
+        };
+  var entries = [];
+  var activeFilter = "all";
+
+  function visibleEntries() {
+    if (activeFilter === "all") return entries.slice();
+    return entries.filter(function (entry) {
+      return String(entry.type || "poetry").toLowerCase() === activeFilter;
+    });
+  }
+
+  function render() {
+    var poems = visibleEntries();
+    if (!poems.length) {
+      container.innerHTML =
+        '<li><details class="writings-entry" open><summary><span class="entry-type">Poetry</span><h2>No poems found</h2></summary><p class="writings-excerpt">No entries match this filter.</p></details></li>';
+      return;
+    }
+    var html = "";
+    for (var i = 0; i < poems.length; i++) {
+      var poem = poems[i] || {};
+      var title = poem.title || "Untitled";
+      var content = String(poem.content || "");
+      var isOpen = i < 2 ? " open" : "";
+      html += "<li>";
+      html += '<details class="writings-entry"' + isOpen + ">";
+      html += "<summary>";
+      html += '<span class="entry-type">Poetry</span>';
+      html += "<h2>" + escapeHtml(title) + "</h2>";
+      html += "</summary>";
+      html +=
+        '<div class="writings-full vault-text">' +
+        escapeHtml(content) +
+        "</div>";
+      html += "</details>";
+      html += "</li>";
+    }
+    container.innerHTML = html;
+    if (typeof utils.refreshStagger === "function") utils.refreshStagger();
+  }
+
+  fetch("data/vault-poems.json", { cache: "no-store" })
+    .then(function (res) {
+      if (!res.ok) throw new Error("Poems unavailable");
+      return res.json();
+    })
+    .then(function (poems) {
+      if (!Array.isArray(poems) || !poems.length) {
+        container.innerHTML =
+          '<li><details class="writings-entry" open><summary><span class="entry-type">Poetry</span><h2>No poems found</h2></summary><p class="writings-excerpt">Could not load poems from vault export.</p></details></li>';
+        if (typeof utils.refreshStagger === "function") utils.refreshStagger();
+        return;
+      }
+      entries = poems;
+      render();
+    })
+    .catch(function () {
+      container.innerHTML =
+        '<li><details class="writings-entry" open><summary><span class="entry-type">Poetry</span><h2>Poems unavailable</h2></summary><p class="writings-excerpt">Vault export could not be loaded.</p></details></li>';
+      if (typeof utils.refreshStagger === "function") utils.refreshStagger();
+    });
+
+  for (var i = 0; i < filterButtons.length; i++) {
+    filterButtons[i].addEventListener("click", function () {
+      activeFilter = this.getAttribute("data-writing-filter") || "all";
+      for (var j = 0; j < filterButtons.length; j++) {
+        var isActive = filterButtons[j] === this;
+        filterButtons[j].classList.toggle("active", isActive);
+        filterButtons[j].setAttribute(
+          "aria-selected",
+          isActive ? "true" : "false",
+        );
+      }
+      render();
+    });
+  }
+})();
