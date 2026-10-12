@@ -115,9 +115,7 @@
       }
     }
 
-    /* The shared lofi player is initialized asynchronously by site.js
-       (after the header/footer includes resolve), so it may not exist
-       yet when this script runs. Poll briefly for its subscription API. */
+    /* Poll briefly for the shared lofi player's subscription API. */
     var subscribeTries = 0;
     function trySubscribe() {
       if (window.TAE_LOFI_PLAYER && window.TAE_LOFI_PLAYER.onAudioElement) {

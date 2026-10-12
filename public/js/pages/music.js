@@ -39,10 +39,10 @@
           '<p class="music-loading">Couldn’t load Last.fm configuration.</p>';
       }
       if (weeklyContainer) {
-        weeklyContainer.innerHTML =
-          '<li class="music-track-tile"><span class="music-track-name">Couldn’t load weekly tracks.</span><span class="music-track-artist">Check lastfm-config.json</span></li>';
+        renderWeeklyError(
+          "Couldn’t load the Last.fm configuration. Check data/lastfm-config.json.",
+        );
       }
-      utils.refreshStagger();
     });
 
   function runLastfmWidgets() {
@@ -96,12 +96,35 @@
       fetchWeeklyTopTracks()
         .then(renderWeeklyTracks)
         .catch(function () {
-          if (!weeklyContainer) return;
-          weeklyContainer.innerHTML =
-            '<li class="music-track-tile"><span class="music-track-name">Couldn’t load weekly tracks.</span><span class="music-track-artist">Try again later</span></li>';
-          utils.refreshStagger();
+          renderWeeklyError("The Last.fm request failed. Try again later.");
         }),
     ]);
+  }
+
+  function renderWeeklyError(detail) {
+    if (!weeklyContainer) return;
+    var item = document.createElement("li");
+    item.className = "music-track-tile music-track-message";
+
+    var marker = document.createElement("span");
+    marker.className = "music-track-rank";
+    marker.setAttribute("aria-hidden", "true");
+    marker.textContent = "!";
+
+    var message = document.createElement("span");
+    message.className = "music-track-name";
+    message.textContent = "Weekly tracks unavailable.";
+
+    var hint = document.createElement("span");
+    hint.className = "music-track-artist";
+    hint.textContent = detail;
+
+    item.appendChild(marker);
+    item.appendChild(message);
+    item.appendChild(hint);
+    weeklyContainer.textContent = "";
+    weeklyContainer.appendChild(item);
+    utils.refreshStagger();
   }
 
   function fetchRecentTrack() {
@@ -136,13 +159,14 @@
       encodeURIComponent(lastfmKey) +
       "&period=7day&limit=8&format=json";
     return jsonp(endpoint).then(function (data) {
-      if (
-        !data ||
-        !data.toptracks ||
-        !data.toptracks.track ||
-        !data.toptracks.track.length
-      ) {
-        throw new Error("No weekly tracks");
+      if (data && data.error) {
+        throw new Error(data.message || "Last.fm weekly tracks request failed");
+      }
+      if (!data || !data.toptracks || !Array.isArray(data.toptracks.track)) {
+        throw new Error("Last.fm returned an invalid weekly tracks response");
+      }
+      if (!data.toptracks.track.length) {
+        return [];
       }
       return data.toptracks.track;
     });
@@ -176,13 +200,13 @@
     }
     if (!added) {
       var emptyLi = document.createElement("li");
-      emptyLi.className = "music-track-tile";
+      emptyLi.className = "music-track-tile music-track-message";
       var emptyName = document.createElement("span");
       emptyName.className = "music-track-name";
-      emptyName.textContent = "No weekly tracks yet.";
+      emptyName.textContent = "No tracks scrobbled this week.";
       var emptyArtist = document.createElement("span");
       emptyArtist.className = "music-track-artist";
-      emptyArtist.textContent = "Last.fm";
+      emptyArtist.textContent = "Try again after listening to something.";
       emptyLi.appendChild(emptyName);
       emptyLi.appendChild(emptyArtist);
       frag.appendChild(emptyLi);

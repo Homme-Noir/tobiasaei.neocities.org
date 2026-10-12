@@ -6,14 +6,13 @@ Static personal site (HTML, CSS, JS). Deploys to Neocities via GitHub Actions.
 
 - **`public/`** — All files that get deployed to Neocities.
   - **`css/palette.css`** — The site's nine colors; the styles use these directly, including for transparent tints.
-  - **`styles.css`** — Shared styles: fonts, layout, navigation, page components, theme, and responsive behavior.
+  - **`styles.css`** — Shared styles: fonts, layout, page components, and responsive behavior.
   - **`css/home.css`** — Home dashboard styles.
   - **`css/intro.css`** and **`css/radio-player.css`** — Styles used only by their standalone pages.
-  - **`js/site.js`** — Shared header/footer, navigation, and page initialization.
+  - **`js/site.js`** — Shared page initialization and animations.
   - **`js/lofi-player.js`** — Shared floating radio player.
   - **`js/utils.js`** — HTML/date helpers shared by the journal, writings, and music pages.
   - **`js/pages/`** — Behavior for pages that load or update data; simple static pages need no page script.
-  - **`includes/`** — Shared header and footer fragments.
   - **`data/`** — JSON data consumed by the pages.
 - **`.github/workflows/neocities.yml`** — Deploys `public/` to Neocities on every push to `main`.
 - **`.github/workflows/sync-spotify-playlists.yml`** — Syncs Spotify playlists into `public/data/spotify-playlists.json` and **deploys `public/` to Neocities when that file changes** (needed because pushes from `github-actions[bot]` do not trigger the normal deploy-on-push workflow).

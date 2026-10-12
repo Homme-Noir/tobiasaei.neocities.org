@@ -59,7 +59,7 @@
 .music-analyzer-sub {
 	font-size: 0.66rem;
 	letter-spacing: 0.08em;
-	color: rgba(var(--ink-rgb), 0.55);
+	color: var(--ink-muted);
 	text-align: right;
 }
 
@@ -193,6 +193,7 @@
 	border: 1px solid rgba(var(--color-6-rgb), 0.55);
 	border-radius: 0.35rem;
 	background: var(--color-6);
+	color: var(--color-1);
 	box-shadow: 0 0 14px rgba(var(--color-6-rgb), 0.18);
 }
 
@@ -247,6 +248,28 @@
 .music-track-grid {
 	grid-template-columns: 1fr;
 	gap: 0.5rem;
+}
+
+.music-track-message {
+	grid-template-columns: 2.6rem minmax(0, 1fr);
+}
+
+.music-track-message .music-track-rank {
+	grid-column: 1;
+	grid-row: 1 / span 2;
+	margin: 0;
+}
+
+.music-track-message .music-track-name {
+	grid-column: 2;
+	white-space: normal;
+}
+
+.music-track-message .music-track-artist {
+	grid-column: 2;
+	max-width: none;
+	text-align: left;
+	white-space: normal;
 }
 
 .music-track-tile {

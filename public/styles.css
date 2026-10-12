@@ -1,15 +1,14 @@
 /* ============================================================
-   styles.css — single entry point for every page except the
-   intro (index.html) and radio pages, which load their own
-   standalone stylesheets.
+   styles.css — shared entry point for content pages. The start
+   page (index.html) and radio page use standalone stylesheets.
 
    Architecture (each layer is a focused module):
      1. palette.css    — the nine source colors (--color-1..9)
-     2. base.css       — reset, fonts, semantic tokens, body bg
-     3. layout.css     — shell, nav bar, footer, mobile nav
-     4. components.css — lofi player, guestbook + per-page UI
-     5. home.css       — cyberdeck homepage (page-specific)
-     6. music.css      — signal booth music page (page-specific)
+     2. base.css       — reset, fonts, semantic tokens, body background
+     3. layout.css     — page shell and responsive layouts
+     4. components.css — lofi player, guestbook, and shared UI
+     5. home.css       — cyberdeck homepage
+     6. music.css      — signal booth music page
    ============================================================ */
 
 @import url("css/palette.css");

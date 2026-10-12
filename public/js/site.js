@@ -1,13 +1,8 @@
 /**
- * Shared layout: inject header/footer, page state, radio, navigation, and animations.
+ * Shared page state, radio player, and animations.
  */
 (function () {
-  var PATHNAME = window.location.pathname;
-  var PATH_BASE = (function () {
-    var i = PATHNAME.lastIndexOf("/");
-    return i === -1 ? "" : PATHNAME.substring(0, i + 1);
-  })();
-  var CURRENT_FILE = PATHNAME.split("/").pop() || "index.html";
+  var CURRENT_FILE = window.location.pathname.split("/").pop() || "index.html";
   var CURRENT_PAGE =
     (CURRENT_FILE || "index.html").replace(/\.html$/, "") || "index";
 
@@ -23,18 +18,6 @@
     ".guestbook-entries .guestbook-entry",
     ".deck-directory .deck-card",
   ];
-  var NAV_THEME_CLASS_BY_PAGE = {
-    home: "home-nav-bar",
-    music: "music-nav-bar",
-    writings: "writings-nav-bar",
-    projects: "projects-nav-bar",
-    journal: "journal-nav-bar",
-    random: "random-nav-bar",
-    guestbook: "home-nav-bar",
-    photography: "home-nav-bar",
-    not_found: "home-nav-bar",
-  };
-
   function rafThrottle(fn) {
     var queued = false;
     return function () {
@@ -45,24 +28,6 @@
         fn();
       });
     };
-  }
-
-  function applyCurrentNavState() {
-    var nav = document.getElementById("navbar");
-    if (!nav) return;
-    var links = nav.querySelectorAll("a[href]");
-    for (var i = 0; i < links.length; i++) {
-      var a = links[i];
-      var href = a.getAttribute("href") || "";
-      var linkFile = href.split("/").pop() || href;
-      if (linkFile === CURRENT_FILE) {
-        a.setAttribute("aria-current", "page");
-        a.classList.add("active");
-      } else {
-        a.removeAttribute("aria-current");
-        a.classList.remove("active");
-      }
-    }
   }
 
   function applyTabTitleSuffix() {
@@ -81,18 +46,6 @@
     document.body.classList.add("page-" + CURRENT_PAGE);
   }
 
-  function applyNavThemeClass() {
-    var shell = document.querySelector(".nav-shell");
-    if (!shell) return;
-    for (var key in NAV_THEME_CLASS_BY_PAGE) {
-      if (Object.prototype.hasOwnProperty.call(NAV_THEME_CLASS_BY_PAGE, key)) {
-        shell.classList.remove(NAV_THEME_CLASS_BY_PAGE[key]);
-      }
-    }
-    var next = NAV_THEME_CLASS_BY_PAGE[CURRENT_PAGE] || "home-nav-bar";
-    shell.classList.add(next);
-  }
-
   function initScrollToTop() {
     if (document.getElementById("scroll-to-top")) return;
     var btn = document.createElement("a");
@@ -109,17 +62,6 @@
     var sync = rafThrottle(function () {
       var y = window.scrollY || document.documentElement.scrollTop;
       btn.classList.toggle("scroll-to-top--hidden", y <= SCROLL_THRESHOLD);
-    });
-    window.addEventListener("scroll", sync, { passive: true });
-    sync();
-  }
-
-  function initNavScrollState() {
-    var shell = document.querySelector(".nav-shell");
-    if (!shell) return;
-    var sync = rafThrottle(function () {
-      var y = window.scrollY || document.documentElement.scrollTop;
-      shell.classList.toggle("is-scrolled", y > 20);
     });
     window.addEventListener("scroll", sync, { passive: true });
     sync();
@@ -150,110 +92,16 @@
     window.TAE_REFRESH_STAGGER = applyStaggerReveal;
   }
 
-  function initMobileNav() {
-    var shell = document.querySelector(".nav-shell");
-    var nav = document.getElementById("navbar");
-    if (!shell || !nav) return;
-    if (shell.querySelector(".mobile-nav-toggle")) return;
-    var list = nav.querySelector("ul");
-    if (!list) return;
-
-    var toggle = document.createElement("button");
-    toggle.type = "button";
-    toggle.className = "mobile-nav-toggle";
-    toggle.setAttribute("aria-expanded", "false");
-    toggle.setAttribute("aria-label", "Toggle menu");
-    toggle.textContent = "Menu";
-    shell.appendChild(toggle);
-
-    var overlay = document.createElement("div");
-    overlay.className = "mobile-nav-overlay";
-    overlay.setAttribute("hidden", "hidden");
-    var panel = document.createElement("div");
-    panel.className = "mobile-nav-panel";
-    panel.appendChild(list.cloneNode(true));
-    overlay.appendChild(panel);
-    document.body.appendChild(overlay);
-
-    function close() {
-      overlay.classList.remove("is-open");
-      toggle.setAttribute("aria-expanded", "false");
-      window.setTimeout(function () {
-        if (!overlay.classList.contains("is-open")) {
-          overlay.setAttribute("hidden", "hidden");
-        }
-      }, 220);
-    }
-
-    function open() {
-      overlay.removeAttribute("hidden");
-      window.requestAnimationFrame(function () {
-        overlay.classList.add("is-open");
-      });
-      toggle.setAttribute("aria-expanded", "true");
-    }
-
-    toggle.addEventListener("click", function () {
-      if (overlay.classList.contains("is-open")) close();
-      else open();
-    });
-    overlay.addEventListener("click", function (e) {
-      if (e.target === overlay) close();
-    });
-
-    var links = overlay.querySelectorAll("a[href]");
-    for (var i = 0; i < links.length; i++) {
-      links[i].addEventListener("click", close);
-    }
-  }
-
-  function runAfterInject() {
+  function runPageSetup() {
     applyPageBodyClass();
     applyTabTitleSuffix();
-    applyCurrentNavState();
-    applyNavThemeClass();
     initScrollToTop();
     if (window.TAE_LOFI_PLAYER && window.TAE_LOFI_PLAYER.init) {
       window.TAE_LOFI_PLAYER.init();
     }
-    initNavScrollState();
     initPageEntrance();
     initStaggerReveal();
-    initMobileNav();
   }
 
-  function injectSharedLayout() {
-    var headerPlaceholder = document.getElementById("headerPlaceholder");
-    var footerPlaceholder = document.getElementById("footerPlaceholder");
-    if (!headerPlaceholder || !footerPlaceholder) {
-      runAfterInject();
-      return;
-    }
-
-    Promise.all([
-      fetch(PATH_BASE + "includes/header.html", { cache: "no-store" }).then(
-        function (r) {
-          if (!r.ok) throw new Error("Could not load the site header.");
-          return r.text();
-        },
-      ),
-      fetch(PATH_BASE + "includes/footer.html", { cache: "no-store" }).then(
-        function (r) {
-          if (!r.ok) throw new Error("Could not load the site footer.");
-          return r.text();
-        },
-      ),
-    ])
-      .then(function (parts) {
-        headerPlaceholder.outerHTML = parts[0];
-        footerPlaceholder.outerHTML = parts[1];
-        runAfterInject();
-      })
-      .catch(function (error) {
-        console.error("Could not load the shared site layout.", error);
-        runAfterInject();
-      });
-  }
-
-  injectSharedLayout();
+  runPageSetup();
 })();

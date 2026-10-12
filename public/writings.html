@@ -9,7 +9,11 @@
   </head>
   <body>
     <div id="container">
-      <div id="headerPlaceholder"></div>
+      <nav class="page-home-nav" aria-label="Page navigation">
+        <a class="page-home-link" href="home.html" aria-label="Go to Home">
+          <span aria-hidden="true">← </span>Home
+        </a>
+      </nav>
       <div class="writings-layout">
         <main class="writings-content">
           <header class="page-head">
@@ -46,7 +50,6 @@
           <ul class="writings-entries" id="writings-list" role="tabpanel"></ul>
         </main>
       </div>
-      <div id="footerPlaceholder"></div>
     </div>
     <script src="js/utils.js"></script>
     <script src="js/pages/writings.js"></script>

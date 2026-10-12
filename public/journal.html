@@ -9,7 +9,11 @@
   </head>
   <body>
     <div id="container">
-      <div id="headerPlaceholder"></div>
+      <nav class="page-home-nav" aria-label="Page navigation">
+        <a class="page-home-link" href="home.html" aria-label="Go to Home">
+          <span aria-hidden="true">← </span>Home
+        </a>
+      </nav>
       <div class="journal-layout">
         <main class="journal-stream">
           <header class="page-head page-head--center journal-head">
@@ -55,7 +59,6 @@
           <div id="journal-entries" role="tabpanel"></div>
         </main>
       </div>
-      <div id="footerPlaceholder"></div>
     </div>
     <script src="js/utils.js"></script>
     <script src="js/pages/journal.js"></script>

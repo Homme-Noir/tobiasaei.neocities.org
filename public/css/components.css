@@ -41,6 +41,7 @@
 
 .lofi-toggle.is-playing {
 	background: var(--color-6);
+	color: var(--color-1);
 	box-shadow: 0 0 16px rgba(var(--color-6-rgb), 0.18);
 }
 
@@ -64,6 +65,16 @@
 /* ============================================================
    Guestbook (HTML Comment Box + wrapper)
    ============================================================ */
+@keyframes pulseDot {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.35;
+	}
+}
+
 .guestbook-list {
 	border: 1px solid var(--panel-border);
 	border-radius: 0.9rem;

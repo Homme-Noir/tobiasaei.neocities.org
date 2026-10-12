@@ -11,7 +11,6 @@
   </head>
   <body class="page-home">
     <div id="container">
-      <div id="headerPlaceholder"></div>
       <main class="home-main">
         <section class="deck-shell" aria-label="Dreamless Boy home terminal">
           <header class="deck-topbar">
@@ -208,10 +207,15 @@
                   <span>GAIN <i></i></span><span>SIG <i></i></span
                   ><span>FREQ <i></i></span>
                 </div>
-                <a class="deck-guestbook-link" href="#guestbook">
+                <button
+                  class="deck-guestbook-link guestbook-toggle"
+                  type="button"
+                  aria-controls="guestbook"
+                  aria-expanded="false"
+                >
                   <span class="nf nf-md-account-edit" aria-hidden="true"></span>
-                  Visitor logs
-                </a>
+                  <span data-guestbook-toggle-label>Visitor logs</span>
+                </button>
               </div>
             </div>
           </div>
@@ -242,6 +246,7 @@
           class="guestbook-list home-guestbook"
           id="guestbook"
           aria-labelledby="guestbook-title"
+          hidden
         >
           <h2 id="guestbook-title">Visitor logs</h2>
           <p class="guestbook-description">
@@ -273,12 +278,16 @@
           </div>
         </section>
       </main>
-      <div id="footerPlaceholder"></div>
     </div>
-    <a class="home-guestbook-shortcut" href="#guestbook">
+    <button
+      class="home-guestbook-shortcut guestbook-toggle"
+      type="button"
+      aria-controls="guestbook"
+      aria-expanded="false"
+    >
       <span class="nf nf-md-message-text-outline" aria-hidden="true"></span>
-      Visitor logs
-    </a>
+      <span data-guestbook-toggle-label>Visitor logs</span>
+    </button>
     <script src="js/pages/home.js"></script>
     <script src="js/lofi-player.js"></script>
     <script src="js/site.js"></script>

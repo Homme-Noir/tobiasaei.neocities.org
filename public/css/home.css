@@ -6,18 +6,21 @@
    palette.css (--color-1..9) — no hard-coded values anywhere.
    ============================================================ */
 
-/* Hide the shared chrome on the deck; the deck has its own bars. */
-.page-home #headerPlaceholder,
-.page-home #headerArea,
-.page-home .nav-shell,
-.page-home #footer.site-footer {
-        display: none;
-}
-
 .page-home {
+        /* Set to url("../wallpaper.webp") to add a wallpaper behind the deck. */
+        --home-wallpaper: none;
+        --home-wallpaper-shade: 0;
         background-color: var(--color-1);
-        /* keep body's fixed gradient/scanlines out of the way */
-        background-image: none;
+        background-image:
+                linear-gradient(
+                        rgba(var(--color-1-rgb), var(--home-wallpaper-shade)),
+                        rgba(var(--color-1-rgb), var(--home-wallpaper-shade))
+                ),
+                var(--home-wallpaper);
+        background-position: center;
+        background-size: cover;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
 }
 
 .page-home::before,
@@ -28,7 +31,15 @@
 
 .page-home #container {
         width: min(1400px, 100%);
-        padding: 0 1rem 5.5rem;
+        min-height: 100vh;
+        min-height: 100svh;
+        justify-content: center;
+        padding: 1rem;
+}
+
+.page-home.has-open-guestbook #container {
+        justify-content: flex-start;
+        padding-bottom: 5.5rem;
 }
 
 .page-home .home-main {
@@ -82,7 +93,7 @@
 
 .deck-topbar p {
         margin: 0;
-        color: var(--color-3);
+        color: var(--color-8);
 }
 
 .deck-topbar time {
@@ -95,13 +106,13 @@
 .deck-topbar time::before {
         content: "┌";
         margin-right: 4px;
-        color: var(--color-3);
+        color: var(--color-8);
 }
 
 .deck-topbar time::after {
         content: "┐";
         margin-left: 4px;
-        color: var(--color-3);
+        color: var(--color-8);
 }
 
 .deck-window-lights {
@@ -165,7 +176,7 @@
 
 .deck-label {
         margin: 0 0 0.75rem;
-        color: var(--color-5);
+        color: var(--color-9);
         font-family: var(--font-mono);
         font-size: 0.68rem;
         font-weight: 400;
@@ -179,7 +190,7 @@
 .deck-label::before {
         content: "▶";
         font-size: 0.55rem;
-        color: var(--color-5);
+        color: var(--color-9);
 }
 
 /* ---- Operator panel ---- */
@@ -199,14 +210,14 @@
 
 .deck-operator h1 em {
         display: block;
-        color: var(--color-5);
+        color: var(--color-9);
         font-style: italic;
         text-shadow: 0 0 30px rgba(var(--color-5-rgb), 0.30);
 }
 
 .deck-handle {
         margin: 0 0 1rem;
-        color: var(--color-3);
+        color: var(--color-8);
         font-family: var(--font-mono);
         font-size: 0.78rem;
 }
@@ -235,7 +246,7 @@
 
 .deck-boot-os {
         margin: 0 0 0.4rem;
-        color: var(--color-3);
+        color: var(--color-8);
         font-family: var(--font-mono);
         font-size: 0.78rem;
 }
@@ -246,7 +257,7 @@
         gap: 0.3rem;
         margin: 0;
         padding: 0;
-        color: var(--color-3);
+        color: var(--color-8);
         font-family: var(--font-mono);
         font-size: 0.78rem;
         line-height: 1.9;
@@ -258,7 +269,7 @@
 
 .deck-boot .warn,
 .deck-boot em {
-        color: var(--color-6);
+        color: var(--color-7);
         font-style: normal;
 }
 
@@ -266,7 +277,7 @@
         position: absolute;
         right: 1.15rem;
         bottom: 0.85rem;
-        color: var(--color-3);
+        color: var(--color-8);
         font-family: var(--font-mono);
         font-size: 0.75rem;
         text-decoration: none;
@@ -302,7 +313,7 @@
 }
 
 .deck-status dt {
-        color: var(--color-3);
+        color: var(--color-8);
         letter-spacing: 0.16em;
         font-size: 0.72rem;
 }
@@ -314,7 +325,7 @@
 }
 
 .deck-status dl div:nth-child(3) dd {
-        color: var(--color-5);
+        color: var(--color-9);
         font-style: italic;
 }
 
@@ -384,7 +395,7 @@
 }
 
 .deck-terminal-bar p span {
-        color: var(--color-3);
+        color: var(--color-8);
 }
 
 .deck-terminal-content {
@@ -462,7 +473,7 @@
         position: absolute;
         top: 0.75rem;
         left: 1rem;
-        color: var(--color-3);
+        color: var(--color-8);
         font-family: var(--font-mono);
         font-size: 0.72rem;
         letter-spacing: 0.14em;
@@ -501,7 +512,7 @@
 }
 
 .deck-card small {
-        color: var(--color-3);
+        color: var(--color-8);
         font-family: var(--font-mono);
         font-size: 0.75rem;
         line-height: 1.45;
@@ -643,7 +654,7 @@
 .deck-indicators span,
 .deck-readouts span {
         gap: 0.4rem;
-        color: var(--color-3);
+        color: var(--color-8);
         font-family: var(--font-mono);
         font-size: 0.62rem;
         letter-spacing: 0.1em;
@@ -736,14 +747,14 @@
         padding: 0.6rem 1.25rem;
         border: none;
         border-radius: 4px;
-        background: linear-gradient(135deg, var(--color-7), var(--color-5));
-        color: var(--color-9);
+        background: linear-gradient(135deg, var(--color-7), var(--color-8));
+        color: var(--color-1);
         font-family: var(--font-mono);
         font-size: 0.72rem;
         font-weight: 700;
         letter-spacing: 0.14em;
-        text-decoration: none;
         text-transform: uppercase;
+        cursor: pointer;
         transition:
                 transform 0.3s ease,
                 box-shadow 0.3s ease;
@@ -799,7 +810,7 @@
 
 .deck-build {
         margin-left: auto;
-        color: var(--color-3);
+        color: var(--color-8);
         letter-spacing: 0.16em;
 }
 
@@ -807,6 +818,10 @@
 .home-guestbook {
         margin-top: 1rem;
         scroll-margin-top: 1rem;
+}
+
+.home-guestbook[hidden] {
+        display: none;
 }
 
 /* ---- Floating player placement on the deck ---- */
@@ -818,15 +833,15 @@
 }
 
 .page-home .lofi-toggle {
-        border: 1px solid var(--color-5);
-        background: rgba(188, 80, 144, 0.15); /* --color-5 */
-        color: var(--color-5);
+        border: 1px solid var(--color-6);
+        background: var(--color-2);
+        color: var(--color-9);
         border-radius: 999px;
 }
 
 .page-home .lofi-toggle.is-playing {
-        background: var(--color-5);
-        color: var(--color-9);
+        background: var(--color-6);
+        color: var(--color-1);
 }
 
 .page-home .lofi-station {
@@ -844,23 +859,37 @@
         display: inline-flex;
         align-items: center;
         gap: 0.45rem;
-        color: var(--color-3);
+        min-height: 2.5rem;
+        padding: 0.45rem 0.8rem;
+        border: 1px solid rgba(var(--color-8-rgb), 0.45);
+        border-radius: 999px;
+        background: rgba(var(--color-1-rgb), 0.88);
+        color: var(--color-8);
         font-family: var(--font-mono);
         font-size: 0.75rem;
         letter-spacing: 0.08em;
-        text-decoration: none;
-        transition: color 0.3s ease;
+        cursor: pointer;
+        backdrop-filter: blur(8px);
+        transition:
+                opacity 0.18s ease,
+                border-color 0.18s ease,
+                background-color 0.18s ease;
+        opacity: 0.78;
 }
 
-.home-guestbook-shortcut:hover {
-        color: var(--color-8);
+.home-guestbook-shortcut:hover,
+.home-guestbook-shortcut:focus-visible {
+        opacity: 1;
+        border-color: var(--color-8);
+        background: var(--color-1);
+}
+
+.home-guestbook-shortcut:focus-visible {
+        outline: 3px solid var(--color-9);
+        outline-offset: 3px;
 }
 
 .home-guestbook-shortcut .nf {
-        color: var(--color-3);
-}
-
-.home-guestbook-shortcut:hover .nf {
         color: var(--color-8);
 }
 
@@ -884,7 +913,9 @@
 
 @media (max-width: 640px) {
         .page-home #container {
-                padding: 0 0.5rem 5.5rem;
+                min-height: 100vh;
+                min-height: 100svh;
+                padding: 1rem 0.5rem;
         }
 
         .deck-topbar,

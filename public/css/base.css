@@ -34,20 +34,20 @@
 
 	/* Color roles — every role maps directly onto a palette slot. */
 	--ink: var(--color-9); /* primary text */
-	--ink-muted: var(--color-3); /* dim labels (palette, not washed ink) */
-	--accent-warm: var(--color-8); /* secondary text / labels */
-	--accent-hot: var(--color-6); /* alerts, focus, live status */
-	--accent-violet: var(--color-5);
+	--ink-muted: var(--color-8); /* secondary text / labels */
+	--accent-warm: var(--color-8);
+	--accent-hot: var(--color-7); /* high-contrast alerts and live status */
+	--accent-violet: var(--color-9);
 	--panel-bg: var(--color-2); /* solid panels keep text legible */
 	--panel-border: var(--color-3);
 	--glow-hot: 0 0 10px rgba(var(--color-6-rgb), 0.70);
 
 	/* RGB triplets for the semantic roles (same palette slots) */
 	--ink-rgb: var(--color-9-rgb);
-	--ink-muted-rgb: var(--color-3-rgb);
+	--ink-muted-rgb: var(--color-8-rgb);
 	--accent-warm-rgb: var(--color-8-rgb);
-	--accent-hot-rgb: var(--color-6-rgb);
-	--accent-violet-rgb: var(--color-5-rgb);
+	--accent-hot-rgb: var(--color-7-rgb);
+	--accent-violet-rgb: var(--color-9-rgb);
 }
 
 /* ---- Reset / defaults ---- */
@@ -158,6 +158,52 @@ main {
 	color: var(--accent-warm);
 	font-size: 0.82rem;
 	line-height: 1.65;
+}
+
+.page-home-nav {
+	position: fixed;
+	left: 1rem;
+	bottom: 1rem;
+	z-index: 50;
+}
+
+.page-home-link {
+	display: inline-flex;
+	min-height: 2.5rem;
+	align-items: center;
+	padding: 0.45rem 0.8rem;
+	border: 1px solid rgba(var(--color-8-rgb), 0.45);
+	border-radius: 999px;
+	background: rgba(var(--color-1-rgb), 0.88);
+	color: var(--color-9);
+	font-family: var(--font-mono);
+	font-size: 0.78rem;
+	font-weight: 500;
+	text-decoration: none;
+	backdrop-filter: blur(8px);
+	opacity: 0.76;
+	transition:
+		opacity 0.18s ease,
+		border-color 0.18s ease,
+		background-color 0.18s ease;
+}
+
+.page-home-link:hover,
+.page-home-link:focus-visible {
+	opacity: 1;
+	border-color: var(--color-8);
+	background: var(--color-1);
+}
+
+.page-home-link:focus-visible {
+	outline: 3px solid var(--color-9);
+	outline-offset: 3px;
+}
+
+@media (max-width: 520px) {
+	.page-home-nav {
+		bottom: 5.35rem;
+	}
 }
 
 .vault-text {

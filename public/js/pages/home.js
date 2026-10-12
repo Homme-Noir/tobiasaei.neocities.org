@@ -1,4 +1,27 @@
 (function () {
+  var guestbook = document.getElementById("guestbook");
+  var guestbookToggles = document.querySelectorAll(".guestbook-toggle");
+
+  function setGuestbookExpanded(expanded) {
+    if (!guestbook) return;
+    guestbook.hidden = !expanded;
+    document.body.classList.toggle("has-open-guestbook", expanded);
+    for (var i = 0; i < guestbookToggles.length; i++) {
+      var toggle = guestbookToggles[i];
+      toggle.setAttribute("aria-expanded", String(expanded));
+      var label = toggle.querySelector("[data-guestbook-toggle-label]");
+      if (label) {
+        label.textContent = expanded ? "Hide visitor logs" : "Visitor logs";
+      }
+    }
+  }
+
+  for (var i = 0; i < guestbookToggles.length; i++) {
+    guestbookToggles[i].addEventListener("click", function () {
+      setGuestbookExpanded(guestbook ? guestbook.hidden : false);
+    });
+  }
+
   // Blinking block cursor at the end of the terminal prompt line.
   var promptTitle = document.getElementById("deck-welcome-title");
   if (promptTitle && !promptTitle.querySelector(".deck-cursor")) {

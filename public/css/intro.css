@@ -1,4 +1,17 @@
 @import url("palette.css");
+
+@font-face {
+  font-family: "Iosevka Nerd Font";
+  src: url("../fonts/IosevkaNerdFont-Regular.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Victor Mono Nerd Font";
+  src: url("../fonts/VictorMonoNerdFont-Regular.woff2") format("woff2");
+  font-display: swap;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -33,7 +46,19 @@ body {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: var(--color-1);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(var(--color-1-rgb), 0.46),
+      rgba(var(--color-1-rgb), 0.3) 52%,
+      rgba(var(--color-1-rgb), 0.5)
+    ),
+    linear-gradient(
+      0deg,
+      rgba(var(--color-1-rgb), 0.42),
+      transparent 32%,
+      rgba(var(--color-1-rgb), 0.34)
+    );
 }
 
 html::before {
@@ -56,11 +81,12 @@ body::before {
   display: block;
   position: fixed;
   inset: 0;
-  background: var(--color-9);
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 2px,
+    rgba(var(--color-1-rgb), 0.25) 2px 3px
+  );
   z-index: 101;
-  background-size:
-    100% 2px,
-    3px 100%;
   pointer-events: none;
 }
 
@@ -74,7 +100,11 @@ body::before {
 .vhs-vignette {
   position: absolute;
   inset: 0;
-  background: var(--color-1);
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--color-1-rgb), 0.08) 35%,
+    rgba(var(--color-1-rgb), 0.62) 100%
+  );
 }
 
 .vhs-flicker {
@@ -183,11 +213,12 @@ body::before {
 .entry h1 {
   margin: 0;
   color: var(--color-9);
-  font-size: clamp(2.6rem, 9vw, 5.6rem);
+  font-size: clamp(2rem, 6vw, 4.5rem);
   font-weight: 600;
   line-height: 1;
   letter-spacing: 0.025em;
   text-align: center;
+  white-space: nowrap;
   text-shadow: none;
 }
 
@@ -222,7 +253,7 @@ body::before {
   align-items: center;
   gap: 0.65rem;
   margin: 1.5rem 0 0;
-  color: var(--color-5);
+  color: var(--color-8);
   font-family: "Iosevka Nerd Font", monospace;
   font-size: 0.58rem;
   letter-spacing: 0.15em;
@@ -256,7 +287,7 @@ body::before {
   font-size: 0.72rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-7);
+  color: var(--color-1);
   text-decoration: none;
   border: 1px solid rgba(var(--color-6-rgb), 0.65);
   border-radius: 0.35rem;
