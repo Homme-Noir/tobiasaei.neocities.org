@@ -62,11 +62,16 @@
 
     /* Palette: read from CSS custom properties so the visualizer
        stays in sync with css/palette.css automatically. */
+    /* Read the nine palette slots directly (hex values from
+       css/palette.css) so every pixel drawn is a palette color. */
     var rootStyle = document.documentElement;
-    var colHot = cssColor(rootStyle, "--accent-hot", "#ff6ec7");
-    var colViolet = cssColor(rootStyle, "--accent-violet", "#a78bfa");
-    var colWarm = cssColor(rootStyle, "--accent-warm", "#fbbf24");
-    var colInkDim = cssColor(rootStyle, "--ink-muted", "#6b7280");
+    function pal(n, fallback) {
+      return cssColor(rootStyle, "--color-" + n, fallback);
+    }
+    var colHot = pal(6, "#ff6361");     /* --color-6 */
+    var colViolet = pal(5, "#bc5090");  /* --color-5 */
+    var colWarm = pal(8, "#ffa600");    /* --color-8 */
+    var colInkDim = pal(3, "#2c4875");  /* --color-3 */
 
     /* ---- sizing (DPR-aware) ---- */
     var w = 0,

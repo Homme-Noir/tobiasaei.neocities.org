@@ -18,19 +18,19 @@
 	padding: 0.5rem 0.7rem;
 	border-radius: 999px;
 	border: 1px solid var(--panel-border);
-	background: color-mix(in srgb, var(--color-1) 88%, transparent);
-	box-shadow: 0 12px 32px color-mix(in srgb, var(--color-1) 55%, transparent);
+	background: var(--color-1);
+	box-shadow: 0 12px 32px rgba(var(--color-1-rgb), 0.55);
 	backdrop-filter: blur(14px);
 }
 
 .lofi-toggle {
-	border: 1px solid color-mix(in srgb, var(--color-6) 55%, transparent);
+	border: 1px solid rgba(var(--color-6-rgb), 0.55);
 	border-radius: 999px;
 	padding: 0.5rem 0.75rem;
 	font-family: var(--font-mono);
 	font-size: 0.78rem;
 	color: var(--color-7);
-	background: color-mix(in srgb, var(--color-6) 16%, transparent);
+	background: var(--color-2);
 	cursor: pointer;
 	transition: filter 0.2s ease;
 }
@@ -40,8 +40,8 @@
 }
 
 .lofi-toggle.is-playing {
-	background: color-mix(in srgb, var(--color-6) 30%, transparent);
-	box-shadow: 0 0 16px color-mix(in srgb, var(--color-6) 18%, transparent);
+	background: var(--color-6);
+	box-shadow: 0 0 16px rgba(var(--color-6-rgb), 0.18);
 }
 
 .lofi-volume {
@@ -57,7 +57,7 @@
 	font-family: var(--font-mono);
 	font-size: 0.72rem;
 	color: var(--ink);
-	background: color-mix(in srgb, var(--color-1) 94%, transparent);
+	background: var(--color-1);
 	accent-color: var(--accent-hot);
 }
 
@@ -67,12 +67,8 @@
 .guestbook-list {
 	border: 1px solid var(--panel-border);
 	border-radius: 0.9rem;
-	background: linear-gradient(
-		145deg,
-		color-mix(in srgb, var(--color-2) 38%, transparent),
-		color-mix(in srgb, var(--color-1) 75%, transparent)
-	);
-	box-shadow: 0 12px 32px color-mix(in srgb, var(--color-1) 22%, transparent);
+	background: var(--color-2);
+	box-shadow: 0 12px 32px rgba(var(--color-1-rgb), 0.22);
 	padding: clamp(1rem, 2.5vw, 1.45rem);
 }
 
@@ -138,14 +134,14 @@
 #HCB_comment_box input.text:focus,
 #HCB_comment_box textarea:focus {
 	border-color: var(--accent-hot);
-	outline: 2px solid color-mix(in srgb, var(--color-6) 25%, transparent);
+	outline: 2px solid rgba(var(--color-6-rgb), 0.25);
 	outline-offset: 1px;
 }
 
 #HCB_comment_box input.submit {
 	border: 1px solid var(--accent-violet);
 	border-radius: 999px;
-	background: color-mix(in srgb, var(--color-5) 20%, transparent);
+	background: var(--color-2);
 	color: var(--ink);
 	cursor: pointer;
 	font: inherit;
@@ -153,7 +149,7 @@
 }
 
 #HCB_comment_box input.submit:hover {
-	background: color-mix(in srgb, var(--color-5) 38%, transparent);
+	background: var(--color-5);
 }
 
 #HCB_comment_box .comment {
@@ -176,7 +172,7 @@
 
 #HCB_comment_box p.error {
 	border: 1px solid var(--accent-hot);
-	background: color-mix(in srgb, var(--color-6) 12%, transparent);
+	background: var(--color-2);
 	color: var(--ink);
 	padding: 0.65rem;
 }
@@ -208,12 +204,8 @@
 .photography-gallery {
 	border: 1px solid var(--panel-border);
 	border-radius: 0.9rem;
-	background: linear-gradient(
-		145deg,
-		color-mix(in srgb, var(--color-2) 38%, transparent),
-		color-mix(in srgb, var(--color-1) 75%, transparent)
-	);
-	box-shadow: 0 12px 32px color-mix(in srgb, var(--color-1) 22%, transparent);
+	background: var(--color-2);
+	box-shadow: 0 12px 32px rgba(var(--color-1-rgb), 0.22);
 }
 
 .music-hero,
@@ -238,7 +230,7 @@
 	width: 150px;
 	height: 150px;
 	border-radius: 999px;
-	border: 1px dashed color-mix(in srgb, var(--color-5) 45%, transparent);
+	border: 1px dashed rgba(var(--color-5-rgb), 0.45);
 	opacity: 0.35;
 	animation: spinSlow 10s linear infinite;
 }
@@ -288,7 +280,7 @@
 	font-size: 2rem;
 	color: var(--ink);
 	text-decoration: none;
-	text-decoration-color: color-mix(in srgb, var(--color-7) 55%, transparent);
+	text-decoration-color: rgba(var(--color-7-rgb), 0.55);
 	text-underline-offset: 0.18em;
 }
 
@@ -339,11 +331,7 @@
 .music-track-tile {
 	border: 1px solid var(--panel-border);
 	border-radius: 0.5rem;
-	background: linear-gradient(
-		145deg,
-		color-mix(in srgb, var(--color-3) 42%, transparent),
-		color-mix(in srgb, var(--color-1) 82%, transparent)
-	);
+	background: var(--color-1);
 	padding: 0.7rem;
 	transition:
 		border-color 0.2s ease,
@@ -352,7 +340,7 @@
 
 .music-track-tile:hover {
 	transform: translateY(-2px);
-	border-color: color-mix(in srgb, var(--color-7) 42%, transparent);
+	border-color: rgba(var(--color-7-rgb), 0.42);
 }
 
 .music-track-rank {
@@ -396,11 +384,7 @@
 	padding: 0.9rem;
 	border: 1px solid var(--panel-border);
 	border-radius: 0.5rem;
-	background: linear-gradient(
-		145deg,
-		color-mix(in srgb, var(--color-3) 42%, transparent),
-		color-mix(in srgb, var(--color-1) 82%, transparent)
-	);
+	background: var(--color-1);
 	transition:
 		border-color 0.2s ease,
 		transform 0.2s ease;
@@ -412,7 +396,7 @@
 
 .curated-item:hover {
 	transform: translateY(-2px);
-	border-color: color-mix(in srgb, var(--color-7) 42%, transparent);
+	border-color: rgba(var(--color-7-rgb), 0.42);
 }
 
 .curated-item h3 {
@@ -424,7 +408,7 @@
 
 .curated-item h3 a {
 	color: var(--ink);
-	text-decoration-color: color-mix(in srgb, var(--color-7) 55%, transparent);
+	text-decoration-color: rgba(var(--color-7-rgb), 0.55);
 	text-underline-offset: 0.18em;
 }
 
@@ -492,7 +476,7 @@
 .writings-entry h2 a {
 	color: var(--ink);
 	text-decoration: none;
-	text-decoration-color: color-mix(in srgb, var(--color-7) 55%, transparent);
+	text-decoration-color: rgba(var(--color-7-rgb), 0.55);
 	text-underline-offset: 0.18em;
 }
 
@@ -559,7 +543,7 @@
 
 .projects-card:hover {
 	transform: translateY(-2px);
-	border-color: color-mix(in srgb, var(--color-7) 42%, transparent);
+	border-color: rgba(var(--color-7-rgb), 0.42);
 }
 
 .projects-card h2 {
@@ -632,7 +616,7 @@
 	top: 3.4rem;
 	bottom: -1.35rem;
 	width: 1px;
-	background: linear-gradient(var(--panel-border), transparent 92%);
+	background: var(--panel-border);
 }
 
 .journal-item:last-child::before {
@@ -654,9 +638,9 @@
 
 .journal-body {
 	/* Solid-ish panel background keeps long-form text legible */
-	background: color-mix(in srgb, var(--color-2) 78%, var(--color-1));
+	background: var(--color-2);
 	padding: 1.15rem 1.4rem 1.35rem;
-	border-left: 2px solid color-mix(in srgb, var(--color-6) 55%, transparent);
+	border-left: 2px solid rgba(var(--color-6-rgb), 0.55);
 	transition: border-color 0.2s ease;
 }
 
@@ -676,7 +660,7 @@
 
 .journal-body .vault-text {
 	margin-top: 0.7rem;
-	font-size: 0.88rem;
+	font-size: 0.92rem;
 	line-height: 1.85;
 	color: var(--ink);
 	max-width: 68ch;
@@ -685,7 +669,7 @@
 .journal-body p {
 	margin: 0.45rem 0 0;
 	font-family: var(--font-mono);
-	font-size: 0.88rem;
+	font-size: 0.92rem;
 	color: var(--ink);
 	line-height: 1.85;
 	max-width: 68ch;
@@ -719,7 +703,7 @@
 
 .random-tile:hover {
 	transform: translateY(-2px);
-	border-color: color-mix(in srgb, var(--color-7) 42%, transparent);
+	border-color: rgba(var(--color-7-rgb), 0.42);
 }
 
 .random-tile--wide {
@@ -819,11 +803,7 @@
 	overflow: hidden;
 	border: 1px solid var(--panel-border);
 	border-radius: 0.5rem;
-	background: linear-gradient(
-		145deg,
-		color-mix(in srgb, var(--color-3) 42%, transparent),
-		color-mix(in srgb, var(--color-1) 82%, transparent)
-	);
+	background: var(--color-1);
 	transition:
 		border-color 0.2s ease,
 		transform 0.2s ease;
@@ -831,7 +811,7 @@
 
 .photography-card:hover {
 	transform: translateY(-2px);
-	border-color: color-mix(in srgb, var(--color-7) 42%, transparent);
+	border-color: rgba(var(--color-7-rgb), 0.42);
 }
 
 .photography-card img {
@@ -941,4 +921,68 @@
 	.music-now-status::before {
 		animation: none;
 	}
+}
+
+/* ============================================================
+   Palette overrides for third-party injected markup
+   (Hypothesis comment box, browser-default form controls)
+   ============================================================ */
+
+/* Hypothesis "Reply / preview" buttons (and any injected widget) */
+input.submit.btn,
+a.btn.btn-secondary,
+#hypothesis-area .btn,
+#hypothesis-area .submit.btn,
+.h-c, .js-add-note-callout .btn {
+        background: var(--color-2) !important;
+        color: var(--ink) !important;
+        border: 1px solid var(--panel-border) !important;
+}
+a.btn.btn-secondary,
+#hypothesis-area .btn-secondary,
+#hypothesis-area .cancel.btn {
+        background: var(--color-1) !important;
+        color: var(--accent-warm) !important;
+}
+
+/* Unstyled links anywhere (e.g. inside injected widgets):
+   keep them on the palette instead of browser blue */
+a:not([class]) {
+        color: var(--accent-violet);
+}
+a:not([class]):hover {
+        color: var(--color-8);
+}
+
+/* Range inputs (lofi volume etc.) — replace the white OS track */
+input[type="range"].lofi-volume {
+        color: var(--color-9);
+        accent-color: var(--color-5);
+        -webkit-appearance: none;
+        appearance: none;
+        height: 4px;
+        border-radius: 2px;
+        background: var(--color-3);
+}
+input[type="range"].lofi-volume::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--color-5);
+        cursor: pointer;
+}
+input[type="range"].lofi-volume::-moz-range-thumb {
+        width: 14px;
+        height: 14px;
+        border: none;
+        border-radius: 50%;
+        background: var(--color-5);
+        cursor: pointer;
+}
+input[type="range"].lofi-volume::-moz-range-track {
+        height: 4px;
+        border-radius: 2px;
+        background: var(--color-3);
 }
