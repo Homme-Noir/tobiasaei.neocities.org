@@ -10,3 +10,17 @@
 	--color-8: #ffa600;
 	--color-9: #ffd380;
 }
+
+/* RGB triplets so rgba(var(--color-N-rgb), a) works everywhere.
+   (Avoids color-mix(), which older browsers drop entirely.) */
+:root {
+        --color-1-rgb: 0, 32, 46;
+        --color-2-rgb: 0, 63, 92;
+        --color-3-rgb: 44, 72, 117;
+        --color-4-rgb: 138, 80, 143;
+        --color-5-rgb: 188, 80, 144;
+        --color-6-rgb: 255, 99, 97;
+        --color-7-rgb: 255, 133, 49;
+        --color-8-rgb: 255, 166, 0;
+        --color-9-rgb: 255, 211, 128;
+}

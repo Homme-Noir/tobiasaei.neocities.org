@@ -8,19 +8,19 @@
 
 /* ---- Fonts: local Nerd Font families behind legacy aliases ---- */
 @font-face {
-	font-family: "Space Grotesk";
+	font-family: "JetBrains Mono Nerd Font";
 	src: url("../fonts/JetBrainsMonoNerdFont-Regular.woff2") format("woff2");
 	font-display: swap;
 }
 
 @font-face {
-	font-family: "IBM Plex Mono";
+	font-family: "Iosevka Nerd Font";
 	src: url("../fonts/IosevkaNerdFont-Regular.woff2") format("woff2");
 	font-display: swap;
 }
 
 @font-face {
-	font-family: "Cormorant Garamond";
+	font-family: "Victor Mono Nerd Font";
 	src: url("../fonts/VictorMonoNerdFont-Regular.woff2") format("woff2");
 	font-display: swap;
 }
@@ -28,19 +28,26 @@
 /* ---- Semantic tokens (always derived from palette colors) ---- */
 :root {
 	/* Typography roles */
-	--font-mono: "IBM Plex Mono", ui-monospace, monospace;
-	--font-ui: "Space Grotesk", sans-serif;
-	--font-display: "Cormorant Garamond", serif;
+	--font-mono: "Iosevka Nerd Font", ui-monospace, monospace;
+	--font-ui: "JetBrains Mono Nerd Font", ui-monospace, monospace;
+	--font-display: "Victor Mono Nerd Font", ui-monospace, monospace;
 
-	/* Color roles */
+	/* Color roles — every role maps directly onto a palette slot. */
 	--ink: var(--color-9); /* primary text */
-	--ink-muted: color-mix(in srgb, var(--color-9) 60%, transparent);
+	--ink-muted: var(--color-3); /* dim labels (palette, not washed ink) */
 	--accent-warm: var(--color-8); /* secondary text / labels */
 	--accent-hot: var(--color-6); /* alerts, focus, live status */
 	--accent-violet: var(--color-5);
-	--panel-bg: color-mix(in srgb, var(--color-1) 82%, transparent);
-	--panel-border: color-mix(in srgb, var(--color-5) 32%, transparent);
-	--glow-hot: 0 0 10px color-mix(in srgb, var(--color-6) 70%, transparent);
+	--panel-bg: var(--color-2); /* solid panels keep text legible */
+	--panel-border: var(--color-3);
+	--glow-hot: 0 0 10px rgba(var(--color-6-rgb), 0.70);
+
+	/* RGB triplets for the semantic roles (same palette slots) */
+	--ink-rgb: var(--color-9-rgb);
+	--ink-muted-rgb: var(--color-3-rgb);
+	--accent-warm-rgb: var(--color-8-rgb);
+	--accent-hot-rgb: var(--color-6-rgb);
+	--accent-violet-rgb: var(--color-5-rgb);
 }
 
 /* ---- Reset / defaults ---- */
@@ -58,18 +65,7 @@ body {
 	font-family: var(--font-ui);
 	color: var(--ink);
 	background-color: var(--color-1);
-	background-image:
-		radial-gradient(
-			circle at 8% 9%,
-			color-mix(in srgb, var(--color-4) 30%, transparent),
-			transparent 42%
-		),
-		radial-gradient(
-			circle at 92% 88%,
-			color-mix(in srgb, var(--color-6) 16%, transparent),
-			transparent 35%
-		),
-		linear-gradient(140deg, var(--color-1), var(--color-2));
+	background-image: none;
 	background-attachment: fixed;
 	display: flex;
 	justify-content: center;
@@ -87,7 +83,7 @@ body::before {
 		to bottom,
 		transparent 0,
 		transparent 2px,
-		color-mix(in srgb, var(--color-1) 22%, transparent) 3px,
+		rgba(0, 0, 0, 0.45) 3px,
 		transparent 4px
 	);
 }
@@ -103,7 +99,7 @@ body::after {
 	background: radial-gradient(
 		circle at center,
 		transparent 48%,
-		color-mix(in srgb, var(--color-1) 58%, transparent) 100%
+		rgba(0, 0, 0, 0.55) 100%
 	);
 }
 
@@ -144,7 +140,7 @@ main {
 	inset: 0 auto 1rem 0;
 	width: 3px;
 	background: linear-gradient(var(--color-6), var(--color-5), var(--color-4));
-	box-shadow: 0 0 14px color-mix(in srgb, var(--color-6) 32%, transparent);
+	box-shadow: 0 0 14px rgba(var(--color-6-rgb), 0.32);
 }
 
 .page-head h1 {
@@ -153,7 +149,7 @@ main {
 	font-size: clamp(2rem, 5vw, 3.3rem);
 	font-weight: 600;
 	color: var(--ink);
-	text-shadow: 0 0 28px color-mix(in srgb, var(--color-6) 12%, transparent);
+	text-shadow: 0 0 28px rgba(var(--color-6-rgb), 0.12);
 }
 
 .page-head p {
@@ -179,7 +175,7 @@ main {
 .journal-filter-btn {
 	border: 1px solid var(--panel-border);
 	border-radius: 999px;
-	background: color-mix(in srgb, var(--color-1) 82%, transparent);
+	background: var(--color-1);
 	color: var(--accent-warm);
 	font-family: var(--font-mono);
 	font-size: 0.72rem;
@@ -197,7 +193,7 @@ main {
 .writings-filter-btn.active,
 .journal-filter-btn.active {
 	border-color: var(--color-6);
-	background: color-mix(in srgb, var(--color-5) 17%, transparent);
+	background: rgba(var(--color-5-rgb), 0.17);
 	color: var(--ink);
 }
 
@@ -215,7 +211,7 @@ main {
 	border-radius: 999px;
 	border: 1px solid var(--panel-border);
 	text-decoration: none;
-	background: color-mix(in srgb, var(--color-1) 92%, transparent);
+	background: var(--color-1);
 	color: var(--ink);
 	font-family: var(--font-mono);
 	font-size: 1.2rem;
