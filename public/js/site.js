@@ -20,20 +20,7 @@
     ".writings-entries > li",
     ".journal-stream .journal-item",
     ".random-bento .random-tile",
-    ".guestbook-entries .guestbook-entry",
-    ".deck-directory .deck-card",
   ];
-  var NAV_THEME_CLASS_BY_PAGE = {
-    home: "home-nav-bar",
-    music: "music-nav-bar",
-    writings: "writings-nav-bar",
-    projects: "projects-nav-bar",
-    journal: "journal-nav-bar",
-    random: "random-nav-bar",
-    guestbook: "home-nav-bar",
-    photography: "home-nav-bar",
-    not_found: "home-nav-bar",
-  };
 
   function rafThrottle(fn) {
     var queued = false;
@@ -79,18 +66,6 @@
   function applyPageBodyClass() {
     if (!CURRENT_PAGE || CURRENT_PAGE === "index") return;
     document.body.classList.add("page-" + CURRENT_PAGE);
-  }
-
-  function applyNavThemeClass() {
-    var shell = document.querySelector(".nav-shell");
-    if (!shell) return;
-    for (var key in NAV_THEME_CLASS_BY_PAGE) {
-      if (Object.prototype.hasOwnProperty.call(NAV_THEME_CLASS_BY_PAGE, key)) {
-        shell.classList.remove(NAV_THEME_CLASS_BY_PAGE[key]);
-      }
-    }
-    var next = NAV_THEME_CLASS_BY_PAGE[CURRENT_PAGE] || "home-nav-bar";
-    shell.classList.add(next);
   }
 
   function initScrollToTop() {
@@ -211,7 +186,6 @@
     applyPageBodyClass();
     applyTabTitleSuffix();
     applyCurrentNavState();
-    applyNavThemeClass();
     initScrollToTop();
     if (window.TAE_LOFI_PLAYER && window.TAE_LOFI_PLAYER.init) {
       window.TAE_LOFI_PLAYER.init();
