@@ -1,4 +1,13 @@
 (function () {
+  // Blinking block cursor at the end of the terminal prompt line.
+  var promptTitle = document.getElementById("deck-welcome-title");
+  if (promptTitle && !promptTitle.querySelector(".deck-cursor")) {
+    var cursor = document.createElement("span");
+    cursor.className = "deck-cursor";
+    cursor.setAttribute("aria-hidden", "true");
+    promptTitle.appendChild(cursor);
+  }
+
   var el = document.getElementById("neocities-visitor-count");
   var note = document.getElementById("visitor-count-note");
   var clock = document.querySelector("[data-deck-clock]");

@@ -3,46 +3,71 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Music — Dreamless_Boy" />
+    <meta
+      name="description"
+      content="Music — Dreamless_Boy. Now playing, weekly transmissions, and curated playlists."
+    />
     <title>Dreamless_Boy | Music</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body class="page-music">
     <div id="container">
       <div id="headerPlaceholder"></div>
+
       <div class="music-layout">
         <main class="music-main">
           <header class="page-head">
-            <h1>Music Landscapes</h1>
-            <p>The sounds that keep me alive.</p>
+            <h1>Signal <span>Booth</span></h1>
+            <p>
+              A live readout of whatever is bleeding through my headphones —
+              scrobbled straight from Last.fm.
+            </p>
           </header>
 
-          <section class="music-hero" aria-label="Last played on Last.fm">
-            <div class="music-hero-label">Now Playing</div>
+          <section class="music-hero" aria-label="Now playing">
+            <h2 class="music-hero-label">◉ Live Input · Scrobble Feed</h2>
             <div id="last-played-content">
-              <p class="music-loading">Loading…</p>
+              <p class="music-loading">Tuning the receiver…</p>
             </div>
           </section>
 
-          <section class="music-recs" aria-label="Top tracks">
-            <h2 class="music-recs-title">Top Weekly Tracks</h2>
+          <section class="music-analyzer" aria-label="Live radio spectrum">
+            <div class="music-analyzer-head">
+              <span class="music-analyzer-title">▤ Signal Analyzer</span>
+              <span class="music-analyzer-sub"
+                >live FFT · lo-fi receiver feed</span
+              >
+            </div>
+            <canvas
+              id="spectrum-canvas"
+              class="music-spectrum-canvas"
+              height="120"
+              aria-hidden="true"
+            ></canvas>
+          </section>
+
+          <section class="music-recs" aria-label="Weekly top tracks">
+            <h2 class="music-recs-title">▮ Weekly Transmissions</h2>
             <ul
               id="weekly-top-tracks"
               class="music-track-list music-track-grid"
             >
               <li class="music-track-tile">
-                <span class="music-track-name">Loading weekly tracks…</span
-                ><span class="music-track-artist">Last.fm</span>
+                <span class="music-track-name">Loading weekly tracks…</span>
               </li>
             </ul>
           </section>
 
-          <section class="music-curated" aria-label="Curated Playlists">
-            <h2 class="music-recs-title">Curated Playlists</h2>
+          <section class="music-curated" aria-label="Curated playlists">
+            <h2 class="music-recs-title">♢ Curated Tapes</h2>
             <div class="music-curated-controls">
-              <span id="spotify-curated-status" class="music-curated-status"
-                >Loading playlists…</span
+              <p
+                id="spotify-curated-status"
+                class="music-curated-status"
+                aria-live="polite"
               >
+                Loading synced playlists…
+              </p>
             </div>
             <div id="curated-playlists">
               <article class="curated-item">
@@ -53,9 +78,11 @@
           </section>
         </main>
       </div>
+
       <div id="footerPlaceholder"></div>
     </div>
     <script src="js/lofi-player.js"></script>
+    <script src="js/spectrum-visualizer.js"></script>
     <script src="js/site.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/pages/music.js"></script>
